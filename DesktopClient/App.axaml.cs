@@ -1,10 +1,10 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using examClientMVVM.ViewModels;
-using examClientMVVM.Views;
+using DesktopClient.ViewModels;
+using DesktopClient.Views;
 
-namespace examClientMVVM
+namespace DesktopClient
 {
     public partial class App : Application
     {

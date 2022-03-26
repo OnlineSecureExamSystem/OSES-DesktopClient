@@ -3,7 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.ReactiveUI;
 using System;
 
-namespace examClientMVVM
+namespace DesktopClient
 {
     internal class Program
     {

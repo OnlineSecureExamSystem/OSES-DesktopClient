@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace examClientMVVM.Helpers
+namespace DesktopClient.Helpers
 {
     public static class WindowShield
     {

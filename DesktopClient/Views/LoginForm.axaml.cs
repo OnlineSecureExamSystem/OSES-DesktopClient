@@ -2,8 +2,9 @@ using Avalonia;
 using Avalonia.Controls;
 
 using Avalonia.Markup.Xaml;
+using DesktopClient.ViewModels;
 
-namespace examClientMVVM.Views
+namespace DesktopClient.Views
 {
     public partial class LoginForm : UserControl
     {
@@ -11,6 +12,7 @@ namespace examClientMVVM.Views
         public LoginForm()
         {
             InitializeComponent();
+            DataContext = new LoginFormViewModel();
         }
         private void InitializeComponent()
         {

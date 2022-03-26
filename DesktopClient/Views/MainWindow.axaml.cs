@@ -1,9 +1,10 @@
 using Avalonia.Controls;
 using System;
-using examClientMVVM.Helpers;
+using DesktopClient.Helpers;
 using Avalonia.Controls.Notifications;
+using DesktopClient.ViewModels;
 
-namespace examClientMVVM.Views
+namespace DesktopClient.Views
 {
     public partial class MainWindow : Window
     {
@@ -12,6 +13,7 @@ namespace examClientMVVM.Views
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainWindowViewModel();
             windowNotificationManager = new WindowNotificationManager(this)
             {
                 MaxItems = 3,

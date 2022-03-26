@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace examClientMVVM.ViewModels
+namespace DesktopClient.ViewModels
 {
     public class ViewModelBase : ReactiveObject
     {
