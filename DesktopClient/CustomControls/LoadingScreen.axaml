@@ -1,0 +1,32 @@
+<UserControl
+    x:Class="DesktopClient.CustomControls.LoadingScreen"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:progRing="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid RowDefinitions="*,*">
+        <Border
+            Grid.RowSpan="2"
+            Background="Black"
+            Opacity="0.5" />
+        <progRing:ProgressRing
+			VerticalAlignment="Bottom"
+            Width="100"
+            Height="100"
+            Foreground="{DynamicResource Primary}"
+            IsActive="True"
+			/>
+        <TextBlock
+			Margin="20"
+			FontSize="20"
+			FontWeight="Bold"
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Text="Please Wait..." />
+    </Grid>
+</UserControl>

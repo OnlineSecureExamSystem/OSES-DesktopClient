@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
+using static DesktopClient.Views.StepManager;
 
 namespace DesktopClient.ViewModels
 {
@@ -29,11 +30,14 @@ namespace DesktopClient.ViewModels
         public StepManagerViewModel()
         {
             NavigateCommand = ReactiveCommand.Create<Control>(Navigate);
+            NavigateCommand.Execute(new LoginForm()).Subscribe();
         }
 
         private void Navigate(Control obj)
         {
-             StepManager.stepManager.FindControl<ContentPresenter>("host").Content = obj;
+             stepManager.FindControl<ContentPresenter>("host").Content = obj;
         }
+        
+
     }
 }

@@ -9,12 +9,19 @@
     d:DesignWidth="50"
     mc:Ignorable="d">
     <Grid>
-        <Ellipse
+		<Ellipse
             Width="30"
             Height="30"
             Fill="{DynamicResource Primary}"
             Stroke="White"
-            StrokeThickness="2" />
+            StrokeThickness="2">
+			<Ellipse.Transitions>
+				<Transitions>
+					<DoubleTransition Easing="ElasticEaseOut" Property="Height" Duration="0:0:0.5"/>
+					<DoubleTransition Easing="ElasticEaseOut" Property="Width" Duration="0:0:0.5"/>
+				</Transitions>
+			</Ellipse.Transitions>
+		</Ellipse>
         <i:Icon Foreground="White" Value="fa-check" />
     </Grid>
 </UserControl>

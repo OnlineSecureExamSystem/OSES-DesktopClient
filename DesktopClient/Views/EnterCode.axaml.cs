@@ -18,5 +18,11 @@ namespace DesktopClient.Views
         {
             AvaloniaXamlLoader.Load(this);
         }
+
+        public void Loaded(object sender, VisualTreeAttachmentEventArgs e)
+        {
+            Control border = this.FindControl<Border>("BorderToAnimate");
+            border.Classes.Add("Fade");
+        }
     }
 }

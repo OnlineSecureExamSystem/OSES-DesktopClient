@@ -57,7 +57,9 @@ namespace DesktopClient.ViewModels
 
             // exception handeling
             LoginCommand.ThrownExceptions.Subscribe(x =>
-                      MainWindow.WindowNotificationManager?.Show(new Avalonia.Controls.Notifications.Notification("Error", x.Message, NotificationType.Error)));
+                      MainWindow.WindowNotificationManager?.Show(new Avalonia.Controls.Notifications.Notification("Error",
+                      x.Message,
+                      NotificationType.Error)));
 
         }
         

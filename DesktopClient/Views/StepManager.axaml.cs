@@ -1,7 +1,11 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using DesktopClient.CustomControls.StepCircle;
+using DesktopClient.ViewModels;
+using System;
 
 namespace DesktopClient.Views
 {
@@ -12,14 +16,17 @@ namespace DesktopClient.Views
         {
             InitializeComponent();
             stepManager = this;
-            DataContext = stepManager;
-            //ContentControl ellipse1 = this.FindControl<ContentControl>("ellipse1");
-            //ellipse1.Content = new Running();
+            DataContext = new StepManagerViewModel();
+            
         }
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
         }
+
+        
+
+     
     }
 }
