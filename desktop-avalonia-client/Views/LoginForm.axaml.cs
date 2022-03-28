@@ -1,51 +1,53 @@
-﻿using Avalonia.Controls.Notifications;
-using Avalonia.Data;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
 using DesktopClient.Helpers;
 using DesktopClient.Models;
 using ReactiveUI;
 using System;
+using System.ComponentModel;
 using System.Reactive;
-using System.Text.RegularExpressions;
-using DesktopClient.Views;
-using static DesktopClient.Views.MainWindow;
-using Avalonia.Controls;
-using Avalonia.Controls.Presenters;
 
-namespace DesktopClient.ViewModels
+namespace DesktopClient.Views
 {
-    public class LoginFormViewModel : ViewModelBase
+    public partial class LoginForm : ReactiveUserControl<LoginForm>
     {
 
+
         private string? _email;
-        
+
         private string? Email
         {
             get => _email;
             set
             {
                 value?.IsValid(DataTypes.Email);
-                this.RaiseAndSetIfChanged(ref _email, value);
+                _email = value;
+                OnPropertyChanged(nameof(Email));
             }
         }
 
         private string? _password;
 
-        
+
         private string? Password
         {
             get => _password;
             set
             {
                 value?.IsValid(DataTypes.Password);
-                this.RaiseAndSetIfChanged(ref _password, value);
+                _password = value;
+                OnPropertyChanged(nameof(Password));
             }
         }
 
 
         private ReactiveCommand<Unit, Unit> LoginCommand { get; }
-
-        public LoginFormViewModel()
+        public LoginForm()
         {
+            InitializeComponent();
+            DataContext = this;
             var canLogin = this.WhenAnyValue(
                 x => x.Email, x => x.Password,
                 (email, pass) =>
@@ -54,17 +56,27 @@ namespace DesktopClient.ViewModels
                 );
 
             LoginCommand = ReactiveCommand.Create(Login, canLogin);
-
-            // exception handeling
             LoginCommand.ThrownExceptions.Subscribe(x =>
-                      MainWindow.WindowNotificationManager?.Show(new Avalonia.Controls.Notifications.Notification("Error", x.Message, NotificationType.Error)));
+                MainWindow.WindowNotificationManager?.Show(new Avalonia.Controls.Notifications.Notification("Error", x.Message, Avalonia.Controls.Notifications.NotificationType.Error)));
 
         }
-        
+
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
+        }
+
         private void Login()
         {
-            StepManagerViewModel stepManager = new StepManagerViewModel();
-            stepManager.NavigateCommand.Execute(new EnterCode()).Subscribe();
+
         }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
 }

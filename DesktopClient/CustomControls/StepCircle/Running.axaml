@@ -1,0 +1,20 @@
+<UserControl
+    x:Class="DesktopClient.CustomControls.StepCircle.Running"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="50"
+    d:DesignWidth="50"
+    mc:Ignorable="d">
+    <Grid>
+        <Ellipse
+            Width="30"
+            Height="30"
+            Fill="{DynamicResource Primary}"
+            Stroke="White"
+            StrokeThickness="2" />
+        <i:Icon Foreground="White" Value="fa-circle" />
+    </Grid>
+</UserControl>

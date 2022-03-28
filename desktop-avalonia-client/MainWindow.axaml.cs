@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using System;
 using Avalonia.Controls.Notifications;
-using DesktopClient.ViewModels;
 using Avalonia.Markup.Xaml;
 using DesktopClient.Helpers;
 
@@ -14,7 +13,7 @@ namespace DesktopClient.Views
         public MainWindow()
         {
             InitializeComponent();
-            
+            DataContext = this;
             WindowNotificationManager = new WindowNotificationManager(this)
             {
                 MaxItems = 3,

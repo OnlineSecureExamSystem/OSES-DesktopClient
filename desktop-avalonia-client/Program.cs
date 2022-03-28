@@ -1,11 +1,13 @@
-﻿using Avalonia;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.ReactiveUI;
 using DesktopClient;
 using Projektanker.Icons.Avalonia;
 using Projektanker.Icons.Avalonia.FontAwesome;
 using System;
 
-namespace DesktopClient
+namespace desktop_avalonia_client
 {
     internal class Program
     {
@@ -19,9 +21,9 @@ namespace DesktopClient
         // Avalonia configuration, don't remove; also used by visual designer.
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
+                .UseReactiveUI()
                 .UsePlatformDetect()
                 .LogToTrace()
-                .UseReactiveUI()
                 .WithIcons(container => container
                     .Register<FontAwesomeIconProvider>());
     }
