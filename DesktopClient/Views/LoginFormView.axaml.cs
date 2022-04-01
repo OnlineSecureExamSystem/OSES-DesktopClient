@@ -1,32 +1,25 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using DesktopClient.CustomControls.StepCircle;
+using Avalonia.ReactiveUI;
 using DesktopClient.ViewModels;
+using ReactiveUI;
 using System;
 
 namespace DesktopClient.Views
 {
-    public partial class StepManager : UserControl
+    public partial class LoginFormView : ReactiveUserControl<LoginFormViewModel>
     {
-        public static StepManager? stepManager;
-        public StepManager()
+
+        public LoginFormView()
         {
             InitializeComponent();
-            stepManager = this;
-            DataContext = new StepManagerViewModel();
-            
         }
-
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
         }
 
-        
-
-     
     }
 }

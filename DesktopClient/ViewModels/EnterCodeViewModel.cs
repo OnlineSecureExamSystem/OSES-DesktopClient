@@ -8,9 +8,9 @@ using System.Reactive;
 
 namespace DesktopClient.ViewModels
 {
-    internal class EnterCodeViewModel : ViewModelBase
+    public class EnterCodeViewModel : ViewModelBase, IRoutableViewModel
     {
-
+        #region Properties
         private string? _code;
 
         public string? Code
@@ -22,19 +22,33 @@ namespace DesktopClient.ViewModels
                 this.RaiseAndSetIfChanged(ref _code, value);
             }
         }
+        #endregion
 
-        private ReactiveCommand<Unit, Unit> EnterCommand { get; }
 
+        private ReactiveCommand<Unit, IRoutableViewModel> EnterCommand { get; }
+
+        public string? UrlPathSegment => "enter_code_path";
+
+        public IScreen HostScreen { get; }
 
         public EnterCodeViewModel()
         {
+
+        }
+
+        public EnterCodeViewModel(IScreen screen)
+        {
+            HostScreen = screen;
+            
             var canEnter = this.WhenAnyValue(
                 x => x.Code,
                 (code) =>
                     !string.IsNullOrEmpty(code)
                 );
 
-            EnterCommand = ReactiveCommand.Create(Enter, canEnter);
+            EnterCommand = ReactiveCommand.CreateFromObservable(() => 
+                screen.Router.Navigate.Execute(new LoginFormViewModel(screen))
+            );
 
             EnterCommand.ThrownExceptions.Subscribe(x =>
                     MainWindow.WindowNotificationManager?
@@ -44,9 +58,6 @@ namespace DesktopClient.ViewModels
                             NotificationType.Error)));
         }
 
-        private void Enter()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

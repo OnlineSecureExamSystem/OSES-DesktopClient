@@ -12,9 +12,14 @@ using static DesktopClient.Views.MainWindow;
 
 namespace DesktopClient.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ViewModelBase, IScreen
     {
-        
+        public RoutingState Router { get; }
 
+        public MainWindowViewModel()
+        {
+            Router = new RoutingState();
+            Router.Navigate.Execute(new StepManagerViewModel(this));
+        }
     }
 }

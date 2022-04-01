@@ -8,17 +8,22 @@ using System.Reactive;
 using System.Text.RegularExpressions;
 using DesktopClient.Views;
 using static DesktopClient.Views.MainWindow;
+using static DesktopClient.Views.LoginFormView;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
+using System.Threading.Tasks;
+using System.Threading;
+using DesktopClient.CustomControls;
+using Avalonia.Threading;
 
 namespace DesktopClient.ViewModels
 {
-    public class LoginFormViewModel : ViewModelBase
+    public class LoginFormViewModel : ViewModelBase, IRoutableViewModel
     {
-
+        #region Properties
         private string? _email;
-        
-        private string? Email
+
+        public string? Email
         {
             get => _email;
             set
@@ -30,8 +35,8 @@ namespace DesktopClient.ViewModels
 
         private string? _password;
 
-        
-        private string? Password
+
+        public string? Password
         {
             get => _password;
             set
@@ -40,12 +45,17 @@ namespace DesktopClient.ViewModels
                 this.RaiseAndSetIfChanged(ref _password, value);
             }
         }
+        #endregion
 
+        public ReactiveCommand<Unit, Unit> LoginCommand { get; }
 
-        private ReactiveCommand<Unit, Unit> LoginCommand { get; }
+        public string? UrlPathSegment => "login_form_path";
 
-        public LoginFormViewModel()
+        public IScreen HostScreen { get; }
+
+        public LoginFormViewModel(IScreen screen)
         {
+            HostScreen = screen;
             var canLogin = this.WhenAnyValue(
                 x => x.Email, x => x.Password,
                 (email, pass) =>
@@ -53,20 +63,27 @@ namespace DesktopClient.ViewModels
                     !string.IsNullOrEmpty(pass)
                 );
 
-            LoginCommand = ReactiveCommand.Create(Login, canLogin);
+            LoginCommand = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await Task.Run(() => Thread.Sleep(3000));
+                HostScreen.Router.Navigate.Execute(new EnterCodeViewModel(screen));
+            }, canLogin);
+
 
             // exception handeling
             LoginCommand.ThrownExceptions.Subscribe(x =>
                       MainWindow.WindowNotificationManager?.Show(new Avalonia.Controls.Notifications.Notification("Error",
                       x.Message,
                       NotificationType.Error)));
+        }
 
-        }
-        
-        private void Login()
-        {
-            StepManagerViewModel stepManager = new StepManagerViewModel();
-            stepManager.NavigateCommand.Execute(new EnterCode()).Subscribe();
-        }
+        //private async void Login()
+        //{
+        //    loginForm.FindControl<ProgressBar>("progressBar").IsVisible = true;
+        //    // login logic
+        //    await Task.Run(() => Thread.Sleep(3000));
+        //    StepManagerViewModel.NavigateCommand.Execute(new EnterCode()).Subscribe();
+        //}
+
     }
 }

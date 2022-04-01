@@ -3,7 +3,12 @@ using Avalonia.ReactiveUI;
 using DesktopClient;
 using Projektanker.Icons.Avalonia;
 using Projektanker.Icons.Avalonia.FontAwesome;
+using Splat;
 using System;
+using DesktopClient.ViewModels;
+using DesktopClient.Views;
+using ReactiveUI;
+using System.Reflection;
 
 namespace DesktopClient
 {
@@ -13,16 +18,22 @@ namespace DesktopClient
         // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
         // yet and stuff might break.
         [STAThread]
-        public static void Main(string[] args) => BuildAvaloniaApp()
-            .StartWithClassicDesktopLifetime(args);
+        [Obsolete]
+        public static void Main(string[] args) => BuildAvaloniaApp().Start<MainWindow>(() => new MainWindowViewModel());
 
         // Avalonia configuration, don't remove; also used by visual designer.
         public static AppBuilder BuildAvaloniaApp()
-            => AppBuilder.Configure<App>()
+        {
+            // registering views so the locator can resolve them when needed
+            Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
+
+            return AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .LogToTrace()
                 .UseReactiveUI()
                 .WithIcons(container => container
                     .Register<FontAwesomeIconProvider>());
+        }
+           
     }
 }

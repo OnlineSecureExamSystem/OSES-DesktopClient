@@ -1,43 +1,48 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Presenters;
+using DesktopClient.CustomControls;
 using DesktopClient.Views;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static DesktopClient.Views.StepManager;
+using static DesktopClient.Views.StepManagerView;
 
 namespace DesktopClient.ViewModels
 {
-    public class StepManagerViewModel : ViewModelBase
+    public class StepManagerViewModel : ViewModelBase, IScreen, IRoutableViewModel  
     {
-        private Control _page;
+        #region Properties
+            private Control _page;
 
-        public Control Page
-        {
-            get => _page;
-            set 
+            public Control Page
             {
-                this.RaiseAndSetIfChanged(ref _page, value);
+                get => _page;
+                set => this.RaiseAndSetIfChanged(ref _page, value);
             }
-        }
 
-        public ReactiveCommand<Control, Unit> NavigateCommand { get; set; }
+        #endregion
 
-        public StepManagerViewModel()
+
+        public RoutingState Router { get; }
+
+        public string? UrlPathSegment => "/StepManager";
+
+        public IScreen HostScreen { get; }
+
+
+        public StepManagerViewModel(IScreen screen)
         {
-            NavigateCommand = ReactiveCommand.Create<Control>(Navigate);
-            NavigateCommand.Execute(new LoginForm()).Subscribe();
-        }
+            HostScreen = screen;
 
-        private void Navigate(Control obj)
-        {
-             stepManager.FindControl<ContentPresenter>("host").Content = obj;
-        }
-        
+            Router = new RoutingState();
 
+            Router.Navigate.Execute(new LoginFormViewModel(this));
+        }
     }
 }

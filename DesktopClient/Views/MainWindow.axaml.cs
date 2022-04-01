@@ -13,6 +13,7 @@ namespace DesktopClient.Views
 
         public MainWindow()
         {
+
             InitializeComponent();
             
             WindowNotificationManager = new WindowNotificationManager(this)
