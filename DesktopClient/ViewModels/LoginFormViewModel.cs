@@ -6,43 +6,56 @@ using ReactiveUI;
 using System;
 using System.Reactive;
 using System.Text.RegularExpressions;
+using DesktopClient.Views;
 using static DesktopClient.Views.MainWindow;
+using static DesktopClient.Views.LoginFormView;
+using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
+using System.Threading.Tasks;
+using System.Threading;
+using DesktopClient.CustomControls;
+using Avalonia.Threading;
 
 namespace DesktopClient.ViewModels
 {
-    public class LoginFormViewModel : ViewModelBase
+    public class LoginFormViewModel : ViewModelBase, IRoutableViewModel
     {
+        #region Properties
+        private string? _email;
 
-        string email;
-        
-        public string Email
+        public string? Email
         {
-            get => email;
+            get => _email;
             set
             {
-                value.isValid(DataTypes.Email);
-                this.RaiseAndSetIfChanged(ref email, value);
+                value?.IsValid(DataTypes.Email);
+                this.RaiseAndSetIfChanged(ref _email, value);
             }
         }
 
-        string password;
+        private string? _password;
 
-        
-        public string Password
+
+        public string? Password
         {
-            get => password;
+            get => _password;
             set
             {
-                value.isValid(DataTypes.Password);
-                this.RaiseAndSetIfChanged(ref password, value);
+                value?.IsValid(DataTypes.Password);
+                this.RaiseAndSetIfChanged(ref _password, value);
             }
         }
-
+        #endregion
 
         public ReactiveCommand<Unit, Unit> LoginCommand { get; }
 
-        public LoginFormViewModel()
+        public string? UrlPathSegment => "login_form_path";
+
+        public IScreen HostScreen { get; }
+
+        public LoginFormViewModel(IScreen screen)
         {
+            HostScreen = screen;
             var canLogin = this.WhenAnyValue(
                 x => x.Email, x => x.Password,
                 (email, pass) =>
@@ -50,16 +63,27 @@ namespace DesktopClient.ViewModels
                     !string.IsNullOrEmpty(pass)
                 );
 
-            LoginCommand = ReactiveCommand.Create(Login, canLogin);
+            LoginCommand = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await Task.Run(() => Thread.Sleep(3000));
+                HostScreen.Router.Navigate.Execute(new EnterCodeViewModel(screen));
+            }, canLogin);
+
+
+            // exception handeling
             LoginCommand.ThrownExceptions.Subscribe(x =>
-                       windowNotificationManager?.Show(new Avalonia.Controls.Notifications.Notification("Error", x.Message, NotificationType.Error)));
+                      MainWindow.WindowNotificationManager?.Show(new Avalonia.Controls.Notifications.Notification("Error",
+                      x.Message,
+                      NotificationType.Error)));
         }
 
-
-        public void Login()
-        {
-            throw new AccessViolationException();
-        }
+        //private async void Login()
+        //{
+        //    loginForm.FindControl<ProgressBar>("progressBar").IsVisible = true;
+        //    // login logic
+        //    await Task.Run(() => Thread.Sleep(3000));
+        //    StepManagerViewModel.NavigateCommand.Execute(new EnterCode()).Subscribe();
+        //}
 
     }
 }

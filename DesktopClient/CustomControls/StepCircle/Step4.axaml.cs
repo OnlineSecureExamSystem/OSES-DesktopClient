@@ -1,19 +1,16 @@
 using Avalonia;
 using Avalonia.Controls;
-
 using Avalonia.Markup.Xaml;
-using DesktopClient.ViewModels;
 
-namespace DesktopClient.Views
+namespace DesktopClient.CustomControls.StepCircle
 {
-    public partial class LoginForm : UserControl
+    public partial class Step4 : UserControl
     {
-
-        public LoginForm()
+        public Step4()
         {
             InitializeComponent();
-            DataContext = new LoginFormViewModel();
         }
+
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);

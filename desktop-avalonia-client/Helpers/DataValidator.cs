@@ -21,7 +21,6 @@ namespace DesktopClient.Helpers
                 DataTypes.Email => Regex.IsMatch(value, emailRegex) ? true : throw new DataValidationException("Invalide email address"),
                 DataTypes.Password => value.Length > 8 ? true : throw new DataValidationException("The password is too short"),
                 DataTypes.PhoneNumber => value.Length > 8 ? true : throw new DataValidationException("Invalide phone number"),
-                DataTypes.Code => value.Length > 8 ? true : throw new DataValidationException("Invalide exam code"),
                 _ => false,
             };
         }

@@ -8,7 +8,6 @@
 	<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="CustomControls\" />
     <AvaloniaResource Include="Assets\**" />
     <None Remove=".gitignore" />
   </ItemGroup>
@@ -21,15 +20,30 @@
   </ItemGroup>
   <ItemGroup>
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-	<PackageReference Include="Avalonia" Version="0.10.12" />
-	<PackageReference Include="Avalonia.Desktop" Version="0.10.12" />
-	<PackageReference Include="Avalonia.Diagnostics" Version="0.10.12" />
-	<PackageReference Include="Avalonia.ReactiveUI" Version="0.10.12" />
-	<PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
+	<PackageReference Include="Aura.UI" Version="0.1.4.2" />
+	<PackageReference Include="Aura.UI.FluentTheme" Version="0.1.4.2" />
+	<PackageReference Include="Avalonia" Version="0.10.13" />
+	<PackageReference Include="Avalonia.Desktop" Version="0.10.13" />
+	<PackageReference Include="Avalonia.Diagnostics" Version="0.10.13" />
+	<PackageReference Include="Avalonia.ReactiveUI" Version="0.10.13" />
+	<PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.9.7" />
+	<PackageReference Include="Projektanker.Icons.Avalonia" Version="4.2.1" />
+	<PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="4.2.1" />
   </ItemGroup>
   <ItemGroup>
     <AvaloniaXaml Update="Styles\NotificationCard.axaml">
       <Generator>MSBuild:Compile</Generator>
     </AvaloniaXaml>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Views\EnterCodeView.axaml.cs">
+      <DependentUpon>EnterCodeView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\LoginFormView.axaml.cs">
+      <DependentUpon>LoginFormView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\StepManagerView.axaml.cs">
+      <DependentUpon>StepManagerView.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

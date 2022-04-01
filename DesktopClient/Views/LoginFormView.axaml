@@ -1,0 +1,63 @@
+<UserControl
+    x:Class="DesktopClient.Views.LoginFormView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cm="using:DesktopClient.CustomControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:DesktopClient.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    FontFamily="Work Sans"
+    mc:Ignorable="d">
+	
+    <Border
+        Width="300"
+        Height="350"
+        Background="White"
+        BorderBrush="{DynamicResource Primary}"
+        BorderThickness="0.8"
+        BoxShadow="0 0 9 0 Gray">
+
+        <Grid ColumnDefinitions="0.25*,1.5*,0.25*" RowDefinitions="0.25*,1.5*,0.25*">
+            <StackPanel Grid.Row="1" Grid.Column="1">
+                <Image Height="60" Source="/Assets/avalonia-logo.ico" />
+                <TextBlock
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="25"
+                    FontWeight="Bold"
+                    Text="Login" />
+                <TextBox
+					
+                    Width="200"
+                    Margin="10"
+                    VerticalAlignment="Center"
+					Text="{Binding Email}"
+                    FontSize="12"
+                    Watermark="Email" />
+                <TextBox
+                    Width="200"
+                    Margin="10"
+					Text="{Binding Password}"
+                    Classes="revealPasswordButton"
+                    FontSize="12"
+                    PasswordChar="•"
+                    Watermark="Password" />
+                <Button
+                    Margin="20"
+                    Padding="60,5"
+					Command="{Binding LoginCommand}"
+                    HorizontalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    Content="Login" />
+                <ProgressBar
+                    x:Name="progressBar"
+                    Foreground="{DynamicResource Primary}"
+                    IsIndeterminate="True"
+                    IsVisible="False" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

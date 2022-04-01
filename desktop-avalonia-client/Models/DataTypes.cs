@@ -10,7 +10,6 @@ namespace DesktopClient.Models
     {
         Email,
         Password,
-        PhoneNumber,
-        Code
+        PhoneNumber
     }
 }

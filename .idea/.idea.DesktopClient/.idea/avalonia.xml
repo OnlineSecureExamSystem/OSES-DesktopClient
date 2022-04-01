@@ -3,6 +3,8 @@
   <component name="AvaloniaProject">
     <option name="projectPerEditor">
       <map>
+        <entry key="DesktopClient/Styles/Button.axaml" value="DesktopClient/DesktopClient.csproj" />
+        <entry key="DesktopClient/Styles/NotificationCard.axaml" value="DesktopClient/DesktopClient.csproj" />
         <entry key="DesktopClient/Views/LoginForm.axaml" value="DesktopClient/DesktopClient.csproj" />
         <entry key="DesktopClient/Views/MainWindow.axaml" value="DesktopClient/DesktopClient.csproj" />
       </map>
