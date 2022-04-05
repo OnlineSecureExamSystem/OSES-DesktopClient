@@ -1,4 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<!-- add runtime identifiers here -->
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	</PropertyGroup>
+	<PropertyGroup>
+		<!-- define dll folders  here -->
+		<DefineConstants Condition="'$(RuntimeIdentifier)' == 'win-x64'">$(DefineConstants);Windows</DefineConstants>
+	</PropertyGroup>
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
@@ -6,6 +14,7 @@
 	<!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
 	<TrimMode>copyused</TrimMode>
 	<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
@@ -26,9 +35,15 @@
 	<PackageReference Include="Avalonia.Desktop" Version="0.10.13" />
 	<PackageReference Include="Avalonia.Diagnostics" Version="0.10.13" />
 	<PackageReference Include="Avalonia.ReactiveUI" Version="0.10.13" />
+	<PackageReference Include="Avalonia.Xaml.Behaviors" Version="0.10.13.2" />
 	<PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.9.7" />
+	<PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-beta.100" />
+	<PackageReference Include="ManagedBass" Version="3.1.0" />
+	<PackageReference Include="ManagedBass.Wasapi" Version="3.1.0" />
 	<PackageReference Include="Projektanker.Icons.Avalonia" Version="4.2.1" />
 	<PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="4.2.1" />
+	<PackageReference Include="SpeedTest.NetCore" Version="2.1.0" />
+	<PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
     <AvaloniaXaml Update="Styles\NotificationCard.axaml">
@@ -46,4 +61,13 @@
       <DependentUpon>StepManagerView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
+
+	<!-- define dlls for each platform here -->
+	<ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+		<Content Include="$(ProjectDir)Libraries\BASS\Windows\bass.dll">
+			<Link>bass.dll</Link>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
+		</Content>
+	</ItemGroup>
 </Project>

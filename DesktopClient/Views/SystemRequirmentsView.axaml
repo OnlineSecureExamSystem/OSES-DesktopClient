@@ -1,0 +1,165 @@
+<UserControl
+    x:Class="DesktopClient.Views.SystemRequirmentsView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+    xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+    xmlns:inter="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+    xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Avalonia;assembly=LiveChartsCore.SkiaSharpView.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <inter:Interaction.Behaviors>
+        <ia:EventTriggerBehavior EventName="AttachedToVisualTree">
+            <ia:InvokeCommandAction Command="{Binding SpeedTestCommand}" />
+        </ia:EventTriggerBehavior>
+    </inter:Interaction.Behaviors>
+    <Border
+        Width="800"
+        Height="450"
+        Background="White"
+        BorderBrush="{DynamicResource Primary}"
+        BorderThickness="0.8"
+        BoxShadow="0 0 9 0 Gray">
+        <Grid ColumnDefinitions="0.5*,4*,4*,0.5*" RowDefinitions="0.5*,4*,*,0.5*">
+            <TextBlock
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                Margin="10,20,10,15"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="16"
+                FontWeight="Bold"
+                Text="EQUIPMENT CHECK" />
+            <TextBlock
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                FontSize="12"
+                Text="We will check your internet connection, video and microphone" />
+            <Border
+                Grid.Row="1"
+                Grid.Column="1"
+                Width="300"
+                Height="170"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="{DynamicResource Background}"
+                BorderBrush="{DynamicResource Primary}"
+                BorderThickness="1">
+                <Image x:Name="preview"/>
+            </Border>
+            <StackPanel
+                Grid.Row="1"
+                Grid.Column="2"
+                Margin="10,45,10,0">
+                <TextBlock FontWeight="SemiBold" Text="Video source" />
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox
+                        Width="250"
+                        Margin="0,5,0,15"
+                        HorizontalContentAlignment="Left"
+                        SelectedIndex="0"
+						Items="{Binding VideoDevices}">
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+									<i:Icon Margin="0,0,5,0" Value="fa-camera" />
+									<TextBlock Text="{Binding}" />
+								</StackPanel>
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <ProgressRing
+                        Width="30"
+                        Height="30"
+                        Margin="8,5,0,15"
+                        ForegroundColor="{DynamicResource Primary}"
+                        IsIndeterminate="True"
+                        IsVisible="False"
+                        StrokeWidth="5" />
+                    <i:Icon
+                        Margin="8,5,0,15"
+                        FontSize="16"
+                        Foreground="Green"
+                        Value="fa-check" />
+                </StackPanel>
+                <TextBlock FontWeight="SemiBold" Text="Microphone source" />
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox
+                        Width="250"
+                        Margin="0,5,0,15"
+                        HorizontalContentAlignment="Left"
+                        SelectedIndex="0"
+						Items="{Binding InputDevices}">
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+									<i:Icon Margin="0,0,5,0" Value="fa-microphone" />
+									<TextBlock Text="{Binding Name}" />
+								</StackPanel>
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+                    </ComboBox>
+                  
+                    <i:Icon
+                        Margin="8,5,0,15"
+                        FontSize="16"
+                        Foreground="Green"
+                        Value="fa-check" />
+                </StackPanel>
+                <TextBlock FontWeight="SemiBold" Text="Audio output" />
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox
+                        Width="250"
+                        Margin="0,5,0,15"
+                        HorizontalContentAlignment="Left"
+                        Items="{Binding OutputDevices}"
+                        SelectedIndex="0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                    <i:Icon Margin="0,0,5,0" Value="fa-headphones" />
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <i:Icon
+                        Margin="8,5,0,15"
+                        FontSize="16"
+                        Foreground="Green"
+                        Value="fa-check" />
+                </StackPanel>
+            </StackPanel>
+            <lvc:PieChart
+                Grid.Row="3"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                Height="250"
+                Margin="0,0,30,0"
+                AutoUpdateEnabled="True"
+                InitialRotation="180"
+                IsVisible="{Binding !isSpeedTestRunning^}"
+                LegendPosition="Hidden"
+                MaxAngle="180"
+                Series="{Binding ChartBuilder}"
+                TooltipPosition="Hidden"
+                Total="20" />
+            <StackPanel
+                Grid.Row="2"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                HorizontalAlignment="Center"
+                IsVisible="{Binding isSpeedTestRunning^}">
+                <ProgressRing Foreground="{DynamicResource Primary}" IsIndeterminate="True" />
+                <TextBlock Margin="5" Text="Checking internet speed..." />
+            </StackPanel>
+
+        </Grid>
+    </Border>
+
+</UserControl>

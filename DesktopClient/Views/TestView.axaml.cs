@@ -1,26 +1,21 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using DesktopClient.ViewModels;
-using ReactiveUI;
-using System;
-using System.Reactive;
 
 namespace DesktopClient.Views
 {
-    public partial class LoginFormView : ReactiveUserControl<LoginFormViewModel>
+    public partial class TestView : ReactiveUserControl<TestViewModel>
     {
-        public LoginFormView()
+        public TestView()
         {
             InitializeComponent();
         }
+
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
         }
-        public void OpenBrowser(object sender, PointerPressedEventArgs args) => throw new NotImplementedException();
     }
 }

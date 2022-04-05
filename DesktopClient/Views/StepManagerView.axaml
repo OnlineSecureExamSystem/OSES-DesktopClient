@@ -10,13 +10,10 @@
     xmlns:rxui="clr-namespace:Avalonia.ReactiveUI;assembly=Avalonia.ReactiveUI"
     xmlns:views="using:DesktopClient.Views"
     xmlns:vm="using:DesktopClient.ViewModels"
-    d:DesignHeight="450"
+    d:DesignHeight="500"
     d:DesignWidth="800"
     Background="{DynamicResource Background}"
     mc:Ignorable="d">
-    <Design.DataContext>
-        <vm:StepManagerViewModel/>
-    </Design.DataContext>
     <Grid>
         <DockPanel>
             <Border
@@ -50,7 +47,7 @@
                 <Grid>
                     <StackPanel>
                         <TextBlock
-                            Margin="25"
+                            Margin="20"
                             HorizontalAlignment="Center"
                             FontFamily="ABeeZee"
                             FontSize="30"
@@ -58,7 +55,8 @@
                             Foreground="{DynamicResource Border}"
                             Text="O S E S" />
                         <TextBlock
-                            Margin="55,31,0,0"
+							FontWeight="Bold"
+                            Margin="55,18,0,0"
                             FontSize="12"
                             Text="Login" />
                         <TextBlock
@@ -68,36 +66,46 @@
                         <TextBlock
                             Margin="55,55,0,0"
                             FontSize="12"
-                            Text="System Requirements" />
+                            Text="System Check" />
                         <TextBlock
                             Margin="55,55,0,0"
                             FontSize="12"
-                            Text="Rules and Policy" />
-
+                            Text="Information Check" />
+						<TextBlock
+                            Margin="55,55,0,0"
+                            FontSize="12"
+                            Text="Start Exam" />
                     </StackPanel>
                     <Canvas Margin="0,30,0,0">
                         <Line
                             Stroke="Black"
                             StrokeThickness="3"
                             ZIndex="0"
-                            StartPoint="35,90"
-                            EndPoint="35,300" />
-                        <ContentControl Canvas.Left="20" Canvas.Top="85">
+                            StartPoint="35,60"
+                            EndPoint="35,350" />
+                        <ContentControl Canvas.Left="20" Canvas.Top="60">
                             <cm:Running x:Name="ellipse1" />
                         </ContentControl>
-                        <ContentControl Canvas.Left="20" Canvas.Top="155">
+                        <ContentControl Canvas.Left="20" Canvas.Top="130">
                             <cm:Step2 x:Name="ellipse2" />
                         </ContentControl>
-                        <ContentControl Canvas.Left="20" Canvas.Top="225">
+                        <ContentControl Canvas.Left="20" Canvas.Top="200">
                             <cm:Step3 x:Name="ellipse3" />
                         </ContentControl>
-                        <ContentControl Canvas.Left="20" Canvas.Top="295">
+                        <ContentControl Canvas.Left="20" Canvas.Top="270">
                             <cm:Step4 x:Name="ellipse4" />
                         </ContentControl>
+						<ContentControl Canvas.Left="20" Canvas.Top="340">
+							<cm:Step5 x:Name="ellipse5" />
+						</ContentControl>
                     </Canvas>
                 </Grid>
             </Border>
-            <rxui:RoutedViewHost Router="{Binding Router}"/>
+			<rxui:RoutedViewHost Router="{Binding Router}">
+				<rxui:RoutedViewHost.PageTransition>
+						<CrossFade Duration="0.3" />
+				</rxui:RoutedViewHost.PageTransition>
+			</rxui:RoutedViewHost>
         </DockPanel>
     </Grid>
 </UserControl>

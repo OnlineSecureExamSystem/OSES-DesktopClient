@@ -17,24 +17,12 @@ namespace DesktopClient.ViewModels
 {
     public class StepManagerViewModel : ViewModelBase, IScreen, IRoutableViewModel  
     {
-        #region Properties
-            private Control _page;
-
-            public Control Page
-            {
-                get => _page;
-                set => this.RaiseAndSetIfChanged(ref _page, value);
-            }
-
-        #endregion
-
 
         public RoutingState Router { get; }
 
         public string? UrlPathSegment => "/StepManager";
 
         public IScreen HostScreen { get; }
-
 
         public StepManagerViewModel(IScreen screen)
         {

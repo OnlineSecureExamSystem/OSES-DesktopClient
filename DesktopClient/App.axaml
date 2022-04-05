@@ -11,6 +11,7 @@
 		<StyleInclude Source="/Styles/NotificationCard.axaml"/>
 		<StyleInclude Source="/Styles/Button.axaml"/>
 		<StyleInclude Source="/Styles/TextBox.axaml"/>
+		<StyleInclude Source="/Styles/HyperLink.axaml"/>
 		<StyleInclude Source="avares://AvaloniaProgressRing/Styles/ProgressRing.xaml"/>
 		<StyleInclude Source="avares://Aura.UI.FluentTheme/AuraUI.xaml"/>
 	</Application.Styles>
@@ -18,7 +19,7 @@
 	<Application.Resources>
 		<ResourceDictionary>
 			<SolidColorBrush x:Key="Primary" Color="#111111"/>
-			<SolidColorBrush x:Key="New" Color="#BC31EA"/>
+			<SolidColorBrush x:Key="Secoundary" Color="#BC31EA"/>
 			<SolidColorBrush x:Key="Hover" Color="#767676"/>
 			<SolidColorBrush x:Key="Background" Color="#F4F4F4"/>
 			<SolidColorBrush x:Key="Foreground" Color="#EEEEEE"/>

@@ -31,7 +31,7 @@ namespace DesktopClient.Views
         public void Loaded(object sender, EventArgs e)
         {
             IntPtr handle = PlatformImpl.Handle.Handle;
-            WindowShield.SetWindowDisplayAffinity(handle, WindowShield.WDA_EXCLUDEFROMCAPTURE);
+            //WindowShield.SetWindowDisplayAffinity(handle, WindowShield.WDA_EXCLUDEFROMCAPTURE);
         }
     }
 }

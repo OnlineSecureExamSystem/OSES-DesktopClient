@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls.Notifications;
+﻿using Avalonia.Controls;
+using Avalonia.Controls.Notifications;
 using DesktopClient.Helpers;
 using DesktopClient.Models;
 using DesktopClient.Views;
@@ -24,7 +25,6 @@ namespace DesktopClient.ViewModels
         }
         #endregion
 
-
         private ReactiveCommand<Unit, IRoutableViewModel> EnterCommand { get; }
 
         public string? UrlPathSegment => "enter_code_path";
@@ -47,7 +47,7 @@ namespace DesktopClient.ViewModels
                 );
 
             EnterCommand = ReactiveCommand.CreateFromObservable(() => 
-                screen.Router.Navigate.Execute(new LoginFormViewModel(screen))
+                screen.Router.Navigate.Execute(new SystemRequirmentsViewModel(screen))
             );
 
             EnterCommand.ThrownExceptions.Subscribe(x =>

@@ -1,20 +1,13 @@
 ﻿using Avalonia.Controls.Notifications;
-using Avalonia.Data;
 using DesktopClient.Helpers;
 using DesktopClient.Models;
+using DesktopClient.Views;
 using ReactiveUI;
 using System;
+using System.Diagnostics;
 using System.Reactive;
-using System.Text.RegularExpressions;
-using DesktopClient.Views;
-using static DesktopClient.Views.MainWindow;
-using static DesktopClient.Views.LoginFormView;
-using Avalonia.Controls;
-using Avalonia.Controls.Presenters;
-using System.Threading.Tasks;
 using System.Threading;
-using DesktopClient.CustomControls;
-using Avalonia.Threading;
+using System.Threading.Tasks;
 
 namespace DesktopClient.ViewModels
 {
@@ -45,13 +38,18 @@ namespace DesktopClient.ViewModels
                 this.RaiseAndSetIfChanged(ref _password, value);
             }
         }
-        #endregion
+
+        public IObservable<bool> Executing => LoginCommand.IsExecuting;
 
         public ReactiveCommand<Unit, Unit> LoginCommand { get; }
 
-        public string? UrlPathSegment => "login_form_path";
+        public ReactiveCommand<Unit, Unit> OpenBrowser { get; }
+
+        public string? UrlPathSegment => "/LoginForm";
 
         public IScreen HostScreen { get; }
+
+        #endregion
 
         public LoginFormViewModel(IScreen screen)
         {
@@ -69,21 +67,24 @@ namespace DesktopClient.ViewModels
                 HostScreen.Router.Navigate.Execute(new EnterCodeViewModel(screen));
             }, canLogin);
 
-
             // exception handeling
             LoginCommand.ThrownExceptions.Subscribe(x =>
                       MainWindow.WindowNotificationManager?.Show(new Avalonia.Controls.Notifications.Notification("Error",
                       x.Message,
                       NotificationType.Error)));
+
+            OpenBrowser = ReactiveCommand.Create(openBrowser);
         }
 
-        //private async void Login()
-        //{
-        //    loginForm.FindControl<ProgressBar>("progressBar").IsVisible = true;
-        //    // login logic
-        //    await Task.Run(() => Thread.Sleep(3000));
-        //    StepManagerViewModel.NavigateCommand.Execute(new EnterCode()).Subscribe();
-        //}
+        void openBrowser()
+        {
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                FileName = "http://www.google.com",
+                UseShellExecute = true
+            };
+            Process.Start(psi);
+        }
 
     }
 }
