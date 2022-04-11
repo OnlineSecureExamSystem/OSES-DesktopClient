@@ -6,6 +6,7 @@ using DesktopClient.Views;
 using ReactiveUI;
 using System;
 using System.Reactive;
+using System.Reactive.Linq;
 
 namespace DesktopClient.ViewModels
 {
@@ -25,7 +26,9 @@ namespace DesktopClient.ViewModels
         }
         #endregion
 
-        private ReactiveCommand<Unit, IRoutableViewModel> EnterCommand { get; }
+         ReactiveCommand<Unit, Unit> EnterCommand { get; }
+
+        IObservable<bool> IsExecuting => EnterCommand.IsExecuting;
 
         public string? UrlPathSegment => "enter_code_path";
 
@@ -46,9 +49,13 @@ namespace DesktopClient.ViewModels
                     !string.IsNullOrEmpty(code)
                 );
 
-            EnterCommand = ReactiveCommand.CreateFromObservable(() => 
-                screen.Router.Navigate.Execute(new SystemRequirmentsViewModel(screen))
-            );
+            EnterCommand = ReactiveCommand.CreateFromTask(async () =>
+            {
+                SystemRequirmentsViewModel vm = new SystemRequirmentsViewModel(screen);
+                await vm.InitTask;
+                screen.Router.Navigate.Execute(vm);
+            }
+            , canEnter) ;
 
             EnterCommand.ThrownExceptions.Subscribe(x =>
                     MainWindow.WindowNotificationManager?

@@ -21,7 +21,8 @@
         Height="450"
         Background="White"
         BorderBrush="{DynamicResource Primary}"
-        BorderThickness="0.8"
+        BorderThickness="1.5"
+		CornerRadius="4"
         BoxShadow="0 0 9 0 Gray">
         <Grid ColumnDefinitions="0.5*,4*,4*,0.5*" RowDefinitions="0.5*,4*,*,0.5*">
             <TextBlock
@@ -49,8 +50,10 @@
                 VerticalAlignment="Center"
                 Background="{DynamicResource Background}"
                 BorderBrush="{DynamicResource Primary}"
-                BorderThickness="1">
-                <Image x:Name="preview"/>
+                BorderThickness="1.5"
+				CornerRadius="4"
+				>
+                <Image Source="{Binding CameraBitmap}" />
             </Border>
             <StackPanel
                 Grid.Row="1"
@@ -62,16 +65,16 @@
                         Width="250"
                         Margin="0,5,0,15"
                         HorizontalContentAlignment="Left"
-                        SelectedIndex="0"
-						Items="{Binding VideoDevices}">
-						<ComboBox.ItemTemplate>
-							<DataTemplate>
-								<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-									<i:Icon Margin="0,0,5,0" Value="fa-camera" />
-									<TextBlock Text="{Binding}" />
-								</StackPanel>
-							</DataTemplate>
-						</ComboBox.ItemTemplate>
+                        Items="{Binding VideoDevices}"
+                        SelectedIndex="0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                    <i:Icon Margin="0,0,5,0" Value="fa-camera" />
+                                    <TextBlock Text="{Binding}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
                     </ComboBox>
                     <ProgressRing
                         Width="30"
@@ -93,18 +96,17 @@
                         Width="250"
                         Margin="0,5,0,15"
                         HorizontalContentAlignment="Left"
-                        SelectedIndex="0"
-						Items="{Binding InputDevices}">
-						<ComboBox.ItemTemplate>
-							<DataTemplate>
-								<StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-									<i:Icon Margin="0,0,5,0" Value="fa-microphone" />
-									<TextBlock Text="{Binding Name}" />
-								</StackPanel>
-							</DataTemplate>
-						</ComboBox.ItemTemplate>
+                        Items="{Binding InputDevices}"
+                        SelectedIndex="0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                    <i:Icon Margin="0,0,5,0" Value="fa-microphone" />
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
                     </ComboBox>
-                  
                     <i:Icon
                         Margin="8,5,0,15"
                         FontSize="16"
@@ -158,7 +160,16 @@
                 <ProgressRing Foreground="{DynamicResource Primary}" IsIndeterminate="True" />
                 <TextBlock Margin="5" Text="Checking internet speed..." />
             </StackPanel>
-
+            <Button
+                Grid.Row="2"
+				Grid.RowSpan="2"
+                Grid.Column="2"
+                Margin="20"
+                Padding="35,9,35,10"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Content="Next"
+				Command="{Binding NextCommand}"/>
         </Grid>
     </Border>
 

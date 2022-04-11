@@ -11,6 +11,10 @@ namespace DesktopClient.Models
         Email,
         Password,
         PhoneNumber,
-        Code
+        Code,
+        InternetSpeed,
+        Name,
+        Date,
+        RegistrationNumber
     }
 }

@@ -4,7 +4,7 @@
 		<Border Padding="20">
 			<TextBox Text="watermrk"
 						Width="100"
-					 Classes="err"
+					 Classes="error"
 					 TextAlignment=	"Center"/>
 		</Border>
 	</Design.PreviewWith>

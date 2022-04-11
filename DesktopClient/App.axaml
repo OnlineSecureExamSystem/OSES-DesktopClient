@@ -8,9 +8,9 @@
 
 	<Application.Styles>
 		<FluentTheme Mode="Light"/>
+		<StyleInclude Source="/Styles/TextBox.axaml"/>
 		<StyleInclude Source="/Styles/NotificationCard.axaml"/>
 		<StyleInclude Source="/Styles/Button.axaml"/>
-		<StyleInclude Source="/Styles/TextBox.axaml"/>
 		<StyleInclude Source="/Styles/HyperLink.axaml"/>
 		<StyleInclude Source="avares://AvaloniaProgressRing/Styles/ProgressRing.xaml"/>
 		<StyleInclude Source="avares://Aura.UI.FluentTheme/AuraUI.xaml"/>

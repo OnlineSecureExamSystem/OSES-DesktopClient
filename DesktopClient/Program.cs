@@ -21,19 +21,20 @@ namespace DesktopClient
         [Obsolete]
         public static void Main(string[] args) => BuildAvaloniaApp().Start<MainWindow>(() => new MainWindowViewModel());
 
-        // Avalonia configuration, don't remove; also used by visual designer.
+        // Avalonia configuration.
         public static AppBuilder BuildAvaloniaApp()
         {
             // registering views so the locator can resolve them when needed
             Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
 
+            
             return AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .LogToTrace()
                 .UseReactiveUI()
                 .WithIcons(container => container
                     .Register<FontAwesomeIconProvider>());
+            
         }
-           
     }
 }

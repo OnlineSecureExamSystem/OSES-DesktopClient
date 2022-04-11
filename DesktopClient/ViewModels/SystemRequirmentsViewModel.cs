@@ -10,14 +10,18 @@ using System.Reactive;
 using ManagedBass;
 using static DesktopClient.Helpers.SpeedTest;
 using static DesktopClient.Helpers.DevicesScanner;
+using static DesktopClient.Helpers.DataValidator;
 using DesktopClient.Helpers;
 using Avalonia.Threading;
 using Avalonia.Media.Imaging;
+using System.Threading.Tasks;
 
 namespace DesktopClient.ViewModels
 {
     public class SystemRequirmentsViewModel : ViewModelBase, IRoutableViewModel
     {
+        public Task InitTask { get; private set; }
+
         public string? UrlPathSegment => "/SystemRequirments";
 
         public IScreen HostScreen { get; }
@@ -29,7 +33,8 @@ namespace DesktopClient.ViewModels
         public ObservableValue InternetSpeed
         {
             get { return _internetSpeed; }
-            set { _internetSpeed = value; }
+            set 
+            { _internetSpeed = value; }
         }
 
         private List<DeviceInfo> _outputDecices;
@@ -61,13 +66,14 @@ namespace DesktopClient.ViewModels
         public Bitmap CameraBitmap
         {
             get { return _cameraBitmap; }
-            set { _cameraBitmap = value; }
+            set { this.RaiseAndSetIfChanged(ref _cameraBitmap, value); }
         }
 
+        public ReactiveCommand<Unit, Unit> SpeedTestCommand { get; }
 
+        public ReactiveCommand<Unit, IRoutableViewModel> NextCommand { get; }
 
-        ReactiveCommand<Unit, Unit> SpeedTestCommand { get; }
-
+        public CameraHelper Camera { get; private set; }
 
         public IObservable<bool> isSpeedTestRunning => SpeedTestCommand.IsExecuting;
 
@@ -76,21 +82,30 @@ namespace DesktopClient.ViewModels
         public SystemRequirmentsViewModel(IScreen screen)
         {
             HostScreen = screen;
-            
-            initChart();
 
-            // camera initialisation is done in the backing code of the view for now
-            //initCameraPreview();
+            InitTask = Task.Run(() => init());
+
+            var canNext = this.WhenAnyValue(x => x.InternetSpeed.Value,
+                (speed) => speed > 1);
+
+            NextCommand = ReactiveCommand.CreateFromObservable(() =>
+            {
+                return HostScreen.Router.Navigate.Execute(new InformationCheckViewModel(HostScreen, Camera));
+            }
+            );
 
             SpeedTestCommand = ReactiveCommand.CreateFromTask(async () => { 
                 InternetSpeed.Value = await getInternetSpeed(); 
             });
+        }
 
+        void init()
+        {
             OutputDevices = getOutputDevices();
-
             InputDevices = getInputAudioDevices();
-
             VideoDevices = CameraHelper.FindDevices();
+            initChart();
+            initCameraPreview();
         }
 
         void initChart()
@@ -105,34 +120,26 @@ namespace DesktopClient.ViewModels
             }.AddValue(InternetSpeed, "Internet Speed").BuildSeries();
         }
 
-        void initCameraPreview()
+        async void initCameraPreview()
         {
-            // [How to use]
-            // check USB camera is available.
-            string[] devices = CameraHelper.FindDevices();
-            if (devices.Length == 0) return; // no camera.
-
             // check format.
             int cameraIndex = 0;
             CameraHelper.VideoFormat[] formats = CameraHelper.GetVideoFormat(cameraIndex);
-            for (int i = 0; i < formats.Length; i++) Console.WriteLine("{0}:{1}", i, formats[i]);
-
             // create usb camera and start.
-            var camera = new CameraHelper(cameraIndex, formats[0]);
-            camera.Start();
-
+            Camera = new CameraHelper(cameraIndex, formats[0]);
+            await Task.Run(() => Camera.Start());
             // get image.
             // Immediately after starting the USB camera,
             // GetBitmap() fails because image buffer is not prepared yet.
-            var bmp = camera.GetBitmap();
-
+            var bmp = Camera.GetBitmap();
+            
             //// show image in PictureBox.
             var timer = new System.Timers.Timer(100);
             timer.Elapsed += (s, ev) =>
             {
                 Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    CameraBitmap = camera.GetBitmap();
+                    CameraBitmap = Camera.GetBitmap();
                 });
             };
             timer.Start();
