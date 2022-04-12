@@ -51,8 +51,9 @@
                         BorderThickness="1.5"
 						CornerRadius="4"
 						BoxShadow="0 0 9 0 Gray">
-                        <Panel>
-							<Image ZIndex="10" Opacity="{Binding CapturedFaceOpacity}"  Source="{Binding CapturedFace}"/>
+                        <Panel HorizontalAlignment="Center">
+							<Image ZIndex="10" Source="/Assets/FaceArea.png"/>
+							<Image ZIndex="5" Opacity="{Binding CapturedFaceOpacity}"  Source="{Binding CapturedFace}"/>
                             <Image Source="{Binding CameraBitmap}">
                                 <Image.RenderTransform>
                                     <ScaleTransform ScaleX="-1" />
@@ -118,7 +119,8 @@
                         BorderThickness="1.5"
 						BoxShadow="0 0 9 0 Gray">
                         <Panel>
-							<Image ZIndex="10" Opacity="{Binding CapturedCardOpacity}"  Source="{Binding CapturedCard}"/>
+							<Image ZIndex="10" Source="/Assets/CardArea.png"/>
+							<Image ZIndex="5" Opacity="{Binding CapturedCardOpacity}"  Source="{Binding CapturedCard}"/>
 							<Image Source="{Binding CameraBitmap}">
                                 <Image.RenderTransform>
                                     <ScaleTransform ScaleX="-1" />
