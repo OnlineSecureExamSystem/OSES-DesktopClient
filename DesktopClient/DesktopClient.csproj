@@ -18,7 +18,14 @@
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
+    <AvaloniaResource Remove="Assets\WaitingDog.gif" />
     <None Remove=".gitignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\WaitingDog.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Libraries\AvaloniaGif\AvaloniaGif.csproj" />
   </ItemGroup>
   <ItemGroup>
 	<!--This helps with theme dll-s trimming.
