@@ -15,6 +15,6 @@
             Fill="{DynamicResource Primary}"
             Stroke="White"
             StrokeThickness="2" />
-        <i:Icon Foreground="White" Value="fa-circle" />
+        <i:Icon Foreground="LightBlue" Value="fa-circle" />
     </Grid>
 </UserControl>

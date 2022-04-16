@@ -7,6 +7,7 @@ using ReactiveUI;
 using System;
 using System.Reactive;
 using System.Reactive.Linq;
+using DesktopClient.CustomControls.StepCircle;
 
 namespace DesktopClient.ViewModels
 {
@@ -36,11 +37,16 @@ namespace DesktopClient.ViewModels
 
         public IScreen HostScreen { get; }
 
+        public StepManagerViewModel StepManager { get; }
 
-        public EnterCodeViewModel(IScreen screen)
+
+        public EnterCodeViewModel(IScreen screen, StepManagerViewModel stepManager)
         {
             HostScreen = screen;
+            StepManager = stepManager;
+
             
+
             var canEnter = this.WhenAnyValue(
                 x => x.Code,
                 (code) =>
@@ -49,11 +55,12 @@ namespace DesktopClient.ViewModels
 
             EnterCommand = ReactiveCommand.CreateFromTask(async () =>
             {
-                SystemRequirmentsViewModel vm = new SystemRequirmentsViewModel(screen);
+                SystemRequirmentsViewModel vm = new SystemRequirmentsViewModel(screen, StepManager);
                 await vm.InitTask;
                 screen.Router.Navigate.Execute(vm);
-            }
-            , canEnter) ;
+                StepManager.ExamCodeCtrl = new Done();
+                StepManager.SystemCheckCtrl = new Running();
+            }, canEnter) ;
 
             EnterCommand.ThrownExceptions.Subscribe(x =>
                     MainWindow.WindowNotificationManager?

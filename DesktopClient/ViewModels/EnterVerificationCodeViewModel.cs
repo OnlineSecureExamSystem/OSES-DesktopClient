@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls.Notifications;
 using Avalonia.Threading;
+using DesktopClient.CustomControls.StepCircle;
 using DesktopClient.Helpers;
 using DesktopClient.Models;
 using DesktopClient.Services;
@@ -37,7 +38,7 @@ namespace DesktopClient.ViewModels
             set { this.RaiseAndSetIfChanged(ref _bottomText, value); }
         }
 
-        private TimeSpan _codeTimer = new(0, 0, 5);
+        private TimeSpan _codeTimer = new(0, 1, 25);
 
         public TimeSpan CodeTimer
         {
@@ -61,9 +62,13 @@ namespace DesktopClient.ViewModels
 
         public IScreen HostScreen { get; }
 
-        public EnterVerificationCodeViewModel(IScreen screen)
+        public StepManagerViewModel StepManager { get; }
+
+        public EnterVerificationCodeViewModel(IScreen screen, StepManagerViewModel stepManager)
         {
             HostScreen = screen;
+            StepManager = stepManager;
+
 
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(1);
@@ -86,7 +91,9 @@ namespace DesktopClient.ViewModels
                          "You are logged in successfully!",
                          NotificationType.Success));
                     
-                    HostScreen.Router.Navigate.Execute(new EnterCodeViewModel(HostScreen));
+                    HostScreen.Router.Navigate.Execute(new EnterCodeViewModel(HostScreen, StepManager));
+                    StepManager.LoginCtrl = new Done();
+                    StepManager.ExamCodeCtrl = new Running();
                 }
                 else
                 {

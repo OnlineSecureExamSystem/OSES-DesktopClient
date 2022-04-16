@@ -55,23 +55,26 @@
                             Foreground="{DynamicResource Border}"
                             Text="O S E S" />
                         <TextBlock
-							FontWeight="Bold"
                             Margin="55,18,0,0"
                             FontSize="12"
+                            FontWeight="Bold"
                             Text="Login" />
                         <TextBlock
                             Margin="55,55,0,0"
                             FontSize="12"
+                            FontWeight="Bold"
                             Text="Exam Code" />
                         <TextBlock
                             Margin="55,55,0,0"
                             FontSize="12"
+                            FontWeight="Bold"
                             Text="System Check" />
                         <TextBlock
                             Margin="55,55,0,0"
                             FontSize="12"
+                            FontWeight="Bold"
                             Text="Information Check" />
-						<TextBlock
+                        <TextBlock
                             Margin="55,55,0,0"
                             FontSize="12"
                             Text="Start Exam" />
@@ -83,29 +86,39 @@
                             ZIndex="0"
                             StartPoint="35,60"
                             EndPoint="35,350" />
-                        <ContentControl Canvas.Left="20" Canvas.Top="60">
-                            <cm:Running x:Name="ellipse1" />
-                        </ContentControl>
-                        <ContentControl Canvas.Left="20" Canvas.Top="130">
-                            <cm:Step2 x:Name="ellipse2" />
-                        </ContentControl>
-                        <ContentControl Canvas.Left="20" Canvas.Top="200">
-                            <cm:Step3 x:Name="ellipse3" />
-                        </ContentControl>
-                        <ContentControl Canvas.Left="20" Canvas.Top="270">
-                            <cm:Step4 x:Name="ellipse4" />
-                        </ContentControl>
-						<ContentControl Canvas.Left="20" Canvas.Top="340">
-							<cm:Step5 x:Name="ellipse5" />
-						</ContentControl>
+                        <ContentPresenter
+                            x:Name="LoginCtrl"
+                            Canvas.Left="20"
+                            Canvas.Top="60"
+							Content="{Binding LoginCtrl}"/>
+                        <ContentPresenter
+                            x:Name="ExamCodeCtrl"
+                            Canvas.Left="20"
+                            Canvas.Top="130"
+							Content="{Binding ExamCodeCtrl}"/>
+                        <ContentPresenter
+                            x:Name="SystemCheckCtrl"
+                            Canvas.Left="20"
+                            Canvas.Top="200"
+							Content="{Binding SystemCheckCtrl}"/>
+                        <ContentPresenter
+                            x:Name="InfoCheckCtrl"
+                            Canvas.Left="20"
+                            Canvas.Top="270"
+							Content="{Binding InfoCheckCtrl}"/>
+                        <ContentPresenter
+                            x:Name="StartExamCtrl"
+                            Canvas.Left="20"
+                            Canvas.Top="340"
+                            Content="{Binding StartExamCtrl}" />
                     </Canvas>
                 </Grid>
             </Border>
-			<rxui:RoutedViewHost Router="{Binding Router}">
-				<rxui:RoutedViewHost.PageTransition>
-						<CrossFade Duration="0.3" />
-				</rxui:RoutedViewHost.PageTransition>
-			</rxui:RoutedViewHost>
+            <rxui:RoutedViewHost Router="{Binding Router}">
+                <rxui:RoutedViewHost.PageTransition>
+                    <CrossFade Duration="0.3" />
+                </rxui:RoutedViewHost.PageTransition>
+            </rxui:RoutedViewHost>
         </DockPanel>
     </Grid>
 </UserControl>

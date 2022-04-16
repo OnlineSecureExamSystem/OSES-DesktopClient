@@ -10,11 +10,13 @@ using System.Reactive;
 using ManagedBass;
 using static DesktopClient.Helpers.SpeedTest;
 using static DesktopClient.Helpers.DevicesScanner;
-using static DesktopClient.Helpers.DataValidator;
 using DesktopClient.Helpers;
 using Avalonia.Threading;
 using Avalonia.Media.Imaging;
 using System.Threading.Tasks;
+using DesktopClient.CustomControls.StepCircle;
+using DesktopClient.Views;
+using Avalonia.Controls.Notifications;
 
 namespace DesktopClient.ViewModels
 {
@@ -22,7 +24,7 @@ namespace DesktopClient.ViewModels
     {
 
         #region Properties
-        private ObservableValue _internetSpeed;
+        private ObservableValue _internetSpeed ;
 
         public ObservableValue InternetSpeed
         {
@@ -73,8 +75,8 @@ namespace DesktopClient.ViewModels
         IEnumerable<ISeries> ChartBuilder { get; set; }
 
         public ReactiveCommand<Unit, Unit> SpeedTestCommand { get; }
-
-        public ReactiveCommand<Unit, IRoutableViewModel> NextCommand { get; }
+        
+        public ReactiveCommand<Unit, Unit> NextCommand { get; }
 
         public ReactiveCommand<Unit, Unit> NavigateBack { get; }
 
@@ -82,30 +84,49 @@ namespace DesktopClient.ViewModels
 
         public IObservable<bool> isSpeedTestRunning => SpeedTestCommand.IsExecuting;
         
-
         Func<ChartPoint, string> SpeedFormatter = (x) => Math.Truncate(x.PrimaryValue * 100) / 100 + "Mbs/s";
-        public SystemRequirmentsViewModel(IScreen screen)
+
+        public StepManagerViewModel StepManager { get; }
+        
+        public SystemRequirmentsViewModel(IScreen screen, StepManagerViewModel stepManager)
         {
             HostScreen = screen;
+            StepManager = stepManager;
 
             InitTask = Task.Run(() => init());
 
             var canNext = this.WhenAnyValue(x => x.InternetSpeed.Value,
                 (speed) => speed > 1);
 
-            NextCommand = ReactiveCommand.CreateFromObservable(() =>
+            NextCommand = ReactiveCommand.Create(() =>
             {
-                return HostScreen.Router.Navigate.Execute(new InformationCheckViewModel(HostScreen, Camera));
+                StepManager.SystemCheckCtrl = new Done();
+                StepManager.InfoCheckCtrl = new Running();
+                HostScreen.Router.Navigate.Execute(new InformationCheckViewModel(HostScreen, Camera, StepManager));
             });
 
-            SpeedTestCommand = ReactiveCommand.CreateFromTask(async () => { 
-                InternetSpeed.Value = await getInternetSpeed(); 
-            });
+            SpeedTestCommand = ReactiveCommand.CreateFromTask(InternetSpeedTest);
 
             NavigateBack = ReactiveCommand.Create(() =>
             {
                 HostScreen.Router.NavigateBack.Execute();
             });
+        }
+
+        private async Task<Unit> InternetSpeedTest()
+        {
+            try
+            {
+                InternetSpeed.Value = await getInternetSpeed();
+                return Unit.Default;
+            }
+            catch (Exception e)
+            {
+                MainWindow.WindowNotificationManager?.Show(new Avalonia.Controls.Notifications.Notification("Error",
+                  "There is no internet connection, try again later",
+                  NotificationType.Error));
+                return Unit.Default;
+            }
         }
 
         void init()

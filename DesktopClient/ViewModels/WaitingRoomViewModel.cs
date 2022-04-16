@@ -1,12 +1,8 @@
 ﻿using Avalonia.Threading;
-using DesktopClient.Helpers;
-using DesktopClient.Models;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DesktopClient.CustomControls.StepCircle;
+
 
 namespace DesktopClient.ViewModels
 {
@@ -14,7 +10,7 @@ namespace DesktopClient.ViewModels
     {
         #region Properties
 
-        private TimeSpan _examTimer = new(0, 5, 5);
+        private TimeSpan _examTimer = new(0, 0, 30);
         
         public TimeSpan ExamTimer
         {
@@ -27,15 +23,20 @@ namespace DesktopClient.ViewModels
         public string? UrlPathSegment => "/WaitingRoom";
 
         private DispatcherTimer _timer { get; set; }
+        
         public IScreen HostScreen { get; }
 
-        public WaitingRoomViewModel(IScreen screen)
+        public StepManagerViewModel StepManager { get; }
+
+        public WaitingRoomViewModel(IScreen screen, StepManagerViewModel stepManager)
         {
             HostScreen = screen;
+
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(1);
             _timer.Tick += Timer_Tick;
             _timer.Start();
+            StepManager = stepManager;
 
         }
 

@@ -43,6 +43,8 @@ namespace DesktopClient.ViewModels
 
         public ReactiveCommand<Unit, Unit> LoginCommand { get; }
 
+        public StepManagerViewModel StepManager { get; }
+
         public ReactiveCommand<Unit, Unit> OpenBrowser { get; }
 
         public string? UrlPathSegment => "/LoginForm";
@@ -51,9 +53,11 @@ namespace DesktopClient.ViewModels
 
         #endregion
 
-        public LoginFormViewModel(IScreen screen)
+        public LoginFormViewModel(IScreen screen, StepManagerViewModel stepManager)
         {
             HostScreen = screen;
+            StepManager = stepManager;
+           
             var canLogin = this.WhenAnyValue(
                 x => x.Email, x => x.Password,
                 (email, pass) =>
@@ -64,7 +68,7 @@ namespace DesktopClient.ViewModels
             LoginCommand = ReactiveCommand.CreateFromTask(async () =>
             {
                 await Task.Run(() => Thread.Sleep(3000));
-                HostScreen.Router.Navigate.Execute(new ChooseVerificationMethodViewModel(screen));
+                HostScreen.Router.Navigate.Execute(new ChooseVerificationMethodViewModel(screen, StepManager));
             }, canLogin);
 
             // exception handeling

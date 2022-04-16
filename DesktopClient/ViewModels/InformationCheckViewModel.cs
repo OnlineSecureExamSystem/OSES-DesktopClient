@@ -6,11 +6,9 @@ using DesktopClient.Models;
 using DesktopClient.Views;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reactive;
-using System.Text;
-using System.Threading.Tasks;
+using DesktopClient.CustomControls.StepCircle;
+
 
 namespace DesktopClient.ViewModels
 {
@@ -183,12 +181,18 @@ namespace DesktopClient.ViewModels
 
         public CameraHelper Camera { get; }
 
+        public StepManagerViewModel StepManager { get; }
 
-        public InformationCheckViewModel(IScreen screen, CameraHelper camera)
+        public InformationCheckViewModel(IScreen screen, CameraHelper camera, StepManagerViewModel stepManager)
         {
             HostScreen = screen;
             Camera = camera;
+            StepManager = stepManager;
+
+            
+            
             initCameraPreview();
+            
             IsCardTaking = true;
             IsFaceTaking = true;
 
@@ -244,7 +248,9 @@ namespace DesktopClient.ViewModels
                 );
             NextCommand = ReactiveCommand.Create(() =>
             {
-                HostScreen.Router.Navigate.Execute(new WaitingRoomViewModel(HostScreen));
+                HostScreen.Router.Navigate.Execute(new WaitingRoomViewModel(HostScreen, StepManager));
+                stepManager.InfoCheckCtrl = new Done();
+                stepManager.StartExamCtrl = new Running();
             }, canNext);
 
             NavigateBack = ReactiveCommand.Create(() =>

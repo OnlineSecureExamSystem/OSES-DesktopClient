@@ -22,6 +22,6 @@
 				</Transitions>
 			</Ellipse.Transitions>
 		</Ellipse>
-        <i:Icon Foreground="White" Value="fa-check" />
+        <i:Icon Foreground="LightGreen" Value="fa-check" />
     </Grid>
 </UserControl>
