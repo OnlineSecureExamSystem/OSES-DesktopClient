@@ -42,6 +42,12 @@ namespace DesktopClient.ViewModels
         private void Timer_Tick(object? sender, EventArgs e)
         {
             ExamTimer = ExamTimer.Subtract(TimeSpan.FromSeconds(1));
+            if (ExamTimer.TotalSeconds == 0)
+            {
+                _timer.Stop();
+                HostScreen.Router.Navigate.Execute(new ExamRoomViewModel(HostScreen));
+            }
+            
         }
     }
 }

@@ -20,20 +20,14 @@ namespace DesktopClient.ViewModels
 {
     public class SystemRequirmentsViewModel : ViewModelBase, IRoutableViewModel
     {
-        public Task InitTask { get; private set; }
 
-        public string? UrlPathSegment => "/SystemRequirments";
-
-        public IScreen HostScreen { get; }
-
-        IEnumerable<ISeries> ChartBuilder { get; set; }
-        
+        #region Properties
         private ObservableValue _internetSpeed;
 
         public ObservableValue InternetSpeed
         {
             get { return _internetSpeed; }
-            set 
+            set
             { _internetSpeed = value; }
         }
 
@@ -68,15 +62,26 @@ namespace DesktopClient.ViewModels
             get { return _cameraBitmap; }
             set { this.RaiseAndSetIfChanged(ref _cameraBitmap, value); }
         }
+        #endregion
+        
+        public Task InitTask { get; private set; }
+
+        public string? UrlPathSegment => "/SystemRequirments";
+
+        public IScreen HostScreen { get; }
+
+        IEnumerable<ISeries> ChartBuilder { get; set; }
 
         public ReactiveCommand<Unit, Unit> SpeedTestCommand { get; }
 
         public ReactiveCommand<Unit, IRoutableViewModel> NextCommand { get; }
 
+        public ReactiveCommand<Unit, Unit> NavigateBack { get; }
+
         public CameraHelper Camera { get; private set; }
 
         public IObservable<bool> isSpeedTestRunning => SpeedTestCommand.IsExecuting;
-
+        
 
         Func<ChartPoint, string> SpeedFormatter = (x) => Math.Truncate(x.PrimaryValue * 100) / 100 + "Mbs/s";
         public SystemRequirmentsViewModel(IScreen screen)
@@ -91,11 +96,15 @@ namespace DesktopClient.ViewModels
             NextCommand = ReactiveCommand.CreateFromObservable(() =>
             {
                 return HostScreen.Router.Navigate.Execute(new InformationCheckViewModel(HostScreen, Camera));
-            }
-            );
+            });
 
             SpeedTestCommand = ReactiveCommand.CreateFromTask(async () => { 
                 InternetSpeed.Value = await getInternetSpeed(); 
+            });
+
+            NavigateBack = ReactiveCommand.Create(() =>
+            {
+                HostScreen.Router.NavigateBack.Execute();
             });
         }
 

@@ -6,9 +6,9 @@ using DesktopClient.ViewModels;
 
 namespace DesktopClient.Views
 {
-    public partial class TestView : ReactiveUserControl<TestViewModel>
+    public partial class ChooseVerificationMethodView : ReactiveUserControl<ChooseVerificationMethodViewModel>
     {
-        public TestView()
+        public ChooseVerificationMethodView()
         {
             InitializeComponent();
         }

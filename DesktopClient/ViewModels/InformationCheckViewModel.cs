@@ -143,22 +143,6 @@ namespace DesktopClient.ViewModels
                 this.RaiseAndSetIfChanged(ref _captureFaceButtonText, value);
             }
         }
-        #endregion
-
-        public IObservable<bool> Executing => NextCommand.IsExecuting;
-
-        public ReactiveCommand<Unit, Unit> NextCommand { get; }
-
-        public string? UrlPathSegment => "/InformationCheck";
-
-        public ReactiveCommand<Unit, Unit> CaptureFace { get; }
-        
-        public ReactiveCommand<Unit, Unit> CaptureCard { get; }
-
-        public IScreen HostScreen { get; }
-
-        public CameraHelper Camera { get; }
-
 
         private bool _isFaceTaking = true;
 
@@ -181,6 +165,24 @@ namespace DesktopClient.ViewModels
                 this.RaiseAndSetIfChanged(ref _isCardTaking, value);
             }
         }
+        #endregion
+
+        public IObservable<bool> Executing => NextCommand.IsExecuting;
+
+        public ReactiveCommand<Unit, Unit> NextCommand { get; }
+
+        public string? UrlPathSegment => "/InformationCheck";
+
+        public ReactiveCommand<Unit, Unit> CaptureFace { get; }
+        
+        public ReactiveCommand<Unit, Unit> CaptureCard { get; }
+        
+        public ReactiveCommand<Unit, Unit> NavigateBack { get; }
+
+        public IScreen HostScreen { get; }
+
+        public CameraHelper Camera { get; }
+
 
         public InformationCheckViewModel(IScreen screen, CameraHelper camera)
         {
@@ -244,6 +246,11 @@ namespace DesktopClient.ViewModels
             {
                 HostScreen.Router.Navigate.Execute(new WaitingRoomViewModel(HostScreen));
             }, canNext);
+
+            NavigateBack = ReactiveCommand.Create(() =>
+            {
+                HostScreen.Router.NavigateBack.Execute();
+            });
 
             // exception handeling
             NextCommand.ThrownExceptions.Subscribe(x =>

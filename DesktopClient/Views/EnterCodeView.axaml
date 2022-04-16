@@ -5,57 +5,67 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="300"
+    d:DesignHeight="500"
     d:DesignWidth="500"
     mc:Ignorable="d">
     <Border
-        Width="300"
-        Height="260"
-		CornerRadius="4"
+        VerticalAlignment="Center"
+		HorizontalAlignment="Center"
         Background="White"
         BorderBrush="{DynamicResource Primary}"
         BorderThickness="1.5"
-        BoxShadow="0 0 9 0 Gray">
-        <StackPanel>
-            <TextBlock
-                Margin="15,15,15,5"
-                HorizontalAlignment="Center"
-                FontWeight="Bold"
-                Text="ENTER EXAM CODE" />
-            <TextBlock
-                HorizontalAlignment="Center"
-                FontSize="10"
-                FontWeight="Regular"
-                Text="the exam code can be found on the exam page" />
-            <i:Icon
-                Margin="20,25,20,8"
-                FontSize="35"
-                Value="fa-key" />
-            <TextBlock
-                Margin="5,5,5,1"
-                HorizontalAlignment="Center"
-                FontSize="8"
-                FontWeight="Regular"
-                Text="EXAM CODE:" />
-            <TextBox
-                Width="150"
-                Margin="20,0,20,25"
-                HorizontalAlignment="Center"
-                VerticalContentAlignment="Center"
-                FontSize="12"
-                Text="{Binding Code}"
-                Watermark="Exam Code" />
+        BoxShadow="0 0 9 0 Gray"
+        CornerRadius="4">
+        <Panel >
             <Button
-                Padding="35,7,35,8"
-                HorizontalAlignment="Center"
-                Command="{Binding EnterCommand}"
-                Content="ENTER EXAM"
-                FontSize="10" />
-            <ProgressBar
-                Margin="20"
-                Foreground="{DynamicResource Primary}"
-                IsIndeterminate="True"
-				IsVisible="{Binding IsExecuting^}"/>
-        </StackPanel>
+                Margin="5"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Classes="IconButton"
+                Command="{Binding NavigateBack}">
+                <i:Icon Value="fa-arrow-left" />
+            </Button>
+            <StackPanel Margin="30,30,30,20">
+                <TextBlock
+                    Margin="15,15,15,5"
+                    HorizontalAlignment="Center"
+                    FontWeight="Bold"
+                    Text="ENTER EXAM CODE" />
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    FontSize="10"
+                    FontWeight="Regular"
+                    Text="the exam code can be found on the exam page" />
+                <i:Icon
+                    Margin="20,25,20,8"
+                    FontSize="35"
+                    Value="fa-key" />
+                <TextBlock
+                    Margin="5,5,5,1"
+                    HorizontalAlignment="Center"
+                    FontSize="8"
+                    FontWeight="Regular"
+                    Text="EXAM CODE:" />
+                <TextBox
+                    Width="150"
+                    Margin="20,0,20,25"
+                    HorizontalAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    FontSize="12"
+                    Text="{Binding Code}"
+                    Watermark="Exam Code" />
+                <Button
+                    Padding="50,8"
+                    HorizontalAlignment="Center"
+                    Command="{Binding EnterCommand}"
+                    Content="ENTER EXAM"
+                    FontSize="12" />
+                <ProgressBar
+                    Margin="20"
+                    Foreground="{DynamicResource Primary}"
+                    IsIndeterminate="True"
+                    IsVisible="{Binding IsExecuting^}" />
+            </StackPanel>
+        </Panel>
     </Border>
 </UserControl>

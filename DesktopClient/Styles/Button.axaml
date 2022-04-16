@@ -1,7 +1,7 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Design.PreviewWith>
         <Border Padding="20">
-            <Button Content="Create New" />
+            <Button Classes="IconButton" Content="O" />
         </Border>
     </Design.PreviewWith>
     <Styles.Resources>
@@ -40,6 +40,14 @@
         </Setter>
     </Style>
 
+	<Style Selector="Button.IconButton">
+		<Setter Property="Background" Value="Transparent"/>
+		<Setter Property="Foreground" Value="{DynamicResource Primary}"/>
+		<Setter Property="Padding" Value="6 6 6 6"/>
+		<Setter Property="CornerRadius" Value="40"/>
+		<Setter Property="FontSize" Value="20"/>
+	</Style>
+	
     <!--  PointerOverState  -->
     <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource Hover}" />
@@ -56,6 +64,24 @@
         <Setter Property="Foreground" Value="{DynamicResource Foreground}" />
         <Setter Property="Opacity" Value="0.8" />
     </Style>
+
+	<!--  PointerOverState for icons -->
+	<Style Selector="Button.IconButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource Border}" />
+		<Setter Property="TextBlock.Foreground" Value="{DynamicResource Background}" />
+	</Style>
+
+	<Style Selector="Button.IconButton:pressed  /template/ ContentPresenter#PART_ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}" />
+		<Setter Property="TextBlock.Foreground" Value="{DynamicResource Primary}" />
+
+	</Style>
+
+	<Style Selector="Button.IconButton:disabled">
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="Foreground" Value="Gray" />
+		<Setter Property="Opacity" Value="0.8" />
+	</Style>
 
     <Style Selector="Button, RepeatButton, ToggleButton">
         <Setter Property="RenderTransform" Value="none" />

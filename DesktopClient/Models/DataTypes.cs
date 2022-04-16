@@ -15,6 +15,7 @@ namespace DesktopClient.Models
         InternetSpeed,
         Name,
         Date,
-        RegistrationNumber
+        RegistrationNumber,
+        VerificationCode
     }
 }

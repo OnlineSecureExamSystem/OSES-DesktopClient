@@ -1,0 +1,102 @@
+<UserControl
+    x:Class="DesktopClient.Views.ChooseVerificationMethodView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Border
+		
+        x:Name="myBorder"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Background="White"
+        BorderBrush="{DynamicResource Primary}"
+        BorderThickness="1.5"
+        BoxShadow="0 0 9 0 Gray"
+        CornerRadius="4">
+		<Panel>
+			<Button
+				Margin="5"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+				Command="{Binding NavigateBack}"
+                Classes="IconButton">
+				<i:Icon Value="fa-arrow-left" />
+			</Button>
+			<Grid
+            Margin="0,50,0,50"
+            ColumnDefinitions="0.25*,1.5*,0.25*"
+            RowDefinitions="0.25*,1.5*,0.25*">
+            <StackPanel
+                x:Name="mySatck"
+                Grid.Row="1"
+                Grid.Column="1"
+                HorizontalAlignment="Center">
+                <Image Margin="0 0 0 20" Height="60" Source="/Assets/avalonia-logo.ico" />
+                <TextBlock
+                    Width="200"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="10"
+                    FontWeight="Bold"
+                    LineHeight="20"
+                    Text="CHOOSE WHERE YOU WANT TO RECEIVE YOUR VERIFICATION CODE"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap" />
+
+				<Button
+					Command="{Binding SendCodeCommand}"
+					CommandParameter="email"
+                    Width="250"
+                    Padding="60,10"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Background="{DynamicResource Background}"
+                    BorderThickness="0,2,0,2"
+                    CornerRadius="0"
+                    FontSize="14"
+                    Foreground="{DynamicResource Primary}" >
+					<StackPanel Orientation="Horizontal">
+						<i:Icon FontSize="16" VerticalAlignment="Center" Margin="10 0 10 0" Value="far fa-envelope"/>
+						<TextBlock VerticalAlignment="Center" Text="Send an Email"/>
+					</StackPanel>
+				</Button>
+				<Button
+					Command="{Binding SendCodeCommand}"
+					CommandParameter="sms"
+                    Width="250"
+                    Padding="60,10"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Background="{DynamicResource Background}"
+                    BorderThickness="0,0,0,2"
+                    CornerRadius="0"
+                    FontSize="14"
+                    Foreground="{DynamicResource Primary}" >
+					<StackPanel Orientation="Horizontal">
+						<i:Icon FontSize="16" Margin="10 0 10 0" Value="fa-mobile-alt"/>
+						<TextBlock Text="Send an SMS"/>
+					</StackPanel>
+				</Button>
+
+            </StackPanel>
+            <ProgressBar
+                x:Name="progressBar"
+                Grid.Row="2"
+                Grid.Column="1"
+                Width="200"
+                Margin="0,30,0,-20"
+                VerticalAlignment="Bottom"
+                Foreground="{DynamicResource Primary}"
+                IsIndeterminate="True"
+                IsVisible="{Binding Executing^}" />
+        </Grid>
+		</Panel>
+        
+    </Border>
+</UserControl>

@@ -64,7 +64,7 @@ namespace DesktopClient.ViewModels
             LoginCommand = ReactiveCommand.CreateFromTask(async () =>
             {
                 await Task.Run(() => Thread.Sleep(3000));
-                HostScreen.Router.Navigate.Execute(new EnterCodeViewModel(screen));
+                HostScreen.Router.Navigate.Execute(new ChooseVerificationMethodViewModel(screen));
             }, canLogin);
 
             // exception handeling

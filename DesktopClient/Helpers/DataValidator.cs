@@ -17,7 +17,7 @@ namespace DesktopClient.Helpers
 
         // extension methods
 
-        
+        // for string validation
         public static bool IsValid(this string value, DataTypes dataType)
         {
             return dataType switch
@@ -28,9 +28,12 @@ namespace DesktopClient.Helpers
                 DataTypes.Code => value.Length > 8 ? true : throw new DataValidationException("Invalide exam code"),
                 DataTypes.Name => Regex.IsMatch(value, nameRegex) ? true : throw new DataValidationException("Invalide name"),
                 DataTypes.RegistrationNumber => Regex.IsMatch(value, numberRegex) ? true : throw new DataValidationException("Invalide registration number"),
+                DataTypes.VerificationCode => Regex.IsMatch(value, numberRegex) ? true : throw new DataValidationException("Invalide code"),
                 _ => false,
             };
         }
+
+        // for double validation
         public static bool IsValid(this double? value, DataTypes dataType)
         {
             return dataType switch
@@ -40,6 +43,7 @@ namespace DesktopClient.Helpers
             };
         }
 
+        // for date validation
         public static bool IsValid(this DateTimeOffset? value, DataTypes dataType)
         {
             return dataType switch

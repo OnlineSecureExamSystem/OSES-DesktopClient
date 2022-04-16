@@ -28,16 +28,14 @@ namespace DesktopClient.ViewModels
 
          ReactiveCommand<Unit, Unit> EnterCommand { get; }
 
+        ReactiveCommand<Unit, Unit> NavigateBack { get; }
+
         IObservable<bool> IsExecuting => EnterCommand.IsExecuting;
 
         public string? UrlPathSegment => "enter_code_path";
 
         public IScreen HostScreen { get; }
 
-        public EnterCodeViewModel()
-        {
-
-        }
 
         public EnterCodeViewModel(IScreen screen)
         {
@@ -63,6 +61,8 @@ namespace DesktopClient.ViewModels
                             "Error",
                             x.Message,
                             NotificationType.Error)));
+
+            NavigateBack = ReactiveCommand.Create(() => { screen.Router.NavigateBack.Execute(); });
         }
 
         

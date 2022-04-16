@@ -1,0 +1,119 @@
+<UserControl
+    x:Class="DesktopClient.Views.ExamRoomView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Panel Background="{DynamicResource Background}">
+        <DockPanel>
+            <Border
+                Background="White"
+                BoxShadow="0 0 9 0 Gray"
+                DockPanel.Dock="Top"
+                ZIndex="10">
+                <Grid ColumnDefinitions="*, *, *">
+                    <StackPanel Orientation="Horizontal" ToolTip.Tip="Student">
+                        <Image
+                            Height="40"
+                            Margin="10,2,10,2"
+                            HorizontalAlignment="Left"
+                            Source="/Assets/avalonia-logo.ico" />
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock
+                                Margin="0,0,0,2"
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Text="StudentName" />
+                            <TextBlock
+                                FontSize="10"
+                                FontWeight="SemiLight"
+                                Text="StudentName@gmail.com" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel
+                        Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal"
+                        ToolTip.Tip="Time Left">
+                        <i:Icon
+                            Margin="10,2,10,2"
+                            VerticalAlignment="Center"
+                            FontSize="20"
+                            Value="far fa-clock" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontWeight="Bold"
+                            Text="1 : 29 : 59" />
+                    </StackPanel>
+                    <StackPanel
+                        Grid.Column="2"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
+                        <Button
+                            Margin="10,2,10,2"
+                            Classes="IconButton"
+                            ToolTip.Tip="Submit">
+                            <i:Icon Foreground="Green" Value="far fa-check-circle" />
+                        </Button>
+                        <Button
+                            Margin="10,2,10,2"
+                            Classes="IconButton"
+                            ToolTip.Tip="Messages">
+                            <i:Icon Value="far fa-envelope" />
+                        </Button>
+                        <Button
+                            Margin="10,2,10,2"
+                            Classes="IconButton"
+                            ToolTip.Tip="Info">
+                            <i:Icon Value="fa-info" />
+                        </Button>
+                        <Separator
+                            Width="1"
+                            Height="30"
+                            Margin="10,0,0,0"
+                            BorderBrush="{DynamicResource Primary}"
+                            BorderThickness=".5" />
+                        <Button
+                            Margin="20,2,20,2"
+                            Classes="IconButton"
+                            ToolTip.Tip="Exit">
+                            <i:Icon Foreground="Crimson" Value="fa-sign-out-alt" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <ScrollViewer>
+                <Border
+                    Width="800"
+                    Height="2000"
+                    Margin="0,40,0,40"
+                    Background="White"
+                    BorderBrush="{DynamicResource Primary}"
+                    BorderThickness="1.5"
+                    BoxShadow="0 0 9 0 Gray"
+                    CornerRadius="4">
+                    <StackPanel />
+                </Border>
+
+            </ScrollViewer>
+        </DockPanel>
+        <StackPanel
+			Margin="30 20"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Orientation="Horizontal">
+            <Button ToolTip.ShowDelay="800" ToolTip.Tip="Zoom In" Margin="0 0 5 0" Classes="IconButton">
+                <i:Icon Value="fa-plus" />
+            </Button>
+            <Button ToolTip.ShowDelay="800" ToolTip.Tip="Zoom Out" Classes="IconButton">
+                <i:Icon Value="fa-minus" />
+            </Button>
+        </StackPanel>
+    </Panel>
+</UserControl>
