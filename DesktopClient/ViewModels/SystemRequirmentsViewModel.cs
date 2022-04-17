@@ -29,8 +29,7 @@ namespace DesktopClient.ViewModels
         public ObservableValue InternetSpeed
         {
             get { return _internetSpeed; }
-            set
-            { _internetSpeed = value; }
+            set => this.RaiseAndSetIfChanged(ref _internetSpeed, value);
         }
 
         private List<DeviceInfo> _outputDecices;
