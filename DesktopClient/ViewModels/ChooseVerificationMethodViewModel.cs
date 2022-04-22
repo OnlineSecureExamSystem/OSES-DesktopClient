@@ -26,12 +26,15 @@ namespace DesktopClient.ViewModels
 
         public IObservable<bool> Executing => SendCodeCommand.IsExecuting;
 
+        public MainWindowViewModel MainWindowp { get; }
+
         
 
-        public ChooseVerificationMethodViewModel(IScreen screen, StepManagerViewModel stepManager)
+        public ChooseVerificationMethodViewModel(IScreen screen, StepManagerViewModel stepManager, MainWindowViewModel mainWindow)
         {
             HostScreen = screen;
             StepManager = stepManager;
+            MainWindowp = mainWindow;
 
             SendCodeCommand = ReactiveCommand.CreateFromTask<string, Unit>(async (p) =>
             {
@@ -50,7 +53,7 @@ namespace DesktopClient.ViewModels
                       "Code sent to your phone",
                       NotificationType.Information));
                 }
-                HostScreen.Router.Navigate.Execute(new EnterVerificationCodeViewModel(screen, StepManager));
+                HostScreen.Router.Navigate.Execute(new EnterVerificationCodeViewModel(screen, StepManager, MainWindowp));
                 return Unit.Default;
             });
 

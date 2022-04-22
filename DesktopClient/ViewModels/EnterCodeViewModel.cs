@@ -39,13 +39,16 @@ namespace DesktopClient.ViewModels
 
         public StepManagerViewModel StepManager { get; }
 
+        public MainWindowViewModel MainWindowp { get; }
 
-        public EnterCodeViewModel(IScreen screen, StepManagerViewModel stepManager)
+
+
+        public EnterCodeViewModel(IScreen screen, StepManagerViewModel stepManager, MainWindowViewModel mainWindowp)
         {
             HostScreen = screen;
             StepManager = stepManager;
+            MainWindowp = mainWindowp;
 
-            
 
             var canEnter = this.WhenAnyValue(
                 x => x.Code,
@@ -55,12 +58,12 @@ namespace DesktopClient.ViewModels
 
             EnterCommand = ReactiveCommand.CreateFromTask(async () =>
             {
-                SystemRequirmentsViewModel vm = new SystemRequirmentsViewModel(screen, StepManager);
+                SystemRequirmentsViewModel vm = new SystemRequirmentsViewModel(screen, StepManager, MainWindowp);
                 await vm.InitTask;
                 screen.Router.Navigate.Execute(vm);
                 StepManager.ExamCodeCtrl = new Done();
                 StepManager.SystemCheckCtrl = new Running();
-            }, canEnter) ;
+            }, canEnter);
 
             EnterCommand.ThrownExceptions.Subscribe(x =>
                     MainWindow.WindowNotificationManager?
@@ -72,6 +75,7 @@ namespace DesktopClient.ViewModels
             NavigateBack = ReactiveCommand.Create(() => { screen.Router.NavigateBack.Execute(); });
         }
 
-        
+
+
     }
 }

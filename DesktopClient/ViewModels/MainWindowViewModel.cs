@@ -1,6 +1,8 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia.Animation;
+using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
 using Avalonia.Data;
+using Avalonia.ReactiveUI;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -19,7 +21,7 @@ namespace DesktopClient.ViewModels
         public MainWindowViewModel()
         {
             Router = new RoutingState();
-            Router.Navigate.Execute(new StepManagerViewModel(this));
+            Router.Navigate.Execute(new ExamRoomViewModel(this));
         }
     }
 }

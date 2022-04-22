@@ -21,6 +21,9 @@
     <AvaloniaResource Remove="Assets\WaitingDog.gif" />
     <None Remove=".gitignore" />
     <None Remove="Assets\FaceArea.png" />
+    <None Update="Models\ExperimentalData\Question.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\WaitingDog.gif" />

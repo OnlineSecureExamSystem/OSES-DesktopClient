@@ -39,6 +39,8 @@ namespace DesktopClient.ViewModels
             }
         }
 
+        #endregion
+
         public IObservable<bool> Executing => LoginCommand.IsExecuting;
 
         public ReactiveCommand<Unit, Unit> LoginCommand { get; }
@@ -51,12 +53,13 @@ namespace DesktopClient.ViewModels
 
         public IScreen HostScreen { get; }
 
-        #endregion
+        public MainWindowViewModel MainWindowP { get; }
 
-        public LoginFormViewModel(IScreen screen, StepManagerViewModel stepManager)
+        public LoginFormViewModel(IScreen screen, MainWindowViewModel mainWindow)
         {
             HostScreen = screen;
-            StepManager = stepManager;
+            StepManager = (StepManagerViewModel)screen;
+            MainWindowP = mainWindow;
            
             var canLogin = this.WhenAnyValue(
                 x => x.Email, x => x.Password,
@@ -68,7 +71,7 @@ namespace DesktopClient.ViewModels
             LoginCommand = ReactiveCommand.CreateFromTask(async () =>
             {
                 await Task.Run(() => Thread.Sleep(3000));
-                HostScreen.Router.Navigate.Execute(new ChooseVerificationMethodViewModel(screen, StepManager));
+                HostScreen.Router.Navigate.Execute(new ChooseVerificationMethodViewModel(screen, StepManager, MainWindowP));
             }, canLogin);
 
             // exception handeling

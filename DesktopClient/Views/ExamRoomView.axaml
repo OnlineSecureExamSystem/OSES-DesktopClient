@@ -2,6 +2,7 @@
     x:Class="DesktopClient.Views.ExamRoomView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cm="using:DesktopClient.CustomControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -11,11 +12,12 @@
     <Panel Background="{DynamicResource Background}">
         <DockPanel>
             <Border
+                Height="60"
                 Background="White"
                 BoxShadow="0 0 9 0 Gray"
                 DockPanel.Dock="Top"
                 ZIndex="10">
-                <Grid ColumnDefinitions="*, *, *">
+                <Grid ColumnDefinitions=".9*, .9*, *">
                     <StackPanel Orientation="Horizontal" ToolTip.Tip="Student">
                         <Image
                             Height="40"
@@ -59,19 +61,42 @@
                             Margin="10,2,10,2"
                             Classes="IconButton"
                             ToolTip.Tip="Submit">
-                            <i:Icon Foreground="Green" Value="far fa-check-circle" />
+                            <StackPanel>
+                                <i:Icon Foreground="Green" Value="far fa-check-circle" />
+                                <TextBlock
+                                    Margin="0,2,0,0"
+                                    HorizontalAlignment="Center"
+                                    FontSize="10"
+                                    FontWeight="Bold"
+                                    Text="Submit" />
+                            </StackPanel>
                         </Button>
                         <Button
                             Margin="10,2,10,2"
                             Classes="IconButton"
                             ToolTip.Tip="Messages">
-                            <i:Icon Value="far fa-envelope" />
+                            <StackPanel>
+                                <i:Icon Value="far fa-envelope" />
+                                <TextBlock
+                                    Margin="0,2,0,0"
+                                    HorizontalAlignment="Center"
+                                    FontSize="10"
+                                    Text="Messages" />
+                            </StackPanel>
                         </Button>
                         <Button
                             Margin="10,2,10,2"
+                            VerticalAlignment="Center"
                             Classes="IconButton"
                             ToolTip.Tip="Info">
-                            <i:Icon Value="fa-info" />
+                            <StackPanel>
+                                <i:Icon Value="fa-info" />
+                                <TextBlock
+                                    Margin="0,2,0,0"
+                                    HorizontalAlignment="Center"
+                                    FontSize="10"
+                                    Text="Info" />
+                            </StackPanel>
                         </Button>
                         <Separator
                             Width="1"
@@ -83,7 +108,15 @@
                             Margin="20,2,20,2"
                             Classes="IconButton"
                             ToolTip.Tip="Exit">
-                            <i:Icon Foreground="Crimson" Value="fa-sign-out-alt" />
+                            <StackPanel>
+                                <i:Icon Foreground="Crimson" Value="fa-sign-out-alt" />
+                                <TextBlock
+                                    Margin="0,2,0,0"
+                                    HorizontalAlignment="Center"
+                                    FontSize="10"
+                                    FontWeight="Bold"
+                                    Text="Exit" />
+                            </StackPanel>
                         </Button>
                     </StackPanel>
                 </Grid>
@@ -91,27 +124,34 @@
             <ScrollViewer>
                 <Border
                     Width="800"
-                    Height="2000"
                     Margin="0,40,0,40"
                     Background="White"
                     BorderBrush="{DynamicResource Primary}"
                     BorderThickness="1.5"
                     BoxShadow="0 0 9 0 Gray"
                     CornerRadius="4">
-                    <StackPanel />
+                    <ContentPresenter HorizontalAlignment="Stretch" Content="{Binding QuestionsStackPanel}" />
                 </Border>
 
             </ScrollViewer>
         </DockPanel>
         <StackPanel
-			Margin="30 20"
+            Margin="30,20"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Orientation="Horizontal">
-            <Button ToolTip.ShowDelay="800" ToolTip.Tip="Zoom In" Margin="0 0 5 0" Classes="IconButton">
+            <Button
+                Margin="0,0,5,0"
+                Classes="IconButton"
+                Command="{Binding TestCommand}"
+                ToolTip.ShowDelay="800"
+                ToolTip.Tip="Zoom In">
                 <i:Icon Value="fa-plus" />
             </Button>
-            <Button ToolTip.ShowDelay="800" ToolTip.Tip="Zoom Out" Classes="IconButton">
+            <Button
+                Classes="IconButton"
+                ToolTip.ShowDelay="800"
+                ToolTip.Tip="Zoom Out">
                 <i:Icon Value="fa-minus" />
             </Button>
         </StackPanel>

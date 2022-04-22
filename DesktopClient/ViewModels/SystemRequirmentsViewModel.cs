@@ -86,11 +86,14 @@ namespace DesktopClient.ViewModels
         Func<ChartPoint, string> SpeedFormatter = (x) => Math.Truncate(x.PrimaryValue * 100) / 100 + "Mbs/s";
 
         public StepManagerViewModel StepManager { get; }
-        
-        public SystemRequirmentsViewModel(IScreen screen, StepManagerViewModel stepManager)
+
+        public MainWindowViewModel MainWindowp { get; }
+
+        public SystemRequirmentsViewModel(IScreen screen, StepManagerViewModel stepManager, MainWindowViewModel mainWindow)
         {
             HostScreen = screen;
             StepManager = stepManager;
+            MainWindowp = mainWindow;
 
             InitTask = Task.Run(() => init());
 
@@ -101,7 +104,7 @@ namespace DesktopClient.ViewModels
             {
                 StepManager.SystemCheckCtrl = new Done();
                 StepManager.InfoCheckCtrl = new Running();
-                HostScreen.Router.Navigate.Execute(new InformationCheckViewModel(HostScreen, Camera, StepManager));
+                HostScreen.Router.Navigate.Execute(new InformationCheckViewModel(HostScreen, Camera, StepManager, MainWindowp));
             });
 
             SpeedTestCommand = ReactiveCommand.CreateFromTask(InternetSpeedTest);

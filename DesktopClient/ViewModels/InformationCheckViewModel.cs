@@ -183,14 +183,16 @@ namespace DesktopClient.ViewModels
 
         public StepManagerViewModel StepManager { get; }
 
-        public InformationCheckViewModel(IScreen screen, CameraHelper camera, StepManagerViewModel stepManager)
+        public MainWindowViewModel MainWindowp { get; }
+
+
+        public InformationCheckViewModel(IScreen screen, CameraHelper camera, StepManagerViewModel stepManager, MainWindowViewModel mainWindow)
         {
             HostScreen = screen;
             Camera = camera;
             StepManager = stepManager;
-
-            
-            
+            MainWindowp = mainWindow;
+   
             initCameraPreview();
             
             IsCardTaking = true;
@@ -248,7 +250,7 @@ namespace DesktopClient.ViewModels
                 );
             NextCommand = ReactiveCommand.Create(() =>
             {
-                HostScreen.Router.Navigate.Execute(new WaitingRoomViewModel(HostScreen, StepManager));
+                HostScreen.Router.Navigate.Execute(new WaitingRoomViewModel(HostScreen, StepManager, MainWindowp));
                 stepManager.InfoCheckCtrl = new Done();
                 stepManager.StartExamCtrl = new Running();
             }, canNext);

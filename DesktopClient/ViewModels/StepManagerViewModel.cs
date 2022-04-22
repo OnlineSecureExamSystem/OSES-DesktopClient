@@ -66,15 +66,17 @@ namespace DesktopClient.ViewModels
 
         public IScreen HostScreen { get; }
 
+        public MainWindowViewModel MainWindow { get; }
+
         public StepManagerViewModel(IScreen screen)
         {
             
-
             HostScreen = screen;
+            MainWindow = (MainWindowViewModel)HostScreen;
 
             Router = new RoutingState();
             
-            Router.Navigate.Execute(new LoginFormViewModel(this, this));
+            Router.Navigate.Execute(new LoginFormViewModel(this, MainWindow));
         }
     }
 }

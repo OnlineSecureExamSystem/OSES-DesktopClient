@@ -10,7 +10,7 @@ namespace DesktopClient.ViewModels
     {
         #region Properties
 
-        private TimeSpan _examTimer = new(0, 0, 30);
+        private TimeSpan _examTimer = new(0, 0, 5);
         
         public TimeSpan ExamTimer
         {
@@ -28,16 +28,16 @@ namespace DesktopClient.ViewModels
 
         public StepManagerViewModel StepManager { get; }
 
-        public WaitingRoomViewModel(IScreen screen, StepManagerViewModel stepManager)
+
+        public WaitingRoomViewModel(IScreen screen, StepManagerViewModel stepManager, MainWindowViewModel mainWindowp)
         {
-            HostScreen = screen;
+            HostScreen = mainWindowp;
 
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(1);
             _timer.Tick += Timer_Tick;
             _timer.Start();
             StepManager = stepManager;
-
         }
 
         private void Timer_Tick(object? sender, EventArgs e)

@@ -21,6 +21,31 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JSON File" />
+      </list>
+    </option>
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/metadata/f0205f0be5f9483e864be02829f47568df800/cb/8ac3d655/IDataTemplate.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/metadata/2073514815234917a5e8f91b0b239405a95b0/a5/f33a9ffe/JsonSerializer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/metadata/f0205f0be5f9483e864be02829f47568df800/39/e12d6b34/RadioButton.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/metadata/f0205f0be5f9483e864be02829f47568df800/12/ffb03bdb/ContentPresenter.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/metadata/abe872111790474cb1c23357339df70f48e00/ff/336a7f62/AvaloniaList`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/metadata/f0205f0be5f9483e864be02829f47568df800/9f/4b0b0f90/Panel.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/metadata/2073514815234917a5e8f91b0b239405a95b0/9c/11b6a580/JsonReader.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/metadata/f0205f0be5f9483e864be02829f47568df800/f9/64af56e9/ToggleButton.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -36,6 +61,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RunManager">
     <configuration name="DesktopClient" type="DotNetProject" factoryName=".NET Project">
@@ -70,6 +96,10 @@
       <workItem from="1648300973100" duration="37000" />
       <workItem from="1648367887554" duration="38000" />
       <workItem from="1649690479884" duration="624000" />
+      <workItem from="1650562751962" duration="10237000" />
+      <workItem from="1650624189893" duration="481000" />
+      <workItem from="1650635075026" duration="9969000" />
+      <workItem from="1650645456013" duration="187000" />
     </task>
     <servers />
   </component>

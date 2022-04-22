@@ -64,11 +64,14 @@ namespace DesktopClient.ViewModels
 
         public StepManagerViewModel StepManager { get; }
 
-        public EnterVerificationCodeViewModel(IScreen screen, StepManagerViewModel stepManager)
+        public MainWindowViewModel MainWindowp { get; }
+
+
+        public EnterVerificationCodeViewModel(IScreen screen, StepManagerViewModel stepManager, MainWindowViewModel mainWindowp)
         {
             HostScreen = screen;
             StepManager = stepManager;
-
+            MainWindowp = mainWindowp;
 
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(1);
@@ -79,7 +82,7 @@ namespace DesktopClient.ViewModels
 
             var canConfirm = this.WhenAnyValue(x =>
                 x.Code, x => !string.IsNullOrEmpty(x));
-            
+
 
             ConfirmCommand = ReactiveCommand.CreateFromTask(async () =>
             {
@@ -90,8 +93,8 @@ namespace DesktopClient.ViewModels
                     MainWindow.WindowNotificationManager?.Show(new Avalonia.Controls.Notifications.Notification("Success",
                          "You are logged in successfully!",
                          NotificationType.Success));
-                    
-                    HostScreen.Router.Navigate.Execute(new EnterCodeViewModel(HostScreen, StepManager));
+
+                    HostScreen.Router.Navigate.Execute(new EnterCodeViewModel(HostScreen, StepManager, MainWindowp));
                     StepManager.LoginCtrl = new Done();
                     StepManager.ExamCodeCtrl = new Running();
                 }
@@ -101,7 +104,7 @@ namespace DesktopClient.ViewModels
                       "Wrong verification code, try again",
                       NotificationType.Error));
                 }
-                
+
             }, canConfirm);
 
             NavigateBack = ReactiveCommand.Create(() =>
