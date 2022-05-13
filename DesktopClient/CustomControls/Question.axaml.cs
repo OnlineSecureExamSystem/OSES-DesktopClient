@@ -1,35 +1,33 @@
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 
 namespace DesktopClient.CustomControls;
 
 public class Question : TemplatedControl
 {
-    public static readonly StyledProperty<string> TextProperty = AvaloniaProperty.Register<Question, string>("Text");
+    public static readonly StyledProperty<object> DescriptionProperty = AvaloniaProperty.Register<Question, object>("Description");
 
-    public string? Text
+    public object Description
     {
-        get => GetValue(TextProperty);
-        set => SetValue(TextProperty, value);
+        get => GetValue(DescriptionProperty);
+        set => SetValue(DescriptionProperty, value);
     }
 
-    
-    public static readonly StyledProperty<object> ContentProperty = AvaloniaProperty.Register<Question, object>("Content");
-    
-    public object Content
+    public static readonly StyledProperty<object> AnswerProperty = AvaloniaProperty.Register<Question, object>("Answer");
+
+    public object Answer
     {
-        get => GetValue(ContentProperty);
-        set => SetValue(ContentProperty, value);
+        get => GetValue(AnswerProperty);
+        set => SetValue(AnswerProperty, value);
     }
     public Question()
     {
         DataContext = this;
     }
 
-    public Question(string? text, object content)
+    public Question(object description, object answer)
     {
-        Text = text;
-        Content = content;
+        Description = description;
+        Answer = answer;
     }
 }

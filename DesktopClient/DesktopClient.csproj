@@ -27,6 +27,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\WaitingDog.gif" />
+    <AvaloniaResource Include="Views\HtmlViews\RichTextBox.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Libraries\AvaloniaGif\AvaloniaGif.csproj" />
@@ -43,6 +44,7 @@
 	<PackageReference Include="Aura.UI" Version="0.1.4.2" />
 	<PackageReference Include="Aura.UI.FluentTheme" Version="0.1.4.2" />
 	<PackageReference Include="Avalonia" Version="0.10.13" />
+	<PackageReference Include="Avalonia.AvaloniaEdit" Version="0.10.12.2" />
 	<PackageReference Include="Avalonia.Desktop" Version="0.10.13" />
 	<PackageReference Include="Avalonia.Diagnostics" Version="0.10.13" />
 	<PackageReference Include="Avalonia.ReactiveUI" Version="0.10.13" />
@@ -51,10 +53,12 @@
 	<PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-beta.100" />
 	<PackageReference Include="ManagedBass" Version="3.1.0" />
 	<PackageReference Include="ManagedBass.Wasapi" Version="3.1.0" />
+	<PackageReference Include="MessageBox.Avalonia" Version="2.0.0" />
 	<PackageReference Include="Projektanker.Icons.Avalonia" Version="4.2.1" />
 	<PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="4.2.1" />
 	<PackageReference Include="SpeedTest.NetCore" Version="2.1.0" />
 	<PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
+	<PackageReference Include="WebViewControl-Avalonia" Version="2.91.23" />
   </ItemGroup>
   <ItemGroup>
     <AvaloniaXaml Update="Styles\NotificationCard.axaml">

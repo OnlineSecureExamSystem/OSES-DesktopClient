@@ -1,17 +1,21 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Layout;
+using Avalonia.Media;
+using Avalonia.Threading;
+using DesktopClient.Helpers;
 using DesktopClient.Models;
+using DesktopClient.Services;
+using MessageBox.Avalonia;
+using MessageBox.Avalonia.DTO;
+using MessageBox.Avalonia.Enums;
+using MessageBox.Avalonia.Models;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reactive;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using Avalonia;
-using Avalonia.Layout;
-using Avalonia.Media;
-using System.Text.Json;
-using static DesktopClient.Helpers.QuestionDecoder;
 using Question = DesktopClient.CustomControls.Question;
 
 namespace DesktopClient.ViewModels
@@ -45,16 +49,33 @@ namespace DesktopClient.ViewModels
 
         public ReactiveCommand<Unit, Unit> TestCommand { get; }
 
+        public ReactiveCommand<Unit, Unit> SubmitCommand { get; }
+
+        public ReactiveCommand<Unit, Unit> ExitCommand { get; }
+
+        public ReactiveCommand<Unit, Unit> InfoCommand { get; }
+
+        public ReactiveCommand<Unit, Unit> ZoomInCommand { get; }
+
+        public ReactiveCommand<Unit, Unit> ZoomOutCommand { get; }
+
+        public ReactiveCommand<Unit, Unit> MessagePopupCommand { get; }
+
+        public Task InitTask { get; private set; }
+
+        public List<Models.Question> QuestionsList { get; private set; }
 
         public ExamRoomViewModel(IScreen screen)
         {
+
+
             HostScreen = screen;
             QuestionsStackPanel = new StackPanel
             {
                 DataContext = this
             };
 
-            
+
             var examNameTextBox = new TextBlock
             {
                 Width = 200,
@@ -66,37 +87,133 @@ namespace DesktopClient.ViewModels
                 FontWeight = FontWeight.Bold,
                 Text = "Exam Name"
             };
-            
+
             QuestionsStackPanel.Children.Add(examNameTextBox);
-            
+
             // getting questions from a json file
-            var questions = GetQuestions();
 
-            for (var i = 0; i < questions.Count; i++)
+            InitTask = Task.Run(() => Init()).ContinueWith(t =>
             {
-                var question = questions[i];
-                
-                // specifying the question number before adding it to the stack panel
-                if (question.Description != null && !char.IsNumber(question.Description[0]))
+                Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    string questionDescription = $"{i + 1}. {question.Description}";
-                    question.Description =  questionDescription;
-                }
-                QuestionsStackPanel.Children.Add(DecodeQuestion(question));
-            }
-
-            TestCommand = ReactiveCommand.Create(() =>
+                    try
+                    {
+                        for (var i = 0; i < t.Result.Count; i++)
+                        {
+                            var question = t.Result[i];
+                            QuestionDecoder decoder = new QuestionDecoder();
+                            QuestionsStackPanel.Children.Add(decoder.DecodeQuestion(question));
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        ExceptionNotifier.NotifyError(e.Message);
+                    }
+                });
+            });
+            SubmitCommand = ReactiveCommand.CreateFromTask(async () =>
             {
-                QuestionsStackPanel.Children.Add(new Question("Question Text", new StackPanel(){Orientation = Orientation.Horizontal,Children = { new CheckBox(), new CheckBox() }}));
+                var messageBox = MessageBoxManager.GetMessageBoxCustomWindow(new MessageBoxCustomParams
+                {
+                    ButtonDefinitions = new[]
+                    {
+                        new ButtonDefinition{Name = "Yes", IsDefault = true},
+                        new ButtonDefinition{Name = "Cancel", IsCancel = true}
+                    },
+                    ContentTitle = "Submit",
+                    ContentMessage = "Are you sure you want to submit?",
+                    Icon = Icon.Warning,
+                    Topmost = true,
+                    CanResize = false,
+                    WindowStartupLocation = WindowStartupLocation.CenterScreen
+                });
+                var result = await messageBox.Show();
+                if (result == "Yes")
+                {
+                    var messageBox2 = MessageBoxManager.GetMessageBoxStandardWindow("Submited", "You did it");
+                    await messageBox2.Show();
+                }
+            });
+
+            ExitCommand = ReactiveCommand.CreateFromTask(async () =>
+            {
+                var messageBox = MessageBoxManager.GetMessageBoxCustomWindow(new MessageBoxCustomParams
+                {
+                    ButtonDefinitions = new[]
+                    {
+                        new ButtonDefinition{Name = "Yes", IsDefault = true},
+                        new ButtonDefinition{Name = "Cancel", IsCancel = true}
+                    },
+                    ContentTitle = "Exit",
+                    ContentMessage = "Are you sure you want to Exit the exam?",
+                    Icon = Icon.Error,
+                    Topmost = true,
+                    CanResize = false,
+                    WindowStartupLocation = WindowStartupLocation.CenterScreen
+                });
+                var result = await messageBox.Show();
+                if (result == "Yes")
+                {
+                    Dispatcher.UIThread.MainLoop(new CancellationToken(true));
+                }
+            });
+
+            InfoCommand = ReactiveCommand.CreateFromTask(async () =>
+            {
+                var messageBox = MessageBoxManager.GetMessageBoxCustomWindow(new MessageBoxCustomParams
+                {
+                    ButtonDefinitions = new[]
+                    {
+                        new ButtonDefinition{Name = "Yes", IsDefault = true},
+                        new ButtonDefinition{Name = "Cancel", IsCancel = true}
+                    },
+                    ContentTitle = "Exit",
+                    ContentMessage = "Are you sure you want to Exit the exam?",
+                    Icon = Icon.Error,
+                    Topmost = true,
+                    CanResize = false,
+                    WindowStartupLocation = WindowStartupLocation.CenterScreen
+                });
+                var result = await messageBox.Show();
+                if (result == "Yes")
+                {
+                    Dispatcher.UIThread.MainLoop(new CancellationToken(true));
+                }
+            });
+
+            MessagePopupCommand = ReactiveCommand.CreateFromTask(async () =>
+            {
+                var messageBox = MessageBoxManager.GetMessageBoxCustomWindow(new MessageBoxCustomParams
+                {
+                    ButtonDefinitions = new[]
+                    {
+                        new ButtonDefinition{Name = "Yes", IsDefault = true},
+                        new ButtonDefinition{Name = "Cancel", IsCancel = true}
+                    },
+                    ContentTitle = "Exit",
+                    ContentMessage = "Are you sure you want to Exit the exam?",
+                    Icon = Icon.Error,
+                    Topmost = true,
+                    CanResize = false,
+                    WindowStartupLocation = WindowStartupLocation.CenterScreen
+                });
+                var result = await messageBox.Show();
+                if (result == "Yes")
+                {
+                    Dispatcher.UIThread.MainLoop(new CancellationToken(true));
+                }
             });
         }
-
-        private List<Models.Question> GetQuestions()
+        async Task<List<Models.Question>> Init()
         {
-            var questions = new List<Models.Question>();
-            var json = System.IO.File.ReadAllText("../Question.json");
-            questions = JsonSerializer.Deserialize<List<Models.Question>>(json);
-            return questions;
+            return await GetQuestions();
+        }
+
+        private async Task<List<Models.Question>> GetQuestions()
+        {
+            ExamService examService = new ExamService();
+            Exam exam = await examService.GetExamAsync("AAAAAA");
+            return exam.Questions;
         }
     }
 }

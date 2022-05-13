@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cm="using:DesktopClient.CustomControls">
     <Design.PreviewWith>
-        <cm:Question Text="question text" />
+        <cm:Question />
     </Design.PreviewWith>
 
     <Style Selector="cm|Question">
@@ -16,11 +16,8 @@
                     BoxShadow="0 0 9 0 Gray"
                     CornerRadius="4">
                     <StackPanel>
-                        <TextBlock
-                            Margin="10"
-                            FontWeight="Bold"
-                            Text="{TemplateBinding Text}" />
-                        <ContentPresenter Content="{TemplateBinding Content}" />
+						<ContentPresenter Content="{TemplateBinding Description}" />
+						<ContentPresenter Content="{TemplateBinding Answer}" />
                     </StackPanel>
 
                 </Border>

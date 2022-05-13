@@ -1,8 +1,9 @@
-﻿using Avalonia.Threading;
+﻿using Avalonia.Controls.Notifications;
+using Avalonia.Threading;
+using DesktopClient.Views;
 using ReactiveUI;
 using System;
-using DesktopClient.CustomControls.StepCircle;
-
+using System.Reactive;
 
 namespace DesktopClient.ViewModels
 {
@@ -11,7 +12,7 @@ namespace DesktopClient.ViewModels
         #region Properties
 
         private TimeSpan _examTimer = new(0, 0, 5);
-        
+
         public TimeSpan ExamTimer
         {
             get { return _examTimer; }
@@ -23,10 +24,14 @@ namespace DesktopClient.ViewModels
         public string? UrlPathSegment => "/WaitingRoom";
 
         private DispatcherTimer _timer { get; set; }
-        
+
         public IScreen HostScreen { get; }
 
         public StepManagerViewModel StepManager { get; }
+
+        public ReactiveCommand<Unit, Unit> Navigate { get; }
+
+        public IObservable<bool> Executing => Navigate.IsExecuting;
 
 
         public WaitingRoomViewModel(IScreen screen, StepManagerViewModel stepManager, MainWindowViewModel mainWindowp)
@@ -38,6 +43,19 @@ namespace DesktopClient.ViewModels
             _timer.Tick += Timer_Tick;
             _timer.Start();
             StepManager = stepManager;
+
+            Navigate = ReactiveCommand.CreateFromTask(async () =>
+            {
+                ExamRoomViewModel examRoomViewModel = new ExamRoomViewModel(HostScreen);
+                await examRoomViewModel.InitTask;
+                HostScreen.Router.Navigate.Execute(new ExamRoomViewModel(HostScreen));
+            });
+
+            // exception handeling
+            Navigate.ThrownExceptions.Subscribe(x =>
+                      MainWindow.WindowNotificationManager?.Show(new Avalonia.Controls.Notifications.Notification("Error",
+                      x.Message,
+                      NotificationType.Error)));
         }
 
         private void Timer_Tick(object? sender, EventArgs e)
@@ -46,9 +64,9 @@ namespace DesktopClient.ViewModels
             if (ExamTimer.TotalSeconds == 0)
             {
                 _timer.Stop();
-                HostScreen.Router.Navigate.Execute(new ExamRoomViewModel(HostScreen));
+                Navigate.Execute().Subscribe();
             }
-            
+
         }
     }
 }
