@@ -61,20 +61,63 @@ namespace DesktopClient.ViewModels
 
         public ReactiveCommand<Unit, Unit> MessagePopupCommand { get; }
 
+        public ReactiveCommand<Unit, Unit> RefreshCommand { get; }
+
         public Task InitTask { get; private set; }
+
+        public Exam ExamObject { get; private set; }
 
         public List<Models.Question> QuestionsList { get; private set; }
 
+        public IObservable<bool> Executing => RefreshCommand.IsExecuting;
+
+        Task LoadingControls()
+        {
+            return Task.Run(() => Init()).ContinueWith(t =>
+            {
+                Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    try
+                    {
+                        QuestionDecoder decoder = new QuestionDecoder();
+
+                        for (var i = 0; i < t.Result.Count; i++)
+                        {
+                            Exercise exercise = t.Result[i];
+
+                            StackPanel stackPanel = new StackPanel();
+
+                            foreach (var question in exercise.Questions)
+                            {
+                                Question questionControl = decoder.DecodeQuestion(question);
+                                stackPanel.Children.Add(questionControl);
+                            }
+
+                            CustomControls.Exercise exerciseControl = new CustomControls.Exercise
+                            {
+                                Title = exercise.Title,
+                                Description = exercise.Description,
+                                Questions = stackPanel
+                            };
+
+                            QuestionsStackPanel.Children.Add(exerciseControl);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        ExceptionNotifier.NotifyError(e.Message);
+                    }
+                });
+            });
+        }
+
         public ExamRoomViewModel(IScreen screen)
         {
-
-
             HostScreen = screen;
             QuestionsStackPanel = new StackPanel
             {
                 DataContext = this
             };
-
 
             var examNameTextBox = new TextBlock
             {
@@ -90,27 +133,8 @@ namespace DesktopClient.ViewModels
 
             QuestionsStackPanel.Children.Add(examNameTextBox);
 
-            // getting questions from a json file
+            InitTask = LoadingControls();
 
-            InitTask = Task.Run(() => Init()).ContinueWith(t =>
-            {
-                Dispatcher.UIThread.InvokeAsync(() =>
-                {
-                    try
-                    {
-                        for (var i = 0; i < t.Result.Count; i++)
-                        {
-                            var question = t.Result[i];
-                            QuestionDecoder decoder = new QuestionDecoder();
-                            QuestionsStackPanel.Children.Add(decoder.DecodeQuestion(question));
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        ExceptionNotifier.NotifyError(e.Message);
-                    }
-                });
-            });
             SubmitCommand = ReactiveCommand.CreateFromTask(async () =>
             {
                 var messageBox = MessageBoxManager.GetMessageBoxCustomWindow(new MessageBoxCustomParams
@@ -130,8 +154,8 @@ namespace DesktopClient.ViewModels
                 var result = await messageBox.Show();
                 if (result == "Yes")
                 {
-                    var messageBox2 = MessageBoxManager.GetMessageBoxStandardWindow("Submited", "You did it");
-                    await messageBox2.Show();
+                    QuestionDecoder decoder = new QuestionDecoder();
+                    decoder.GetAnswers(ExamObject, QuestionsStackPanel);
                 }
             });
 
@@ -203,17 +227,24 @@ namespace DesktopClient.ViewModels
                     Dispatcher.UIThread.MainLoop(new CancellationToken(true));
                 }
             });
+
+            RefreshCommand = ReactiveCommand.CreateFromTask(async () =>
+            {
+                QuestionsStackPanel.Children.Clear();
+                await LoadingControls();
+            });
         }
-        async Task<List<Models.Question>> Init()
+        async Task<List<Exercise>> Init()
         {
-            return await GetQuestions();
+            return await GetExercises();
         }
 
-        private async Task<List<Models.Question>> GetQuestions()
+        private async Task<List<Exercise>> GetExercises()
         {
             ExamService examService = new ExamService();
-            Exam exam = await examService.GetExamAsync("AAAAAA");
-            return exam.Questions;
+            ExamObject = await examService.GetExamAsync("AAAAAA");
+
+            return ExamObject.Exercises;
         }
     }
 }

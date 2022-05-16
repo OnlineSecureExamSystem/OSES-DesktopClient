@@ -27,10 +27,8 @@ namespace DesktopClient.ViewModels
         {
             HostScreen = screen;
 
-            Content = new WebView()
-            {
-                Address = @"C:\Users\rd07g\Desktop\OSES\desktop-avalonia-client\DesktopClient\Views\HtmlViews\RichTextBox.html"
-            };
+
+
 
             SubmitCommand = ReactiveCommand.CreateFromTask(async () =>
             {

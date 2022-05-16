@@ -152,13 +152,29 @@
                 ToolTip.Tip="Zoom In">
                 <i:Icon Value="fa-plus" />
             </Button>
-            <Button
+			<Button
+				Margin="0,0,5,0"
+                Classes="IconButton"
+                Command="{Binding RefreshCommand}"
+                ToolTip.ShowDelay="800"
+                ToolTip.Tip="Zoom Out">
+                <i:Icon Value="fa-sync" />
+            </Button>
+			<Button
                 Classes="IconButton"
                 Command="{Binding ZoomOutCommand}"
                 ToolTip.ShowDelay="800"
                 ToolTip.Tip="Zoom Out">
-                <i:Icon Value="fa-minus" />
-            </Button>
+				<i:Icon Value="fa-minus" />
+			</Button>
         </StackPanel>
+		<Border Background="Black" Opacity="0.5" IsVisible="{Binding Executing^}">
+			<ProgressRing
+                Width="100"
+                Height="100"
+                IsIndeterminate="true"
+                StrokeWidth="20"
+				ForegroundColor="Black"/>
+		</Border>
     </Panel>
 </UserControl>

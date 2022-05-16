@@ -4,9 +4,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 xmlns:cm="using:DesktopClient.CustomControls"
              x:Class="DesktopClient.Views.RichTextBoxView">
 	<Grid Background="{DynamicResource Background}">
-		<ContentPresenter Content="{Binding Content}"/>
-        <Button Content="Submit" HorizontalAlignment="Center" Command="{Binding SubmitCommand}"/>
+		<cm:Exercise  Title="hey" Description="Wow"/>
 	</Grid>
 </UserControl>

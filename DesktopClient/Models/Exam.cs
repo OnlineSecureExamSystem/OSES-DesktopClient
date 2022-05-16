@@ -9,6 +9,9 @@ namespace DesktopClient.Models
         public string? Name { get; set; }
         public string? ExamCode { get; set; }
         public TimeSpan Duration { get; set; }
-        public List<Question>? Questions { get; set; }
+        public string? Description { get; set; }
+        public List<Exercise>? Exercises { get; set; }
+
+
     }
 }

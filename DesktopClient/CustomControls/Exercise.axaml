@@ -1,0 +1,32 @@
+<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cm="using:DesktopClient.CustomControls">
+    <Design.PreviewWith>
+        <cm:Exercise  Title="Test" Description="Description" />
+    </Design.PreviewWith>
+
+    <Style Selector="cm|Exercise">
+        <!--  Set Defaults  -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <StackPanel Margin="15">
+                    <Line
+                        Margin="0,20,0,20"
+                        Stroke="Gray"
+                        StrokeThickness="3"
+                        StartPoint="0,0"
+						HorizontalAlignment="Center"
+                        EndPoint="1000, 0" />
+                    <TextBlock
+                        Margin="0,0,0,5"
+                        FontSize="18"
+                        FontWeight="Bold"
+                        Text="{TemplateBinding Title}" />
+                    <TextBlock Text="{TemplateBinding Description}" />
+                    <ContentPresenter Margin="10,10,0,0" Content="{TemplateBinding Questions}" />
+                </StackPanel>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

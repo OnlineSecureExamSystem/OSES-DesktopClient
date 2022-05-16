@@ -11,9 +11,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border
-                    Margin="30"
-                    Background="{DynamicResource Background}"
-                    BoxShadow="0 0 9 0 Gray"
+                    Margin="15"
                     CornerRadius="4">
                     <StackPanel>
 						<ContentPresenter Content="{TemplateBinding Description}" />
