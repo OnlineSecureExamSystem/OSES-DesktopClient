@@ -58,9 +58,9 @@ public class QuestionDecoder
                         VerticalAlignment = VerticalAlignment.Center,
                         HorizontalAlignment = HorizontalAlignment.Stretch,
                         MinHeight = 80,
-                        Address = @"C:\Users\rd07g\Desktop\OSES\desktop-avalonia-client\DesktopClient\Views\HtmlViews\RichTextBox.html"
+                        Address = @"C:\Users\rd07g\Desktop\OSES\desktop-avalonia-client\DesktopClient\Views\HtmlViews\EmptyHtml.html"
                     };
-
+                    content.ExecuteScript("document.body.innerHTML = '" + description.Content + "';");
                     control.Children.Add(label);
                     control.Children.Add(content);
 
@@ -268,13 +268,8 @@ public class QuestionDecoder
 
                     return stackPanel;
                 }
-            // script
-            case 7:
-                {
-                    return new TextBlock { Text = "Script" };
-                }
             // rich box
-            case 8:
+            case 7:
                 {
                     WebView webView = new WebView()
                     {
@@ -282,10 +277,16 @@ public class QuestionDecoder
                         VerticalAlignment = VerticalAlignment.Center,
                         HorizontalAlignment = HorizontalAlignment.Stretch,
                         MinHeight = 150
-                        ,
+                       ,
                         Address = @"C:\Users\rd07g\Desktop\OSES\desktop-avalonia-client\DesktopClient\Views\HtmlViews\RichTextBox.html"
                     };
                     return webView;
+                }
+            // script
+            case 8:
+                {
+                    return new TextBlock { Text = "Script" };
+
                 }
             // diagram
             case 9:
@@ -304,6 +305,7 @@ public class QuestionDecoder
         {
             q.Description = DecodeDescription(question.Description);
             q.Answer = DecodeAnswer(question.Answer);
+            q.QuestionType = question.Answer.Type;
         }
         catch (Exception e)
         {
@@ -315,19 +317,28 @@ public class QuestionDecoder
 
     public async Task<Exam> GetAnswers(Exam exam, StackPanel questionsPanel)
     {
-        foreach (var item in exam.Exercises)
+        List<CustomControls.Exercise> exercisesControls = new List<CustomControls.Exercise>();
+        for (int i = 1; i < questionsPanel.Children.Count; i++)
         {
-            int[] questionTypes = new int[item.Questions.Count];
+            exercisesControls.Add(questionsPanel.Children[i] as CustomControls.Exercise);
+        }
 
-            for (int i = 0; i < item.Questions.Count; i++)
-            {
-                questionTypes[i] = item.Questions[i].Answer.Type;
-            }
-            for (int i = 1; i < questionsPanel.Children.Count; i++)
-            {
-                CustomControls.Question? question = questionsPanel.Children[i] as CustomControls.Question;
+        for (int i1 = 0; i1 < exercisesControls.Count; i1++)
+        {
 
-                switch (questionTypes[i - 1])
+            Panel? exercise = exercisesControls[i1].Questions as Panel;
+
+            int foreachIndex = 0;
+            foreach (var item in exercise.Children)
+            {
+
+                if (item is TextBlock)
+                {
+                    continue;
+                }
+                CustomControls.Question? question = exercise.Children[foreachIndex] as CustomControls.Question;
+
+                switch (question.QuestionType)
                 {
                     // multiple choice
                     case 1:
@@ -338,7 +349,7 @@ public class QuestionDecoder
                                 var item1 = grid.Children[j];
                                 if (item1 is CheckBox checkBox)
                                 {
-                                    item.Questions[i - 1].Answer.Content[j].IsChecked = checkBox.IsChecked;
+                                    exam.Exercises[i1].Questions[foreachIndex].Answer.Content[j].IsChecked = checkBox.IsChecked;
                                 }
                             }
 
@@ -353,7 +364,7 @@ public class QuestionDecoder
                                 var item1 = grid.Children[j];
                                 if (item1 is RadioButton radioButton)
                                 {
-                                    item.Questions[i - 1].Answer.Content[j].IsChecked = radioButton.IsChecked;
+                                    exam.Exercises[i1].Questions[foreachIndex].Answer.Content[j].IsChecked = radioButton.IsChecked;
                                 }
                             }
                         }
@@ -375,15 +386,15 @@ public class QuestionDecoder
                                             RadioButton? radioButton1 = grid.Children[j + 1] as RadioButton;
                                             if (radioButton.IsChecked == true)
                                             {
-                                                item.Questions[i - 1].Answer.Content[m].IsChecked = true;
+                                                exam.Exercises[i1].Questions[foreachIndex].Answer.Content[m].IsChecked = true;
                                             }
                                             else if (radioButton1.IsChecked == true)
                                             {
-                                                item.Questions[i - 1].Answer.Content[m].IsChecked = false;
+                                                exam.Exercises[i1].Questions[foreachIndex].Answer.Content[m].IsChecked = false;
                                             }
                                             else
                                             {
-                                                item.Questions[i - 1].Answer.Content[m].IsChecked = null;
+                                                exam.Exercises[i1].Questions[foreachIndex].Answer.Content[m].IsChecked = null;
                                             }
                                             j++;
                                         }
@@ -400,7 +411,7 @@ public class QuestionDecoder
                             List<AnswerItem> answer = new List<AnswerItem>();
                             AnswerItem answerItem = new AnswerItem() { Content = textBox.Text };
                             answer.Add(answerItem);
-                            item.Questions[i - 1].Answer.Content = answer;
+                            exam.Exercises[i1].Questions[foreachIndex].Answer.Content = answer;
                         }
                         break;
                     // fill in the blanks
@@ -411,25 +422,25 @@ public class QuestionDecoder
                             for (int j = 0; j < stackpanel.Children.Count; j++)
                             {
                                 TextBox? item1 = stackpanel.Children[j] as TextBox;
-                                item.Questions[i - 1].Answer.Content[j].Content = item1.Text;
+                                exam.Exercises[i1].Questions[foreachIndex].Answer.Content[j].Content = item1.Text;
                             }
                         }
                         break;
-                    // script
+                    // rich box 
                     case 7:
-                        {
-
-                        }
-                        break;
-                    // rich box
-                    case 8:
                         {
                             WebView? webView = question.Answer as WebView;
                             string? data = await webView.EvaluateScriptFunction<string>("submit");
                             List<AnswerItem> answer = new List<AnswerItem>();
                             AnswerItem answerItem = new AnswerItem() { Content = data };
                             answer.Add(answerItem);
-                            item.Questions[i - 1].Answer.Content = answer;
+                            exam.Exercises[i1].Questions[foreachIndex].Answer.Content = answer;
+                        }
+                        break;
+                    // script
+                    case 8:
+                        {
+
                         }
                         break;
                     // diagram
@@ -439,14 +450,12 @@ public class QuestionDecoder
                         }
                         break;
                     default:
-                        ExceptionNotifier.NotifyError($"Couldnt get the answer number : {i - 1}");
+                        ExceptionNotifier.NotifyError($"Couldnt get the answer number : {foreachIndex - 1}");
                         break;
                 }
+                foreachIndex++;
             }
-
         }
-
-
         return exam;
     }
 }

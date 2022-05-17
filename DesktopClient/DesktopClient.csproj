@@ -21,12 +21,14 @@
     <AvaloniaResource Remove="Assets\WaitingDog.gif" />
     <None Remove=".gitignore" />
     <None Remove="Assets\FaceArea.png" />
+    <None Remove="Views\HtmlViews\EmptyHtml.html" />
     <None Update="Models\ExperimentalData\Question.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\WaitingDog.gif" />
+    <AvaloniaResource Include="Views\HtmlViews\EmptyHtml.html" />
     <AvaloniaResource Include="Views\HtmlViews\RichTextBox.html" />
   </ItemGroup>
   <ItemGroup>

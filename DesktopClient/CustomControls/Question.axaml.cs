@@ -5,6 +5,8 @@ namespace DesktopClient.CustomControls;
 
 public class Question : TemplatedControl
 {
+    public int QuestionType { get; set; }
+
     public static readonly StyledProperty<object> DescriptionProperty = AvaloniaProperty.Register<Question, object>("Description");
 
     public object Description

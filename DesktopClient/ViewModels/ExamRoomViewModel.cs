@@ -75,7 +75,7 @@ namespace DesktopClient.ViewModels
         {
             return Task.Run(() => Init()).ContinueWith(t =>
             {
-                Dispatcher.UIThread.InvokeAsync(() =>
+                Dispatcher.UIThread.InvokeAsync(async () =>
                 {
                     try
                     {
