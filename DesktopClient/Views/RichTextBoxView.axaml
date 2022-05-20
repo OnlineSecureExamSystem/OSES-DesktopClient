@@ -7,6 +7,6 @@
 			 xmlns:cm="using:DesktopClient.CustomControls"
              x:Class="DesktopClient.Views.RichTextBoxView">
 	<Grid Background="{DynamicResource Background}">
-		<cm:Exercise  Title="hey" Description="Wow"/>
+		<ContentPresenter Content="{Binding Content}"/>
 	</Grid>
 </UserControl>

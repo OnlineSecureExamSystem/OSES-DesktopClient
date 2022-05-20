@@ -9,7 +9,8 @@ namespace DesktopClient.ViewModels
         public MainWindowViewModel()
         {
             Router = new RoutingState();
-            Router.Navigate.Execute(new SystemRequirmentsViewModel(this, new StepManagerViewModel(this), this));
+            //Router.Navigate.Execute(new RichTextBoxViewModel(this));
+            Router.Navigate.Execute(new WaitingRoomViewModel(this, new StepManagerViewModel(this), this));
         }
     }
 }

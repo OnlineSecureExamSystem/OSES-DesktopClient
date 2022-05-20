@@ -1,4 +1,6 @@
-﻿using ReactiveUI;
+﻿using Avalonia;
+using Avalonia.Layout;
+using ReactiveUI;
 using System.Reactive;
 using WebViewControl;
 
@@ -28,7 +30,14 @@ namespace DesktopClient.ViewModels
             HostScreen = screen;
 
 
-
+            Content = new WebView()
+            {
+                Margin = new Thickness(5, 5, 5, 5),
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                MinHeight = 80,
+                Address = System.AppDomain.CurrentDomain.BaseDirectory + "Assets/HtmlViews/RichTextBox.html"
+            };
 
             SubmitCommand = ReactiveCommand.CreateFromTask(async () =>
             {

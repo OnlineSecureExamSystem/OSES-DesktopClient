@@ -58,7 +58,7 @@ public class QuestionDecoder
                         VerticalAlignment = VerticalAlignment.Center,
                         HorizontalAlignment = HorizontalAlignment.Stretch,
                         MinHeight = 80,
-                        Address = @"C:\Users\rd07g\Desktop\OSES\desktop-avalonia-client\DesktopClient\Views\HtmlViews\EmptyHtml.html"
+                        Address = System.AppDomain.CurrentDomain.BaseDirectory + "Assets/HtmlViews/EmptyHtml.html"
                     };
                     content.ExecuteScript("document.body.innerHTML = '" + description.Content + "';");
                     control.Children.Add(label);
@@ -278,7 +278,7 @@ public class QuestionDecoder
                         HorizontalAlignment = HorizontalAlignment.Stretch,
                         MinHeight = 150
                        ,
-                        Address = @"C:\Users\rd07g\Desktop\OSES\desktop-avalonia-client\DesktopClient\Views\HtmlViews\RichTextBox.html"
+                        Address = System.AppDomain.CurrentDomain.BaseDirectory + "Assets/HtmlViews/RichTextBox.html"
                     };
                     return webView;
                 }

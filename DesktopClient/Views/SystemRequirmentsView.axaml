@@ -148,6 +148,15 @@
                             FontSize="16"
                             Foreground="Green"
                             Value="fa-check" />
+                        <Button Command="{Binding PlayAudio}" Padding="10 4" Margin="20,0,0,10" Classes="IconButton">
+							<StackPanel>
+								<i:Icon
+							  HorizontalAlignment="Center"
+							  VerticalAlignment="Center"
+							  Value="fa-play" />
+								<TextBlock FontSize="12" FontWeight="Bold" Text="Play"/>
+							</StackPanel>
+                        </Button>
                     </StackPanel>
                 </StackPanel>
                 <lvc:PieChart

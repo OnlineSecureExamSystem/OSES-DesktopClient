@@ -18,18 +18,15 @@
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
+    <AvaloniaResource Remove="Assets\EmptyHtml.html" />
+	<AvaloniaResource Remove="Assets\HtmlViews\EmptyHtml.html" />
+    <AvaloniaResource Remove="Assets\HtmlViews\RichTextBox.html" />
+    <AvaloniaResource Remove="Assets\RichTextBox.html" />
+    <AvaloniaResource Remove="Assets\sound.mp3" />
     <AvaloniaResource Remove="Assets\WaitingDog.gif" />
-    <None Remove=".gitignore" />
-    <None Remove="Assets\FaceArea.png" />
-    <None Remove="Views\HtmlViews\EmptyHtml.html" />
-    <None Update="Models\ExperimentalData\Question.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\WaitingDog.gif" />
-    <AvaloniaResource Include="Views\HtmlViews\EmptyHtml.html" />
-    <AvaloniaResource Include="Views\HtmlViews\RichTextBox.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Libraries\AvaloniaGif\AvaloniaGif.csproj" />
@@ -61,6 +58,22 @@
 	<PackageReference Include="SpeedTest.NetCore" Version="2.1.0" />
 	<PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
 	<PackageReference Include="WebViewControl-Avalonia" Version="2.91.23" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\sound.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Assets\sound.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\HtmlViews\EmptyHtml.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\HtmlViews\RichTextBox.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <AvaloniaXaml Update="Styles\NotificationCard.axaml">
