@@ -84,7 +84,6 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                        <!--  ReSharper disable once Xaml.InvalidResourceType  -->
                         <ProgressRing
                             Width="30"
                             Height="30"
@@ -103,7 +102,7 @@
                     <StackPanel Orientation="Horizontal">
                         <ComboBox
                             Width="250"
-                            Margin="0,5,0,15"
+                            Margin="0,5,0,0"
                             HorizontalContentAlignment="Left"
                             Items="{Binding InputDevices}"
                             SelectedIndex="0">
@@ -122,6 +121,7 @@
                             Foreground="Green"
                             Value="fa-check" />
                     </StackPanel>
+					<ProgressBar Value="{Binding MicrophoneLevel}" HorizontalAlignment="Left" Width="250" Margin="0 1 0 15" />
                     <TextBlock FontWeight="SemiBold" Text="Audio output" />
                     <StackPanel Orientation="Horizontal">
                         <ComboBox

@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
 using Avalonia.Markup.Xaml;
+using DesktopClient.Helpers;
 using System;
 
 namespace DesktopClient.Views
@@ -29,7 +30,7 @@ namespace DesktopClient.Views
         public void Loaded(object sender, EventArgs e)
         {
             IntPtr handle = PlatformImpl.Handle.Handle;
-            //WindowShield.SetWindowDisplayAffinity(handle, WindowShield.WDA_EXCLUDEFROMCAPTURE);
+            WindowShield.SetWindowDisplayAffinity(handle, WindowShield.WDA_EXCLUDEFROMCAPTURE);
         }
     }
 }

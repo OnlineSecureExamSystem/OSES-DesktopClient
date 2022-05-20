@@ -11,7 +11,7 @@ namespace DesktopClient.ViewModels
     {
         #region Properties
 
-        private TimeSpan _examTimer = new(0, 0, 1);
+        private TimeSpan _examTimer = new(0, 0, 5);
 
         public TimeSpan ExamTimer
         {

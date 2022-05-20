@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cm="using:DesktopClient.CustomControls">
     <Design.PreviewWith>
-        <cm:Exercise  Title="Test" Description="Description" />
+        <cm:Exercise Title="Test" Description="Description" />
     </Design.PreviewWith>
 
     <Style Selector="cm|Exercise">
@@ -11,13 +11,12 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <StackPanel Margin="15">
-                    <Line
-                        Margin="0,20,0,20"
-                        Stroke="Gray"
-                        StrokeThickness="3"
-                        StartPoint="0,0"
-						HorizontalAlignment="Center"
-                        EndPoint="1000, 0" />
+
+                    <Rectangle
+                        Height="2"
+                        Margin="20"
+                        HorizontalAlignment="Stretch"
+                        Fill="Gray" />
                     <TextBlock
                         Margin="0,0,0,5"
                         FontSize="18"

@@ -11,7 +11,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Border
-                    Margin="15"
+                    Margin="10"
                     CornerRadius="4">
                     <StackPanel>
 						<ContentPresenter Content="{TemplateBinding Description}" />

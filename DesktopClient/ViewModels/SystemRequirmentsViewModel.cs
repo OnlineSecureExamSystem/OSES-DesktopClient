@@ -1,22 +1,22 @@
-﻿using LiveChartsCore;
-using LiveChartsCore.Defaults; 
+﻿using Avalonia.Controls.Notifications;
+using Avalonia.Media.Imaging;
+using Avalonia.Threading;
+using DesktopClient.CustomControls.StepCircle;
+using DesktopClient.Helpers;
+using DesktopClient.Views;
+using LiveChartsCore;
+using LiveChartsCore.Defaults;
 using LiveChartsCore.Kernel;
 using LiveChartsCore.Measure;
 using LiveChartsCore.SkiaSharpView;
+using ManagedBass;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Reactive;
-using ManagedBass;
-using static DesktopClient.Helpers.SpeedTest;
-using static DesktopClient.Helpers.DevicesScanner;
-using DesktopClient.Helpers;
-using Avalonia.Threading;
-using Avalonia.Media.Imaging;
 using System.Threading.Tasks;
-using DesktopClient.CustomControls.StepCircle;
-using DesktopClient.Views;
-using Avalonia.Controls.Notifications;
+using static DesktopClient.Helpers.DevicesScanner;
+using static DesktopClient.Helpers.SpeedTest;
 
 namespace DesktopClient.ViewModels
 {
@@ -24,7 +24,7 @@ namespace DesktopClient.ViewModels
     {
 
         #region Properties
-        private ObservableValue _internetSpeed ;
+        private ObservableValue _internetSpeed;
 
         public ObservableValue InternetSpeed
         {
@@ -63,8 +63,16 @@ namespace DesktopClient.ViewModels
             get { return _cameraBitmap; }
             set { this.RaiseAndSetIfChanged(ref _cameraBitmap, value); }
         }
+
+        private int _microphoneLevel;
+
+        public int MicrophoneLevel
+        {
+            get { return _microphoneLevel; }
+            set { this.RaiseAndSetIfChanged(ref _microphoneLevel, value); }
+        }
         #endregion
-        
+
         public Task InitTask { get; private set; }
 
         public string? UrlPathSegment => "/SystemRequirments";
@@ -74,7 +82,7 @@ namespace DesktopClient.ViewModels
         IEnumerable<ISeries> ChartBuilder { get; set; }
 
         public ReactiveCommand<Unit, Unit> SpeedTestCommand { get; }
-        
+
         public ReactiveCommand<Unit, Unit> NextCommand { get; }
 
         public ReactiveCommand<Unit, Unit> NavigateBack { get; }
@@ -82,12 +90,13 @@ namespace DesktopClient.ViewModels
         public CameraHelper Camera { get; private set; }
 
         public IObservable<bool> isSpeedTestRunning => SpeedTestCommand.IsExecuting;
-        
+
         Func<ChartPoint, string> SpeedFormatter = (x) => Math.Truncate(x.PrimaryValue * 100) / 100 + "Mbs/s";
 
         public StepManagerViewModel StepManager { get; }
 
         public MainWindowViewModel MainWindowp { get; }
+
 
         public SystemRequirmentsViewModel(IScreen screen, StepManagerViewModel stepManager, MainWindowViewModel mainWindow)
         {
@@ -113,6 +122,8 @@ namespace DesktopClient.ViewModels
             {
                 HostScreen.Router.NavigateBack.Execute();
             });
+
+            setMicrophoneLevelBinding();
         }
 
         private async Task<Unit> InternetSpeedTest()
@@ -152,6 +163,27 @@ namespace DesktopClient.ViewModels
             }.AddValue(InternetSpeed, "Internet Speed").BuildSeries();
         }
 
+        void setMicrophoneLevelBinding()
+        {
+            var device = Bass.CurrentRecordingDevice;
+            Bass.RecordInit(device);
+            int channel = Bass.RecordStart(44100, 1, BassFlags.Default, CallBack);
+        }
+
+        bool CallBack(int Handle, IntPtr Buffer, int Length, IntPtr User)
+        {
+            var levels = new float[1];
+            Bass.ChannelGetLevel(Handle, levels, 0.02f, 0);
+            var channelLevel = levels[0] * 40;
+
+            Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                MicrophoneLevel = Math.Abs((int)channelLevel * 2);
+            });
+
+            return true;
+        }
+
         async void initCameraPreview()
         {
             // check format.
@@ -164,7 +196,7 @@ namespace DesktopClient.ViewModels
             // Immediately after starting the USB camera,
             // GetBitmap() fails because image buffer is not prepared yet.
             var bmp = Camera.GetBitmap();
-            
+
             //// show image in PictureBox.
             var timer = new System.Timers.Timer(100);
             timer.Elapsed += (s, ev) =>
