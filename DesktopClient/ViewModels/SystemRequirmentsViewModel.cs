@@ -71,6 +71,27 @@ namespace DesktopClient.ViewModels
             get { return _microphoneLevel; }
             set { this.RaiseAndSetIfChanged(ref _microphoneLevel, value); }
         }
+
+        private int _outputSelectedIndex = 0;
+
+        public int OutputSelectedIndex
+        {
+            get { return _outputSelectedIndex; }
+            set { this.RaiseAndSetIfChanged(ref _outputSelectedIndex, value); }
+        }
+
+        private int _inputSelectedIndex = 0;
+
+        public int InputSelectedIndex
+        {
+            get { return _inputSelectedIndex; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _inputSelectedIndex, value);
+                Bass.RecordFree();
+                setMicrophoneLevelBinding();
+            }
+        }
         #endregion
 
         public Task InitTask { get; private set; }
@@ -165,7 +186,7 @@ namespace DesktopClient.ViewModels
 
         void setMicrophoneLevelBinding()
         {
-            var device = Bass.CurrentRecordingDevice;
+            var device = InputSelectedIndex;
             Bass.RecordInit(device);
             int channel = Bass.RecordStart(44100, 1, BassFlags.Default, CallBack);
         }
