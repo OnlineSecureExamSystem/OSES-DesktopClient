@@ -1,26 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls.Notifications;
-using Avalonia.Media.Imaging;
-using Avalonia.Platform;
-using Avalonia.Threading;
-using DesktopClient.CustomControls.StepCircle;
-using DesktopClient.Helpers;
-using DesktopClient.Views;
-using LiveChartsCore;
-using LiveChartsCore.Defaults;
-using LiveChartsCore.Kernel;
-using LiveChartsCore.Measure;
-using LiveChartsCore.SkiaSharpView;
-using ManagedBass;
-using ReactiveUI;
-using System;
-using System.Collections.Generic;
-using System.Reactive;
-using System.Threading.Tasks;
-using static DesktopClient.Helpers.DevicesScanner;
-using static DesktopClient.Helpers.SpeedTest;
-
-namespace DesktopClient.ViewModels
+﻿namespace DesktopClient.ViewModels
 {
     public class SystemRequirmentsViewModel : ViewModelBase, IRoutableViewModel
     {
