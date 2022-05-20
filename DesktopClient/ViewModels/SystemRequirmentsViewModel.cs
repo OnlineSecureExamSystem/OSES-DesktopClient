@@ -72,7 +72,7 @@ namespace DesktopClient.ViewModels
             set { this.RaiseAndSetIfChanged(ref _microphoneLevel, value); }
         }
 
-        private int _outputSelectedIndex = 0;
+        private int _outputSelectedIndex = 1;
 
         public int OutputSelectedIndex
         {
@@ -108,6 +108,8 @@ namespace DesktopClient.ViewModels
 
         public ReactiveCommand<Unit, Unit> NavigateBack { get; }
 
+        public ReactiveCommand<Unit, Unit> PlayAudio { get; }
+
         public CameraHelper Camera { get; private set; }
 
         public IObservable<bool> isSpeedTestRunning => SpeedTestCommand.IsExecuting;
@@ -142,6 +144,30 @@ namespace DesktopClient.ViewModels
             NavigateBack = ReactiveCommand.Create(() =>
             {
                 HostScreen.Router.NavigateBack.Execute();
+            });
+
+            PlayAudio = ReactiveCommand.Create(() =>
+            {
+                Bass.Free();
+                var device = OutputSelectedIndex;
+                string file = @"C:\Users\rd07g\Desktop\OSES\desktop-avalonia-client\DesktopClient\Assets\sound.mp3";
+                var result = Bass.Init(device);
+                if (!result)
+                {
+                    ExceptionNotifier.NotifyError(Bass.LastError.ToString());
+                    return;
+                }
+                int loaded = Bass.CreateStream(file, 0L, 0L, BassFlags.Default);
+                if (loaded == 0)
+                {
+                    ExceptionNotifier.NotifyError(Bass.LastError.ToString());
+                    return;
+                }
+                bool r = Bass.ChannelPlay(loaded, true);
+                if (!r)
+                {
+                    ExceptionNotifier.NotifyError(Bass.LastError.ToString());
+                }
             });
 
             setMicrophoneLevelBinding();

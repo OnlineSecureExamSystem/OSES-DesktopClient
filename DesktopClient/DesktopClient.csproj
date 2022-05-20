@@ -21,6 +21,7 @@
     <AvaloniaResource Remove="Assets\WaitingDog.gif" />
     <None Remove=".gitignore" />
     <None Remove="Assets\FaceArea.png" />
+    <None Remove="Assets\sound.mp3" />
     <None Remove="Views\HtmlViews\EmptyHtml.html" />
     <None Update="Models\ExperimentalData\Question.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
