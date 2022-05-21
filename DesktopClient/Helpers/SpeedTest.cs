@@ -9,6 +9,7 @@ namespace DesktopClient.Helpers
         public async static Task<double> getInternetSpeed()
         {
             var speed = await FastClient.GetDownloadSpeed(SpeedTestUnit.MegaBytesPerSecond);
+
             return speed.Speed * 8;
         }
     }

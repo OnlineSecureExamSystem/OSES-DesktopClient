@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls.Notifications;
 using DesktopClient.Views;
+using System;
 
 namespace DesktopClient.Helpers
 {
@@ -18,6 +19,14 @@ namespace DesktopClient.Helpers
                                               message,
                                               NotificationType.Warning));
         }
+
+        public static void NotifyWarningClick(string message, Action onCLick)
+        {
+            MainWindow.WindowNotificationManager.Show(new Notification("Warning",
+                                              message,
+                                              NotificationType.Warning, onClick: onCLick));
+        }
+
 
         public static void NotifyInfo(string message)
         {

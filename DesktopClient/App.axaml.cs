@@ -1,8 +1,6 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using DesktopClient.ViewModels;
-using DesktopClient.Views;
 
 namespace DesktopClient
 {
@@ -17,10 +15,10 @@ namespace DesktopClient
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow
-                {
-                    DataContext = new MainWindowViewModel(),
-                };
+                //desktop.MainWindow = new MainWindow
+                //{
+                //    DataContext = new MainWindowViewModel(),
+                //};
             }
 
             base.OnFrameworkInitializationCompleted();

@@ -15,6 +15,7 @@
 	<TrimMode>copyused</TrimMode>
 	<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
@@ -53,8 +54,8 @@
 	<PackageReference Include="ManagedBass" Version="3.1.0" />
 	<PackageReference Include="ManagedBass.Wasapi" Version="3.1.0" />
 	<PackageReference Include="MessageBox.Avalonia" Version="2.0.0" />
-	<PackageReference Include="Projektanker.Icons.Avalonia" Version="4.2.1" />
-	<PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="4.2.1" />
+	<PackageReference Include="Projektanker.Icons.Avalonia" Version="4.4.0" />
+	<PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="4.4.0" />
 	<PackageReference Include="SpeedTest.NetCore" Version="2.1.0" />
 	<PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
 	<PackageReference Include="WebViewControl-Avalonia" Version="2.91.23" />

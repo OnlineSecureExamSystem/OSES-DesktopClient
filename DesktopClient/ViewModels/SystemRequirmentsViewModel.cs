@@ -1,4 +1,24 @@
-﻿namespace DesktopClient.ViewModels
+﻿using Avalonia.Controls.Notifications;
+using Avalonia.Media.Imaging;
+using Avalonia.Threading;
+using DesktopClient.CustomControls.StepCircle;
+using DesktopClient.Helpers;
+using DesktopClient.Views;
+using LiveChartsCore;
+using LiveChartsCore.Defaults;
+using LiveChartsCore.Kernel;
+using LiveChartsCore.Measure;
+using LiveChartsCore.SkiaSharpView;
+using ManagedBass;
+using ReactiveUI;
+using System;
+using System.Collections.Generic;
+using System.Reactive;
+using System.Threading.Tasks;
+using static DesktopClient.Helpers.DevicesScanner;
+using static DesktopClient.Helpers.SpeedTest;
+
+namespace DesktopClient.ViewModels
 {
     public class SystemRequirmentsViewModel : ViewModelBase, IRoutableViewModel
     {
@@ -100,7 +120,6 @@
 
         public MainWindowViewModel MainWindowp { get; }
 
-
         public SystemRequirmentsViewModel(IScreen screen, StepManagerViewModel stepManager, MainWindowViewModel mainWindow)
         {
             HostScreen = screen;
@@ -117,7 +136,7 @@
                 StepManager.SystemCheckCtrl = new Done();
                 StepManager.InfoCheckCtrl = new Running();
                 HostScreen.Router.Navigate.Execute(new InformationCheckViewModel(HostScreen, Camera, StepManager, MainWindowp));
-            });
+            }, canNext);
 
             SpeedTestCommand = ReactiveCommand.CreateFromTask(InternetSpeedTest);
 
@@ -129,8 +148,6 @@
             PlayAudio = ReactiveCommand.Create(() =>
             {
                 Bass.Free();
-                var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-                //bool k = assets.Exists(new Uri("sound.mp3"));
                 var device = OutputSelectedIndex;
 
                 string file = "Assets/sound.mp3";
@@ -156,6 +173,49 @@
             setMicrophoneLevelBinding();
         }
 
+        void setMicrophoneLevelBinding()
+        {
+            var device = InputSelectedIndex;
+            Bass.RecordInit(device);
+            int channel = Bass.RecordStart(44100, 1, BassFlags.Default, InputRecordCallBack);
+        }
+
+        bool InputRecordCallBack(int Handle, IntPtr Buffer, int Length, IntPtr User)
+        {
+            var levels = new float[1];
+            Bass.ChannelGetLevel(Handle, levels, 0.02f, 0);
+            var channelLevel = levels[0] * 40;
+
+            Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                MicrophoneLevel = Math.Abs((int)channelLevel * 2);
+            });
+
+            return true;
+        }
+
+        async void initCameraPreview()
+        {
+            int cameraIndex = 0;
+            CameraHelper.VideoFormat[] formats = CameraHelper.GetVideoFormat(cameraIndex);
+            Camera = new CameraHelper(cameraIndex, formats[0]);
+            
+            await Task.Run(() => Camera.Start());
+            
+            var bmp = Camera.GetBitmap();
+            var timer = new System.Timers.Timer(100);
+            
+            timer.Elapsed += (s, ev) =>
+            {
+                Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    CameraBitmap = Camera.GetBitmap();
+                });
+            };
+            
+            timer.Start();
+        }
+        
         private async Task<Unit> InternetSpeedTest()
         {
             try
@@ -163,7 +223,7 @@
                 InternetSpeed.Value = await getInternetSpeed();
                 return Unit.Default;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 MainWindow.WindowNotificationManager?.Show(new Avalonia.Controls.Notifications.Notification("Error",
                   "There is no internet connection, try again later",
@@ -191,52 +251,6 @@
                 LabelsPosition = PolarLabelsPosition.ChartCenter,
                 LabelsSize = 25,
             }.AddValue(InternetSpeed, "Internet Speed").BuildSeries();
-        }
-
-        void setMicrophoneLevelBinding()
-        {
-            var device = InputSelectedIndex;
-            Bass.RecordInit(device);
-            int channel = Bass.RecordStart(44100, 1, BassFlags.Default, CallBack);
-        }
-
-        bool CallBack(int Handle, IntPtr Buffer, int Length, IntPtr User)
-        {
-            var levels = new float[1];
-            Bass.ChannelGetLevel(Handle, levels, 0.02f, 0);
-            var channelLevel = levels[0] * 40;
-
-            Dispatcher.UIThread.InvokeAsync(() =>
-            {
-                MicrophoneLevel = Math.Abs((int)channelLevel * 2);
-            });
-
-            return true;
-        }
-
-        async void initCameraPreview()
-        {
-            // check format.
-            int cameraIndex = 0;
-            CameraHelper.VideoFormat[] formats = CameraHelper.GetVideoFormat(cameraIndex);
-            // create usb camera and start.
-            Camera = new CameraHelper(cameraIndex, formats[0]);
-            await Task.Run(() => Camera.Start());
-            // get image.
-            // Immediately after starting the USB camera,
-            // GetBitmap() fails because image buffer is not prepared yet.
-            var bmp = Camera.GetBitmap();
-
-            //// show image in PictureBox.
-            var timer = new System.Timers.Timer(100);
-            timer.Elapsed += (s, ev) =>
-            {
-                Dispatcher.UIThread.InvokeAsync(() =>
-                {
-                    CameraBitmap = Camera.GetBitmap();
-                });
-            };
-            timer.Start();
         }
     }
 }

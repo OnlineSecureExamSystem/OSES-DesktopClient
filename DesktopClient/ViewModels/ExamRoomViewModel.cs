@@ -41,6 +41,7 @@ namespace DesktopClient.ViewModels
             set => this.RaiseAndSetIfChanged(ref _questions, value);
         }
 
+
         #endregion
 
         public string? UrlPathSegment => "/ExamRoom";
@@ -70,6 +71,10 @@ namespace DesktopClient.ViewModels
         public List<Models.Question> QuestionsList { get; private set; }
 
         public IObservable<bool> Executing => RefreshCommand.IsExecuting;
+
+        bool IsMessageBoxOpen => SystemMonitor.IsMessageBoxOpen;
+
+
 
         Task LoadingControls()
         {
@@ -113,6 +118,7 @@ namespace DesktopClient.ViewModels
 
         public ExamRoomViewModel(IScreen screen)
         {
+            SystemMonitor.IsInExamRoom = true;
             HostScreen = screen;
             QuestionsStackPanel = new StackPanel
             {
