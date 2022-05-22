@@ -56,6 +56,8 @@ namespace DesktopClient.ViewModels
                       MainWindow.WindowNotificationManager?.Show(new Avalonia.Controls.Notifications.Notification("Error",
                       x.Message,
                       NotificationType.Error)));
+
+
         }
 
         private void Timer_Tick(object? sender, EventArgs e)

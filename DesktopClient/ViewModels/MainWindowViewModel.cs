@@ -7,16 +7,17 @@ namespace DesktopClient.ViewModels
     {
         public RoutingState Router { get; }
 
+        public SystemMonitor Monitor { get; private set; }
+
         public MainWindowViewModel()
         {
             Router = new RoutingState();
             //Router.Navigate.Execute(new StepManagerViewModel(this));
             Router.Navigate.Execute(new WaitingRoomViewModel(this, new StepManagerViewModel(this), this));
 
-            SystemMonitor systemMonitor = new SystemMonitor();
-            if (systemMonitor.IsMonitoring)
-                return;
-            systemMonitor.StartMonitoring();
+            Monitor = new SystemMonitor();
+
+            Monitor.StartMonitoring();
         }
     }
 }

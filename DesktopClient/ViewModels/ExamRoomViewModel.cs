@@ -22,7 +22,31 @@ namespace DesktopClient.ViewModels
 {
     public class ExamRoomViewModel : ViewModelBase, IRoutableViewModel
     {
+
+        private Border _border = new Border()
+        {
+            Background = Brushes.Black,
+            IsVisible = false,
+            Opacity = 0.5,
+            ZIndex = 500
+        };
+
+        private readonly DispatcherTimer _timer;
+
+        public Border Border
+        {
+            get => _border;
+            set => this.RaiseAndSetIfChanged(ref _border, value);
+        }
         #region Properties
+
+        private TimeSpan _examTimer = new(1, 30, 0);
+
+        public TimeSpan ExamTimer
+        {
+            get { return _examTimer; }
+            set { this.RaiseAndSetIfChanged(ref _examTimer, value); }
+        }
 
         private StackPanel _questionsStackPanel;
 
@@ -41,6 +65,13 @@ namespace DesktopClient.ViewModels
             set => this.RaiseAndSetIfChanged(ref _questions, value);
         }
 
+        private Border _msgBoxBackground;
+
+        public Border MsgBoxBackground
+        {
+            get => _msgBoxBackground;
+            set => this.RaiseAndSetIfChanged(ref _msgBoxBackground, value);
+        }
 
         #endregion
 
@@ -49,32 +80,26 @@ namespace DesktopClient.ViewModels
         public IScreen HostScreen { get; }
 
         public ReactiveCommand<Unit, Unit> TestCommand { get; }
-
         public ReactiveCommand<Unit, Unit> SubmitCommand { get; }
-
         public ReactiveCommand<Unit, Unit> ExitCommand { get; }
-
         public ReactiveCommand<Unit, Unit> InfoCommand { get; }
-
         public ReactiveCommand<Unit, Unit> ZoomInCommand { get; }
-
         public ReactiveCommand<Unit, Unit> ZoomOutCommand { get; }
 
-        public ReactiveCommand<Unit, Unit> MessagePopupCommand { get; }
+        public ReactiveCommand<Unit, Unit> BackgroundOn { get; }
 
+        public ReactiveCommand<Unit, Unit> BackgroundOff { get; }
+        public ReactiveCommand<Unit, Unit> MessagePopupCommand { get; }
         public ReactiveCommand<Unit, Unit> RefreshCommand { get; }
 
         public Task InitTask { get; private set; }
+
 
         public Exam ExamObject { get; private set; }
 
         public List<Models.Question> QuestionsList { get; private set; }
 
         public IObservable<bool> Executing => RefreshCommand.IsExecuting;
-
-        bool IsMessageBoxOpen => SystemMonitor.IsMessageBoxOpen;
-
-
 
         Task LoadingControls()
         {
@@ -118,6 +143,13 @@ namespace DesktopClient.ViewModels
 
         public ExamRoomViewModel(IScreen screen)
         {
+            var mainWindow = screen as MainWindowViewModel;
+            mainWindow.Monitor.StopMonitoring();
+
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromSeconds(1);
+            _timer.Tick += _timer_Tick;
+
             SystemMonitor.IsInExamRoom = true;
             HostScreen = screen;
             QuestionsStackPanel = new StackPanel
@@ -136,6 +168,9 @@ namespace DesktopClient.ViewModels
                 FontWeight = FontWeight.Bold,
                 Text = "Exam Name"
             };
+
+            BackgroundOn = ReactiveCommand.Create(() => { Border.IsVisible = true; });
+            BackgroundOff = ReactiveCommand.Create(() => { Border.IsVisible = false; });
 
             QuestionsStackPanel.Children.Add(examNameTextBox);
 
@@ -161,7 +196,9 @@ namespace DesktopClient.ViewModels
                 if (result == "Yes")
                 {
                     QuestionDecoder decoder = new QuestionDecoder();
-                    decoder.GetAnswers(ExamObject, QuestionsStackPanel);
+                    await decoder.GetAnswers(ExamObject, QuestionsStackPanel);
+                    ExceptionNotifier.NotifySuccess("Exam answers submitted sucessfully! ✔️");
+
                 }
             });
 
@@ -207,7 +244,7 @@ namespace DesktopClient.ViewModels
                 var result = await messageBox.Show();
                 if (result == "Yes")
                 {
-                    Dispatcher.UIThread.MainLoop(new CancellationToken(true));
+                    BackgroundOn.Execute().Subscribe();
                 }
             });
 
@@ -239,12 +276,30 @@ namespace DesktopClient.ViewModels
                 QuestionsStackPanel.Children.Clear();
                 await LoadingControls();
             });
+
+            SystemMonitor monitor = new SystemMonitor(this);
+            monitor.StartExamMonitoring();
+            _timer.Start();
         }
+
+        private void _timer_Tick(object? sender, EventArgs e)
+        {
+            ExamTimer = ExamTimer.Subtract(TimeSpan.FromSeconds(1));
+            if (ExamTimer.TotalSeconds == 0)
+            {
+                _timer.Stop();
+            }
+        }
+
         async Task<List<Exercise>> Init()
         {
             return await GetExercises();
         }
 
+        public void setBackgroundVisibility(bool visibility)
+        {
+            Border.IsVisible = visibility;
+        }
         private async Task<List<Exercise>> GetExercises()
         {
             ExamService examService = new ExamService();

@@ -50,7 +50,7 @@
                         <TextBlock
                             VerticalAlignment="Center"
                             FontWeight="Bold"
-                            Text="1 : 29 : 59" />
+                            Text="{Binding ExamTimer, StringFormat=\{0:h\\:mm\\:ss\}}}" />
                     </StackPanel>
                     <StackPanel
                         Grid.Column="2"
@@ -176,5 +176,7 @@
                 StrokeWidth="20"
 				ForegroundColor="Black"/>
 		</Border>
+		
+		<ContentPresenter ZIndex="500" Content="{Binding Border}"/>
     </Panel>
 </UserControl>

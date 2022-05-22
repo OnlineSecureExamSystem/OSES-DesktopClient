@@ -1,5 +1,7 @@
-﻿using DesktopClient.Models;
+﻿using DesktopClient.Helpers;
+using DesktopClient.Models;
 using Newtonsoft.Json;
+using System;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
@@ -15,7 +17,7 @@ namespace DesktopClient.Services
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new System.Uri(ServiceConfig.ServiceUrl + "/exam"),
+                RequestUri = new Uri(ServiceConfig.ServiceUrl + "/exam"),
                 Content = new StringContent(json, Encoding.UTF8, "application/json")
             };
 
@@ -30,6 +32,32 @@ namespace DesktopClient.Services
                 else
                 {
                     throw new HttpRequestException(response.ReasonPhrase);
+                }
+            }
+        }
+
+        public async Task<bool> SendExamAnswers(Exam exam)
+        {
+            var json = JsonConvert.SerializeObject(exam);
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri(ServiceConfig.ServiceUrl + "/exam"),
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
+
+            using (var client = new HttpClient())
+            {
+                HttpResponseMessage response = await client.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    ExceptionNotifier.NotifyError(result);
+                    return false;
                 }
             }
         }
