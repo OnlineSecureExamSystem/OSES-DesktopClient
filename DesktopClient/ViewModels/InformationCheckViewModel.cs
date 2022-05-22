@@ -1,14 +1,14 @@
 ﻿using Avalonia.Controls.Notifications;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
+using DesktopClient.CustomControls.StepCircle;
 using DesktopClient.Helpers;
 using DesktopClient.Models;
+using DesktopClient.Services;
 using DesktopClient.Views;
 using ReactiveUI;
 using System;
 using System.Reactive;
-using DesktopClient.CustomControls.StepCircle;
-
 
 namespace DesktopClient.ViewModels
 {
@@ -58,7 +58,7 @@ namespace DesktopClient.ViewModels
         public string RegistrationNumber
         {
             get { return _registrationNumber; }
-            set 
+            set
             {
                 value.IsValid(DataTypes.RegistrationNumber);
                 this.RaiseAndSetIfChanged(ref _registrationNumber, value);
@@ -70,7 +70,7 @@ namespace DesktopClient.ViewModels
         public Bitmap CameraBitmap
         {
             get { return _cameraBitmap; }
-            set 
+            set
             {
                 this.RaiseAndSetIfChanged(ref _cameraBitmap, value);
             }
@@ -172,9 +172,9 @@ namespace DesktopClient.ViewModels
         public string? UrlPathSegment => "/InformationCheck";
 
         public ReactiveCommand<Unit, Unit> CaptureFace { get; }
-        
+
         public ReactiveCommand<Unit, Unit> CaptureCard { get; }
-        
+
         public ReactiveCommand<Unit, Unit> NavigateBack { get; }
 
         public IScreen HostScreen { get; }
@@ -192,9 +192,9 @@ namespace DesktopClient.ViewModels
             Camera = camera;
             StepManager = stepManager;
             MainWindowp = mainWindow;
-   
+
             initCameraPreview();
-            
+
             IsCardTaking = true;
             IsFaceTaking = true;
 
@@ -248,11 +248,30 @@ namespace DesktopClient.ViewModels
                     !string.IsNullOrEmpty(num) &&
                     !cardTaking && !faceTaking
                 );
-            NextCommand = ReactiveCommand.Create(() =>
+            NextCommand = ReactiveCommand.CreateFromTask(async () =>
             {
-                HostScreen.Router.Navigate.Execute(new WaitingRoomViewModel(HostScreen, StepManager, MainWindowp));
-                stepManager.InfoCheckCtrl = new Done();
-                stepManager.StartExamCtrl = new Running();
+                StudentInformation studentInformation = new StudentInformation()
+                {
+                    FirstName = this.FirstName,
+                    LastName = this.LastName,
+                    BirthDate = this.BirthDate,
+                    RegistrationNumber = this.RegistrationNumber,
+                };
+                CapturedFace.Save(studentInformation.FaceCapture);
+                CapturedCard.Save(studentInformation.CardCapture);
+                StudentService studentService = new StudentService();
+                var result = await studentService.SendStudentInformation(studentInformation);
+                if (result)
+                {
+                    ExceptionNotifier.NotifySuccess("Student information sent to proctor successfully ✅");
+                    HostScreen.Router.Navigate.Execute(new WaitingRoomViewModel(HostScreen, StepManager, MainWindowp));
+                    stepManager.InfoCheckCtrl = new Done();
+                    stepManager.StartExamCtrl = new Running();
+                }
+                else
+                {
+                    ExceptionNotifier.NotifyError("Counldnt send student information to proctor");
+                }
             }, canNext);
 
             NavigateBack = ReactiveCommand.Create(() =>

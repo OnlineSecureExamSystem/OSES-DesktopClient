@@ -196,9 +196,13 @@ namespace DesktopClient.ViewModels
                 if (result == "Yes")
                 {
                     QuestionDecoder decoder = new QuestionDecoder();
-                    await decoder.GetAnswers(ExamObject, QuestionsStackPanel);
-                    ExceptionNotifier.NotifySuccess("Exam answers submitted sucessfully! ✔️");
-
+                    ExamService examService = new ExamService();
+                    var examAnswers = await decoder.GetAnswers(ExamObject, QuestionsStackPanel);
+                    var results = await examService.SendExamAnswers(examAnswers);
+                    if (results)
+                        ExceptionNotifier.NotifySuccess("Exam asnwers submitted sucessfully ✅");
+                    else
+                        ExceptionNotifier.NotifyError("Something went wrong ❌");
                 }
             });
 

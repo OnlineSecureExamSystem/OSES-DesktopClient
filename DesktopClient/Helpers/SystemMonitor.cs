@@ -32,7 +32,7 @@ namespace DesktopClient.Helpers
 
         private List<string> forbiddenPrecessNames = new List<string>()
         {
-            // browsers process names 
+            // browsers process names
             "chrome",
             "firefox",
             "opera",
@@ -41,7 +41,7 @@ namespace DesktopClient.Helpers
             "chromium",
             "msedge",
             
-            // comunication process names
+            // comunication process names ,zooom
             "skype",
             "Discord",
             "Telegram",
