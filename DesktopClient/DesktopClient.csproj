@@ -15,7 +15,7 @@
 	<TrimMode>copyused</TrimMode>
 	<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	<ApplicationManifest>app.manifest</ApplicationManifest>
+	<ApplicationManifest></ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />

@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
+using DesktopClient.Services;
 using DesktopClient.ViewModels;
 using MessageBox.Avalonia;
 using MessageBox.Avalonia.DTO;
@@ -16,11 +17,14 @@ namespace DesktopClient.Helpers
     {
         private DispatcherTimer _timer;
         private DispatcherTimer _examTimer;
-
+        private DispatcherTimer _internetTimer;
+        int connectionCutCount = 0;
         public bool IsMonitoring { get; private set; }
 
         public static bool IsMessageBoxOpen { get; private set; }
         public static bool IsInExamRoom { get; set; }
+
+        ExamService examService = new ExamService();
 
         public ExamRoomViewModel ExamRoom { get; set; }
 
@@ -39,7 +43,7 @@ namespace DesktopClient.Helpers
             "iexplore",
             "safari",
             "chromium",
-            "msedge",
+            //"msedge",
             
             // comunication process names ,zooom
             "skype",
@@ -62,7 +66,7 @@ namespace DesktopClient.Helpers
             "POWERPNT",
             "OUTLOOK",
             "WINWORD",
-            "HxOutlook",
+            //"HxOutlook",
             
             // recording process names
             // no need to close them because they cant record anything
@@ -92,6 +96,16 @@ namespace DesktopClient.Helpers
             IsMonitoring = true;
         }
 
+        public void StartInternetMonitoring()
+        {
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromSeconds(5);
+            _timer.Tick += internetTimer_Elapsed;
+            _timer.Start();
+        }
+
+
+
         public void StartExamMonitoring()
         {
             _examTimer = new DispatcherTimer();
@@ -99,6 +113,72 @@ namespace DesktopClient.Helpers
             _examTimer.Tick += examTimer_Elapsed;
             _examTimer.Start();
             IsMonitoring = true;
+        }
+
+        private async void internetTimer_Elapsed(object sender, EventArgs e)
+        {
+            var answers = await ExamRoom.getExamAnswers();
+            bool result = await examService.SendExamAnswers(answers);
+            if (result)
+            {
+                //ExceptionNotifier.NotifySuccess("Answers Saved");
+            }
+            else
+            {
+                connectionCutCount++;
+                if (!IsMessageBoxOpen)
+                {
+                    if (connectionCutCount > 2)
+                    {
+                        IsMessageBoxOpen = true;
+                        var endMessageBox = MessageBoxManager.GetMessageBoxCustomWindow(new MessageBoxCustomParams
+                        {
+
+                            ButtonDefinitions = new[] { new ButtonDefinition { Name = "Ok", IsDefault = true }, },
+                            ContentTitle = "Goodbey",
+                            ContentMessage = "Your internet connection is cutted alote,\n we had to kick you out of the exam room",
+                            Icon = Icon.Info,
+                            Topmost = true,
+                            CanResize = false,
+                            WindowStartupLocation = WindowStartupLocation.CenterScreen
+                        });
+                        var r2 = await endMessageBox.ShowDialog(getMainWindow());
+                        Environment.Exit(0);
+                    }
+
+                    var messageBox = MessageBoxManager.GetMessageBoxCustomWindow(new MessageBoxCustomParams
+                    {
+
+                        ButtonDefinitions = new[] { new ButtonDefinition { Name = "Retry", IsDefault = true },
+                                                new ButtonDefinition { Name = "Exit Exam", IsDefault = false }},
+                        ContentTitle = "Warning",
+                        ContentMessage = "You have no internet connection,\n If you exit now your answers will be sent automaticaly \n but you cant join the exam session again",
+                        Icon = Icon.Warning,
+                        Topmost = true,
+                        CanResize = false,
+                        WindowStartupLocation = WindowStartupLocation.CenterScreen
+                    });
+                    IsMessageBoxOpen = true;
+                    var r = await messageBox.ShowDialog(getMainWindow());
+                    if (r == "Retry")
+                    {
+                        bool r1 = await examService.SendExamAnswers(answers);
+                        if (r1)
+                        {
+                            ExceptionNotifier.NotifySuccess("Connection Restored");
+                        }
+                        else
+                        {
+                            ExceptionNotifier.NotifyError("No Internet Connection");
+                        }
+                        IsMessageBoxOpen = false;
+                    }
+                    else
+                    {
+                        Environment.Exit(0);
+                    }
+                }
+            }
         }
 
         private async void examTimer_Elapsed(object sender, EventArgs e)
@@ -251,7 +331,16 @@ namespace DesktopClient.Helpers
                 {
                     if (p.ProcessName == process)
                     {
-                        p.Kill();
+                        try
+                        {
+                            p.Kill();
+                        }
+                        catch (Exception e)
+                        {
+
+                            ExceptionNotifier.NotifyError(e.Message);
+                        }
+
                     }
                 }
             }

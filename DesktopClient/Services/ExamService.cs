@@ -43,12 +43,58 @@ namespace DesktopClient.Services
             {
                 Method = HttpMethod.Post,
                 RequestUri = new Uri(ServiceConfig.ServiceUrl + "/exam"),
-                Content = new StringContent(json, Encoding.UTF8, "application/json")
+                Content = new StringContent(json, Encoding.UTF8, "application/json"),
+                Headers = { { "IsSubmit", "false" } }
             };
 
             using (var client = new HttpClient())
             {
-                HttpResponseMessage response = await client.SendAsync(request);
+                HttpResponseMessage response;
+                try
+                {
+                    response = await client.SendAsync(request);
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    ExceptionNotifier.NotifyError(result);
+                    return false;
+                }
+            }
+        }
+
+        public async Task<bool> SubmitExamAnswers(Exam examAnswers)
+        {
+            var json = JsonConvert.SerializeObject(examAnswers);
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri(ServiceConfig.ServiceUrl + "/exam"),
+                Content = new StringContent(json, Encoding.UTF8, "application/json"),
+                Headers = { { "IsSubmit", "true" } }
+            };
+
+            using (var client = new HttpClient())
+            {
+                HttpResponseMessage response;
+                try
+                {
+                    response = await client.SendAsync(request);
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+
                 if (response.IsSuccessStatusCode)
                 {
                     return true;

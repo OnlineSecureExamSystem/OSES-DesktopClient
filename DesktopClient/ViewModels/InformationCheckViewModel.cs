@@ -257,8 +257,10 @@ namespace DesktopClient.ViewModels
                     BirthDate = this.BirthDate,
                     RegistrationNumber = this.RegistrationNumber,
                 };
-                CapturedFace.Save(studentInformation.FaceCapture);
-                CapturedCard.Save(studentInformation.CardCapture);
+
+                //CapturedFace.Save(studentInformation.FaceCapture);
+                //CapturedCard.Save(studentInformation.CardCapture);
+
                 StudentService studentService = new StudentService();
                 var result = await studentService.SendStudentInformation(studentInformation);
                 if (result)

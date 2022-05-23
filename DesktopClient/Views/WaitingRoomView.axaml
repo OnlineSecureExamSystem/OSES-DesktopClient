@@ -8,70 +8,89 @@
     d:DesignHeight="500"
     d:DesignWidth="900"
     mc:Ignorable="d">
-    <Grid>
-        <Border
-            Width="800"
-            Height="450"
-            Background="White"
-            BorderBrush="{DynamicResource Primary}"
-            BorderThickness="1.5"
-            BoxShadow="0 0 9 0 Gray"
-            CornerRadius="4">
-            <StackPanel
-                Grid.Column="1"
-                Grid.ColumnSpan="3"
-                Margin="0,20,0,40">
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    FontSize="30"
-                    FontWeight="Bold"
-                    Text="You’re all set up 😀" />
-                <TextBlock
-                    Margin="0,40,0,10"
-                    HorizontalAlignment="Center"
-                    FontSize="16"
-                    FontWeight="Bold"
-                    Text="WAITING ROOM" />
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    FontSize="12"
-                    Text="you and all your friends are waiting for the exam to start" />
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    FontSize="12"
-                    Text="dont worry! " />
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    FontSize="12"
-                    Text="once the exams starts you’ll be directed automatically to the exam page" />
-                <TextBlock
-                    Margin="0,40,0,0"
-                    HorizontalAlignment="Center"
-                    FontSize="25"
-                    FontWeight="Bold"
-                    Text="TIME LEFT TO EXAM" />
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    FontSize="25"
-                    FontWeight="Bold"
-                    Text="{Binding ExamTimer, StringFormat=\{0:h\\:mm\\:ss\}}" />
+		<Grid>
+			
+			<Border
+				Width="800"
+				Height="450"
+				Background="White"
+				BorderBrush="{DynamicResource Primary}"
+				BorderThickness="1.5"
+				BoxShadow="0 0 9 0 Gray"
+				CornerRadius="4">
+				<ScrollViewer>
 
-                <gif:GifImage
-                    Height="150"
-                    Margin="30,0,0,0"
-                    SourceUri="resm:DesktopClient.Assets.WaitingDog.gif"
-                    Stretch="Uniform"
-                    StretchDirection="Both" />
+					<StackPanel
+					Grid.Column="1"
+					Grid.ColumnSpan="3"
+					Margin="0,20,0,40">
+					<TextBlock
+						HorizontalAlignment="Center"
+						FontSize="30"
+						FontWeight="Bold"
+						Text="You’re all set up 😀" />
+					<TextBlock
+						Margin="0,40,0,10"
+						HorizontalAlignment="Center"
+						FontSize="16"
+						FontWeight="Bold"
+						Text="WAITING ROOM" />
+					<TextBlock
+						HorizontalAlignment="Center"
+						FontSize="12"
+						Text="you and all your friends are waiting for the exam to start" />
+					<TextBlock
+						HorizontalAlignment="Center"
+						FontSize="12"
+						Text="dont worry! " />
+					<TextBlock
+						HorizontalAlignment="Center"
+						FontSize="12"
+						Text="once the exams starts you’ll be directed automatically to the exam page" />
+					<TextBlock
+						Margin="0,40,0,0"
+						HorizontalAlignment="Center"
+						FontSize="25"
+						FontWeight="Bold"
+						Text="TIME LEFT TO EXAM" />
+					<TextBlock
+						HorizontalAlignment="Center"
+						Margin="0 0 0 20"
+						FontSize="25"
+						FontWeight="Bold"
+						Text="{Binding ExamTimer, StringFormat=\{0:h\\:mm\\:ss\}}" />
+					<Expander>
+						<Expander.HeaderTemplate>
+							<DataTemplate>
+								<TextBlock Text="Rules" FontSize="20"/>
+							</DataTemplate>
+						</Expander.HeaderTemplate>
+					</Expander>
+					<Expander>
+						<Expander.HeaderTemplate>
+							<DataTemplate>
+								<TextBlock Text="Informations" FontSize="20"/>
+							</DataTemplate>
+						</Expander.HeaderTemplate>
+					</Expander>
 
-            </StackPanel>
-        </Border>
-        <Border Background="Black" Opacity="0.5" IsVisible="{Binding Executing^}">
-            <ProgressRing
-                Width="100"
-                Height="100"
-                IsIndeterminate="true"
-                StrokeWidth="20"
-				ForegroundColor="Black"/>
-        </Border>
-    </Grid>
+					<gif:GifImage
+						Height="150"
+						Margin="30,0,0,0"
+						SourceUri="resm:DesktopClient.Assets.WaitingDog.gif"
+						Stretch="Uniform"
+						StretchDirection="Both" />
+				</StackPanel>
+				</ScrollViewer>
+			</Border>
+			<Border Background="Black" Opacity="0.5" IsVisible="{Binding Executing^}">
+				<ProgressRing
+					Width="100"
+					Height="100"
+					IsIndeterminate="true"
+					StrokeWidth="20"
+					ForegroundColor="Black"/>
+			</Border>
+		</Grid>
+	
 </UserControl>

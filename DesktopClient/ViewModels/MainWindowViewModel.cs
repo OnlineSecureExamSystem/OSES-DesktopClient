@@ -13,7 +13,7 @@ namespace DesktopClient.ViewModels
         {
             Router = new RoutingState();
             //Router.Navigate.Execute(new StepManagerViewModel(this));
-            Router.Navigate.Execute(new SystemRequirmentsViewModel(this, new StepManagerViewModel(this), this));
+            Router.Navigate.Execute(new WaitingRoomViewModel(this, new StepManagerViewModel(this), this));
 
             Monitor = new SystemMonitor();
 

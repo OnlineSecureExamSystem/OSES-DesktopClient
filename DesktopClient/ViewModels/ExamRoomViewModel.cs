@@ -79,6 +79,7 @@ namespace DesktopClient.ViewModels
 
         public IScreen HostScreen { get; }
 
+        public Exam ExamAnswers { get; set; }
         public ReactiveCommand<Unit, Unit> TestCommand { get; }
         public ReactiveCommand<Unit, Unit> SubmitCommand { get; }
         public ReactiveCommand<Unit, Unit> ExitCommand { get; }
@@ -98,6 +99,7 @@ namespace DesktopClient.ViewModels
         public Exam ExamObject { get; private set; }
 
         public List<Models.Question> QuestionsList { get; private set; }
+        QuestionDecoder decoder = new QuestionDecoder();
 
         public IObservable<bool> Executing => RefreshCommand.IsExecuting;
 
@@ -109,6 +111,33 @@ namespace DesktopClient.ViewModels
                 {
                     try
                     {
+                        StackPanel info = new StackPanel();
+
+                        var examNameTextBox = new TextBlock
+                        {
+                            Margin = new Thickness(10, 30, 10, 30),
+                            VerticalAlignment = VerticalAlignment.Center,
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                            FontSize = 30,
+                            FontWeight = FontWeight.Bold,
+                            Text = ExamObject.Name
+                        };
+
+                        var examDescriptionTextBlock = new TextBlock
+                        {
+                            Margin = new Thickness(10, 0, 10, 10),
+                            VerticalAlignment = VerticalAlignment.Center,
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                            FontSize = 16,
+                            TextWrapping = TextWrapping.Wrap,
+                            TextAlignment = TextAlignment.Center,
+                            Text = ExamObject.Description
+                        };
+
+                        info.Children.Add(examNameTextBox);
+                        info.Children.Add(examDescriptionTextBlock);
+                        QuestionsStackPanel.Children.Add(info);
+
                         QuestionDecoder decoder = new QuestionDecoder();
 
                         for (var i = 0; i < t.Result.Count; i++)
@@ -157,22 +186,8 @@ namespace DesktopClient.ViewModels
                 DataContext = this
             };
 
-            var examNameTextBox = new TextBlock
-            {
-                Width = 200,
-                Height = 30,
-                Margin = new Thickness(10, 30, 10, 30),
-                VerticalAlignment = VerticalAlignment.Center,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                FontSize = 30,
-                FontWeight = FontWeight.Bold,
-                Text = "Exam Name"
-            };
-
             BackgroundOn = ReactiveCommand.Create(() => { Border.IsVisible = true; });
             BackgroundOff = ReactiveCommand.Create(() => { Border.IsVisible = false; });
-
-            QuestionsStackPanel.Children.Add(examNameTextBox);
 
             InitTask = LoadingControls();
 
@@ -195,10 +210,9 @@ namespace DesktopClient.ViewModels
                 var result = await messageBox.Show();
                 if (result == "Yes")
                 {
-                    QuestionDecoder decoder = new QuestionDecoder();
+
                     ExamService examService = new ExamService();
-                    var examAnswers = await decoder.GetAnswers(ExamObject, QuestionsStackPanel);
-                    var results = await examService.SendExamAnswers(examAnswers);
+                    var results = await examService.SubmitExamAnswers(ExamAnswers);
                     if (results)
                         ExceptionNotifier.NotifySuccess("Exam asnwers submitted sucessfully ✅");
                     else
@@ -283,6 +297,7 @@ namespace DesktopClient.ViewModels
 
             SystemMonitor monitor = new SystemMonitor(this);
             monitor.StartExamMonitoring();
+            monitor.StartInternetMonitoring();
             _timer.Start();
         }
 
@@ -310,6 +325,12 @@ namespace DesktopClient.ViewModels
             ExamObject = await examService.GetExamAsync("AAAAAA");
 
             return ExamObject.Exercises;
+        }
+
+        public async Task<Exam> getExamAnswers()
+        {
+            ExamAnswers = await decoder.GetAnswers(ExamObject, QuestionsStackPanel);
+            return ExamAnswers;
         }
     }
 }
