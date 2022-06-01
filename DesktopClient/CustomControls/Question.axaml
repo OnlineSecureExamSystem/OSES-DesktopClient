@@ -1,0 +1,25 @@
+<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cm="using:DesktopClient.CustomControls">
+    <Design.PreviewWith>
+        <cm:Question />
+    </Design.PreviewWith>
+
+    <Style Selector="cm|Question">
+        <!--  Set Defaults  -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border
+                    Margin="10"
+                    CornerRadius="4">
+                    <StackPanel>
+						<ContentPresenter Content="{TemplateBinding Description}" />
+						<ContentPresenter Content="{TemplateBinding Answer}" />
+                    </StackPanel>
+
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

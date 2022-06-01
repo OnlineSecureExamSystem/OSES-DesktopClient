@@ -1,9 +1,15 @@
 ﻿using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.ReactiveUI;
+using DesktopClient.ViewModels;
+using DesktopClient.Views;
+using Projektanker.Icons.Avalonia;
+using Projektanker.Icons.Avalonia.FontAwesome;
+using ReactiveUI;
+using Splat;
 using System;
+using System.Reflection;
 
-namespace examClientMVVM
+namespace DesktopClient
 {
     internal class Program
     {
@@ -11,14 +17,23 @@ namespace examClientMVVM
         // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
         // yet and stuff might break.
         [STAThread]
-        public static void Main(string[] args) => BuildAvaloniaApp()
-            .StartWithClassicDesktopLifetime(args);
+        [Obsolete]
+        public static void Main(string[] args) => BuildAvaloniaApp().Start<MainWindow>(() => new MainWindowViewModel());
 
-        // Avalonia configuration, don't remove; also used by visual designer.
+        // Avalonia configuration.
         public static AppBuilder BuildAvaloniaApp()
-            => AppBuilder.Configure<App>()
+        {
+            // registering views so the locator can resolve them when needed
+            Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
+
+
+            return AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .LogToTrace()
-                .UseReactiveUI();
+                .UseReactiveUI()
+                .WithIcons(container => container
+                    .Register<FontAwesomeIconProvider>());
+
+        }
     }
 }

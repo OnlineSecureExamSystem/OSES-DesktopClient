@@ -1,0 +1,80 @@
+<UserControl
+    x:Class="DesktopClient.Views.LoginFormView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cm="using:DesktopClient.CustomControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:DesktopClient.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    FontFamily="Work Sans"
+    mc:Ignorable="d">
+
+    <Border
+        x:Name="myBorder"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Background="White"
+        BorderBrush="{DynamicResource Primary}"
+        BorderThickness="1.5"
+		CornerRadius="4"
+        BoxShadow="0 0 9 0 Gray">
+
+        <Grid
+            Margin="30,50,30,50"
+            ColumnDefinitions="0.25*,1.5*,0.25*"
+            RowDefinitions="0.25*,1.5*,0.25*">
+            <StackPanel
+                x:Name="mySatck"
+                Grid.Row="1"
+                Grid.Column="1"
+                HorizontalAlignment="Center">
+                <Image Height="60" Source="/Assets/avalonia-logo.ico" />
+                <TextBlock
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="25"
+                    FontWeight="Bold"
+                    Text="Login" />
+                <TextBox
+                    Width="200"
+                    Margin="10"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    Text="{Binding Email}"
+                    Watermark="Email" />
+                <TextBox
+                    Width="200"
+                    Margin="10"
+                    Classes="revealPasswordButton"
+                    FontSize="12"
+                    PasswordChar="•"
+                    Text="{Binding Password}"
+                    Watermark="Password" />
+                <Button
+                    Margin="20,5,20,0"
+                    Padding="60,5"
+                    HorizontalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    Command="{Binding LoginCommand}"
+                    Content="Login" />
+
+				<Button
+                    Margin="0,0,0,10"
+                    HorizontalAlignment="Center"
+                    Classes="Hyperlink"
+					Command="{Binding OpenBrowser}"
+                    ><TextBlock TextDecorations="Underline" Text="Login with browser"/></Button>
+
+
+                <ProgressBar
+                    x:Name="progressBar"
+                    Foreground="{DynamicResource Primary}"
+                    IsIndeterminate="True"
+                    IsVisible="{Binding Executing^}" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

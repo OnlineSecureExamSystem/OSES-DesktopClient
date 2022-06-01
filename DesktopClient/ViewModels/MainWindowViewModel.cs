@@ -1,65 +1,32 @@
-﻿using Avalonia.Controls;
-using Avalonia.Controls.Notifications;
-using Avalonia.Data;
+﻿using DesktopClient.Helpers;
 using ReactiveUI;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reactive;
-using System.Text;
-using System.Text.RegularExpressions;
-using static examClientMVVM.Views.MainWindow;
 
-namespace examClientMVVM.ViewModels
+namespace DesktopClient.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ViewModelBase, IScreen
     {
-        string email;
+        public RoutingState Router { get; }
 
-        public string Email
-        {
-            get => email;
-            set
-            {
-                if (!Regex.IsMatch(value, @"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"))
-                {
-                    throw new DataValidationException("invalid email");
-                }
-                this.RaiseAndSetIfChanged(ref email, value);
-            }
-        }
-
-        string password;
-
-        public string Password
-        {
-            get => password;
-            set => this.RaiseAndSetIfChanged(ref password, value);
-        }
-
-
-        public ReactiveCommand<Unit, Unit> LoginCommand { get; }
+        public SystemMonitor Monitor { get; private set; }
 
         public MainWindowViewModel()
         {
-            var canLogin = this.WhenAnyValue(
-                x => x.Email, x => x.Password,
-                (email, pass) =>
-                    !string.IsNullOrEmpty(email) &&
-                    !string.IsNullOrEmpty(pass)
-                );
+            Router = new RoutingState();
+            Monitor = new SystemMonitor();
 
-            LoginCommand = ReactiveCommand.Create(Login, canLogin);
-            LoginCommand.ThrownExceptions.Subscribe(x =>
-                       windowNotificationManager?.Show(new Avalonia.Controls.Notifications.Notification("Error", x.Message, NotificationType.Error)));
+
+            // navigating to the main view
+            //Router.Navigate.Execute(new StepManagerViewModel(this));
+            Router.Navigate.Execute(new EnterCodeViewModel(this, new StepManagerViewModel(this), this));
+
+
+            // starting the websocket server used for streaming
+            //StreamingHelper streamingHelper = new StreamingHelper();
+            //streamingHelper.InitWebsocket();
+
+            // starting system monitoring threads 
+            //Monitor.StartMonitoring();
+            //Monitor.StartScreenMonitoring();
         }
-
-
-        public void Login()
-        {
-            throw new AccessViolationException();
-        }
-
-
     }
 }

@@ -1,10 +1,8 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using examClientMVVM.ViewModels;
-using examClientMVVM.Views;
 
-namespace examClientMVVM
+namespace DesktopClient
 {
     public partial class App : Application
     {
@@ -17,10 +15,10 @@ namespace examClientMVVM
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow
-                {
-                    DataContext = new MainWindowViewModel(),
-                };
+                //desktop.MainWindow = new MainWindow
+                //{
+                //    DataContext = new MainWindowViewModel(),
+                //};
             }
 
             base.OnFrameworkInitializationCompleted();

@@ -1,0 +1,27 @@
+<UserControl
+    x:Class="DesktopClient.CustomControls.StepCircle.Done"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="50"
+    d:DesignWidth="50"
+    mc:Ignorable="d">
+    <Grid>
+		<Ellipse
+            Width="30"
+            Height="30"
+            Fill="{DynamicResource Primary}"
+            Stroke="White"
+            StrokeThickness="2">
+			<Ellipse.Transitions>
+				<Transitions>
+					<DoubleTransition Easing="ElasticEaseOut" Property="Height" Duration="0:0:0.5"/>
+					<DoubleTransition Easing="ElasticEaseOut" Property="Width" Duration="0:0:0.5"/>
+				</Transitions>
+			</Ellipse.Transitions>
+		</Ellipse>
+        <i:Icon Foreground="LightGreen" Value="fa-check" />
+    </Grid>
+</UserControl>

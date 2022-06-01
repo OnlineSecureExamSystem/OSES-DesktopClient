@@ -1,4 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<!-- add runtime identifiers here -->
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	</PropertyGroup>
+	<PropertyGroup>
+		<!-- define dll folders  here -->
+		<DefineConstants Condition="'$(RuntimeIdentifier)' == 'win-x64'">$(DefineConstants);Windows</DefineConstants>
+	</PropertyGroup>
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
@@ -6,12 +14,22 @@
 	<!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
 	<TrimMode>copyused</TrimMode>
 	<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<ApplicationManifest></ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="CustomControls\" />
-    <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
-    <None Remove=".gitignore" />
+    <AvaloniaResource Remove="Assets\EmptyHtml.html" />
+	<AvaloniaResource Remove="Assets\HtmlViews\EmptyHtml.html" />
+    <AvaloniaResource Remove="Assets\HtmlViews\RichTextBox.html" />
+    <AvaloniaResource Remove="Assets\RichTextBox.html" />
+    <AvaloniaResource Remove="Assets\WaitingDog.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\WaitingDog.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Libraries\AvaloniaGif\AvaloniaGif.csproj" />
   </ItemGroup>
   <ItemGroup>
 	<!--This helps with theme dll-s trimming.
@@ -21,16 +39,67 @@
 	<TrimmableAssembly Include="Avalonia.Themes.Default" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.13" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.13" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.13" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.13" />
-	<PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
+	<PackageReference Include="Aura.UI" Version="0.1.4.2" />
+	<PackageReference Include="Aura.UI.FluentTheme" Version="0.1.4.2" />
+	<PackageReference Include="Avalonia" Version="0.10.13" />
+	<PackageReference Include="Avalonia.AvaloniaEdit" Version="0.10.12.2" />
+	<PackageReference Include="Avalonia.Desktop" Version="0.10.13" />
+	<PackageReference Include="Avalonia.Diagnostics" Version="0.10.13" />
+	<PackageReference Include="Avalonia.ReactiveUI" Version="0.10.13" />
+	<PackageReference Include="Avalonia.Xaml.Behaviors" Version="0.10.13.2" />
+	<PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.9.7" />
+	<PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-beta.100" />
+	<PackageReference Include="ManagedBass" Version="3.1.0" />
+	<PackageReference Include="ManagedBass.Wasapi" Version="3.1.0" />
+	<PackageReference Include="MessageBox.Avalonia" Version="2.0.0" />
+	<PackageReference Include="Projektanker.Icons.Avalonia" Version="4.4.0" />
+	<PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="4.4.0" />
+	<PackageReference Include="SIPSorcery.WebSocketSharp" Version="0.0.1" />
+	<PackageReference Include="SpeedTest.NetCore" Version="2.1.0" />
+	<PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
+	<PackageReference Include="WebViewControl-Avalonia" Version="2.91.25" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Assets\HtmlViews\EmptyHtml.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\HtmlViews\RichTextBox.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <AvaloniaXaml Update="Styles\NotificationCard.axaml">
       <Generator>MSBuild:Compile</Generator>
     </AvaloniaXaml>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Views\EnterCodeView.axaml.cs">
+      <DependentUpon>EnterCodeView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\LoginFormView.axaml.cs">
+      <DependentUpon>LoginFormView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\StepManagerView.axaml.cs">
+      <DependentUpon>StepManagerView.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="C:\Users\rd07g\Desktop\OSES\desktop-avalonia-client\DesktopClient\Libraries\ffmpeg\avcodec-58.dll" />
+  </ItemGroup>
+
+	<!-- define dlls for each platform here -->
+	
+	<ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+		<Content Include="$(ProjectDir)Libraries\BASS\Windows\bass.dll">
+			<Link>bass.dll</Link>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
+		</Content>
+		<Content Include="$(ProjectDir)Libraries\BASS\Windows\bass.dll">
+			<Link>bass.dll</Link>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
+		</Content>
+	</ItemGroup>
 </Project>

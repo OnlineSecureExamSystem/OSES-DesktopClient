@@ -1,24 +1,29 @@
 using Avalonia.Controls;
-using System;
-using examClientMVVM.Helpers;
 using Avalonia.Controls.Notifications;
+using Avalonia.Markup.Xaml;
+using System;
 
-namespace examClientMVVM.Views
+namespace DesktopClient.Views
 {
     public partial class MainWindow : Window
     {
-        public static WindowNotificationManager? windowNotificationManager;
+        public static WindowNotificationManager? WindowNotificationManager;
 
         public MainWindow()
         {
+
             InitializeComponent();
-            windowNotificationManager = new WindowNotificationManager(this)
+
+            WindowNotificationManager = new WindowNotificationManager(this)
             {
                 MaxItems = 3,
             };
         }
 
-
+        private void InitializeComponent()
+        {
+            AvaloniaXamlLoader.Load(this);
+        }
 
         //setting the main window affinity as soon as the window is loaded
         public void Loaded(object sender, EventArgs e)

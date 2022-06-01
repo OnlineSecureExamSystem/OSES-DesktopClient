@@ -1,17 +1,15 @@
-using Avalonia;
 using Avalonia.Controls;
-
 using Avalonia.Markup.Xaml;
 
-namespace examClientMVVM.Views
+namespace DesktopClient.CustomControls.StepCircle
 {
-    public partial class LoginForm : UserControl
+    public partial class Step3 : UserControl
     {
-
-        public LoginForm()
+        public Step3()
         {
             InitializeComponent();
         }
+
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
