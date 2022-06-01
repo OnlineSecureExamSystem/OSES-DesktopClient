@@ -7,11 +7,7 @@ using DesktopClient.Services;
 using DesktopClient.Views;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reactive;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DesktopClient.ViewModels
 {
@@ -121,7 +117,7 @@ namespace DesktopClient.ViewModels
             {
                 _timer.Stop();
                 BottomText = "verification code expired";
-                
+
                 if (HostScreen.Router.GetCurrentViewModel().UrlPathSegment == "/EnterVerificationCode")
                 {
                     MainWindow.WindowNotificationManager?.Show(new Avalonia.Controls.Notifications.Notification("Info",

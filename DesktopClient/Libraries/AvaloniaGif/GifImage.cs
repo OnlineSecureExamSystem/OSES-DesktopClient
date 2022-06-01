@@ -1,13 +1,11 @@
-﻿using System;
-using System.IO;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
-using Avalonia.Media;
-using Avalonia.Media.Imaging;
+using System;
+using System.IO;
 
 namespace AvaloniaGif
 {
@@ -88,20 +86,20 @@ namespace AvaloniaGif
         {
             var image = e.Sender as GifImage;
             if (image == null)
-                return; 
+                return;
         }
 
         public override void Render(DrawingContext context)
         {
             if (gifInstance == null)
                 return;
-                
+
             if (gifInstance.GetBitmap() is WriteableBitmap source && backingRTB is not null)
             {
                 using (var ctx = backingRTB.CreateDrawingContext(null))
                 {
                     var ts = new Rect(source.Size);
-                    ctx.DrawBitmap(source.PlatformImpl, 1, ts,ts);
+                    ctx.DrawBitmap(source.PlatformImpl, 1, ts, ts);
                 }
             }
             if (backingRTB is not null && Bounds.Width > 0 && Bounds.Height > 0)
@@ -114,7 +112,7 @@ namespace AvaloniaGif
                 var destRect = viewPort
                     .CenterRect(new Rect(scaledSize))
                     .Intersect(viewPort);
-                
+
                 var sourceRect = new Rect(sourceSize)
                     .CenterRect(new Rect(destRect.Size / scale));
 
@@ -122,7 +120,7 @@ namespace AvaloniaGif
 
                 context.DrawImage(backingRTB, sourceRect, destRect, interpolationMode);
             }
-            
+
             Dispatcher.UIThread.Post(InvalidateVisual, DispatcherPriority.Background);
         }
 
@@ -160,7 +158,7 @@ namespace AvaloniaGif
                 return new Size();
             }
         }
-        
+
         private static void SourceChanged(AvaloniaPropertyChangedEventArgs e)
         {
             var image = e.Sender as GifImage;
@@ -170,7 +168,7 @@ namespace AvaloniaGif
             image.gifInstance?.Dispose();
             image.backingRTB?.Dispose();
             image.backingRTB = null;
-            
+
             var value = e.NewValue;
             if (value is string s)
                 value = new Uri(s);

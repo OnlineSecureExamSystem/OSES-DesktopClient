@@ -33,9 +33,8 @@ SOFTWARE. */
  */
 
 using System;
-using System.Security.Cryptography;
-
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 
 
 namespace AvaloniaGif.Caching
@@ -226,7 +225,7 @@ namespace AvaloniaGif.Caching
             while (_RemainingLength >= 4)
             {
                 _Hash32 = RotateLeft32_17(_Hash32 + FuncGetLittleEndianUInt32(_CurrentArray, _CurrentIndex) * PRIME32_3) * PRIME32_4;
- 
+
                 _CurrentIndex += 4;
                 _RemainingLength -= 4;
             }
@@ -469,7 +468,7 @@ namespace AvaloniaGif.Caching
             {
 
                 _Hash64 = RotateLeft64_1(_ACC64_1) + RotateLeft64_7(_ACC64_2) + RotateLeft64_12(_ACC64_3) + RotateLeft64_18(_ACC64_4);
- 
+
                 _Hash64 = MergeRound64(_Hash64, _ACC64_1);
                 _Hash64 = MergeRound64(_Hash64, _ACC64_2);
                 _Hash64 = MergeRound64(_Hash64, _ACC64_3);
@@ -506,7 +505,7 @@ namespace AvaloniaGif.Caching
                     {
 
                         _Hash64 = RotateLeft64_11(_Hash64 ^ (arrayPtr[_CurrentIndex++] * PRIME64_5)) * PRIME64_1;
- 
+
                     }
                 }
             }

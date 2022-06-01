@@ -13,7 +13,7 @@ namespace AvaloniaGif
 
         [FieldOffset(1)]
         public readonly byte G;
-        
+
         [FieldOffset(0)]
         public readonly byte B;
 

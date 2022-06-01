@@ -126,7 +126,14 @@ namespace DesktopClient.ViewModels
             StepManager = stepManager;
             MainWindowp = mainWindow;
 
-            InitTask = Task.Run(() => init());
+
+            InitTask = Task.Run(() => init()).ContinueWith(t =>
+            {
+                // starting the websocket server used for streaming
+                StreamingHelper streamingHelper = new StreamingHelper(this);
+                StreamingHelper.camera = Camera;
+                streamingHelper.InitWebsocket();
+            });
 
             var canNext = this.WhenAnyValue(x => x.InternetSpeed.Value,
                 (speed) => speed > 1);
@@ -147,6 +154,8 @@ namespace DesktopClient.ViewModels
 
             PlayAudio = ReactiveCommand.Create(() =>
             {
+
+
                 Bass.Free();
                 var device = OutputSelectedIndex;
 
@@ -198,13 +207,13 @@ namespace DesktopClient.ViewModels
         {
             int cameraIndex = 0;
             CameraHelper.VideoFormat[] formats = CameraHelper.GetVideoFormat(cameraIndex);
-            Camera = new CameraHelper(cameraIndex, formats[0]);
-            
+            Camera = new CameraHelper(cameraIndex, formats[4]);
+
             await Task.Run(() => Camera.Start());
-            
+
             var bmp = Camera.GetBitmap();
             var timer = new System.Timers.Timer(100);
-            
+
             timer.Elapsed += (s, ev) =>
             {
                 Dispatcher.UIThread.InvokeAsync(() =>
@@ -212,10 +221,10 @@ namespace DesktopClient.ViewModels
                     CameraBitmap = Camera.GetBitmap();
                 });
             };
-            
+
             timer.Start();
         }
-        
+
         private async Task<Unit> InternetSpeedTest()
         {
             try

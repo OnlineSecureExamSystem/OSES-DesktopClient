@@ -1,13 +1,12 @@
 ﻿using Avalonia;
 using Avalonia.ReactiveUI;
-using DesktopClient;
-using Projektanker.Icons.Avalonia;
-using Projektanker.Icons.Avalonia.FontAwesome;
-using Splat;
-using System;
 using DesktopClient.ViewModels;
 using DesktopClient.Views;
+using Projektanker.Icons.Avalonia;
+using Projektanker.Icons.Avalonia.FontAwesome;
 using ReactiveUI;
+using Splat;
+using System;
 using System.Reflection;
 
 namespace DesktopClient
@@ -27,14 +26,14 @@ namespace DesktopClient
             // registering views so the locator can resolve them when needed
             Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
 
-            
+
             return AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .LogToTrace()
                 .UseReactiveUI()
                 .WithIcons(container => container
                     .Register<FontAwesomeIconProvider>());
-            
+
         }
     }
 }

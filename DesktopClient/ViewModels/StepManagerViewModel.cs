@@ -1,22 +1,10 @@
 ﻿using Avalonia.Controls;
-using Avalonia.Controls.Notifications;
-using Avalonia.Controls.Presenters;
-using DesktopClient.CustomControls;
-using DesktopClient.Views;
-using ReactiveUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive;
-using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DesktopClient.CustomControls.StepCircle;
-using static DesktopClient.Views.StepManagerView;
+using ReactiveUI;
 
 namespace DesktopClient.ViewModels
 {
-    public class StepManagerViewModel : ViewModelBase, IScreen, IRoutableViewModel  
+    public class StepManagerViewModel : ViewModelBase, IScreen, IRoutableViewModel
     {
         #region Properties
         private Control _loginCtrl = new Running();
@@ -44,7 +32,7 @@ namespace DesktopClient.ViewModels
         }
 
         private Control _infoCheckCtrl = new Step4();
-        
+
         public Control InfoCheckCtrl
         {
             get { return _infoCheckCtrl; }
@@ -70,12 +58,12 @@ namespace DesktopClient.ViewModels
 
         public StepManagerViewModel(IScreen screen)
         {
-            
+
             HostScreen = screen;
             MainWindow = (MainWindowViewModel)HostScreen;
 
             Router = new RoutingState();
-            
+
             Router.Navigate.Execute(new LoginFormViewModel(this, MainWindow));
         }
     }

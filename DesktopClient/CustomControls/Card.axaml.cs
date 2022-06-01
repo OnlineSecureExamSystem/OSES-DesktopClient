@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 
 namespace DesktopClient.CustomControls
 {
-    
+
     public partial class Card : UserControl
     {
         public static readonly StyledProperty<object> AdditionalContentProperty =

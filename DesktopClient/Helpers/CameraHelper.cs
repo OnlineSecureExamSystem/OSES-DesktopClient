@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Avalonia;
+using Avalonia.Media.Imaging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using Avalonia;
-using Avalonia.Media.Imaging;
+using System.Text;
 
 
 namespace DesktopClient.Helpers
@@ -324,9 +324,9 @@ namespace DesktopClient.Helpers
             }
         }
 
-        private class SampleGrabberCallback : DirectShow.ISampleGrabberCB
+        public class SampleGrabberCallback : DirectShow.ISampleGrabberCB
         {
-            private byte[] Buffer;
+            public static byte[] Buffer;
             private object BufferLock = new object();
 
             public Bitmap
@@ -398,7 +398,7 @@ namespace DesktopClient.Helpers
             GetBitmapFromSampleGrabberBufferMain(DirectShow.ISampleGrabber i_grabber, int width, int height, int stride)
         {
             int sz = 0;
-            i_grabber.GetCurrentBuffer(ref sz, IntPtr.Zero); 
+            i_grabber.GetCurrentBuffer(ref sz, IntPtr.Zero);
             if (sz == 0) return null;
 
             var ptr = Marshal.AllocCoTaskMem(sz);
@@ -768,7 +768,7 @@ namespace DesktopClient.Helpers
 
                 result.Add(name);
 
-                return false; 
+                return false;
             });
 
             return result;

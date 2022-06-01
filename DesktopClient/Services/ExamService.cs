@@ -27,7 +27,14 @@ namespace DesktopClient.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return await response.Content.ReadFromJsonAsync<Exam>();
+                    try
+                    {
+                        return await response.Content.ReadFromJsonAsync<Exam>();
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
                 }
                 else
                 {

@@ -2,7 +2,7 @@ namespace AvaloniaGif.Decoding
 {
     public readonly struct GifRect
     {
-        public  int X { get; }
+        public int X { get; }
         public int Y { get; }
         public int Width { get; }
         public int Height { get; }
@@ -30,13 +30,13 @@ namespace AvaloniaGif.Decoding
         }
 
         public override bool Equals(object obj)
-        {            
+        {
             if (obj == null || GetType() != obj.GetType())
                 return false;
 
             return this == (GifRect)obj;
         }
-        
+
         public override int GetHashCode()
         {
             return X.GetHashCode() ^ Y.GetHashCode() | Width.GetHashCode() ^ Height.GetHashCode();

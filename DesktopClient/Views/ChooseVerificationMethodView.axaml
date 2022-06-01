@@ -27,6 +27,14 @@
                 Classes="IconButton">
 				<i:Icon Value="fa-arrow-left" />
 			</Button>
+			<Button
+				Margin="5"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+				Command="{Binding SkipCommand}"
+                Classes="IconButton"
+				Content="Skip"
+				/>
 			<Grid
             Margin="0,50,0,50"
             ColumnDefinitions="0.25*,1.5*,0.25*"

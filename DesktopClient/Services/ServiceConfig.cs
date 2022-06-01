@@ -2,7 +2,7 @@
 {
     public static class ServiceConfig
     {
-        public static string ServiceUrl = "https://localhost:44386/api";
+        public static string ServiceUrl = "https://localhost:7261/api";
 
     }
 }

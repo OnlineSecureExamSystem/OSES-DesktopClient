@@ -23,7 +23,6 @@
 	<AvaloniaResource Remove="Assets\HtmlViews\EmptyHtml.html" />
     <AvaloniaResource Remove="Assets\HtmlViews\RichTextBox.html" />
     <AvaloniaResource Remove="Assets\RichTextBox.html" />
-    <AvaloniaResource Remove="Assets\sound.mp3" />
     <AvaloniaResource Remove="Assets\WaitingDog.gif" />
   </ItemGroup>
   <ItemGroup>
@@ -56,19 +55,12 @@
 	<PackageReference Include="MessageBox.Avalonia" Version="2.0.0" />
 	<PackageReference Include="Projektanker.Icons.Avalonia" Version="4.4.0" />
 	<PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="4.4.0" />
+	<PackageReference Include="SIPSorcery.WebSocketSharp" Version="0.0.1" />
 	<PackageReference Include="SpeedTest.NetCore" Version="2.1.0" />
 	<PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
-	<PackageReference Include="WebViewControl-Avalonia" Version="2.91.23" />
+	<PackageReference Include="WebViewControl-Avalonia" Version="2.91.25" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\sound.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="Assets\sound.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Assets\HtmlViews\EmptyHtml.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -92,9 +84,18 @@
       <DependentUpon>StepManagerView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Content Remove="C:\Users\rd07g\Desktop\OSES\desktop-avalonia-client\DesktopClient\Libraries\ffmpeg\avcodec-58.dll" />
+  </ItemGroup>
 
 	<!-- define dlls for each platform here -->
+	
 	<ItemGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+		<Content Include="$(ProjectDir)Libraries\BASS\Windows\bass.dll">
+			<Link>bass.dll</Link>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
+		</Content>
 		<Content Include="$(ProjectDir)Libraries\BASS\Windows\bass.dll">
 			<Link>bass.dll</Link>
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>

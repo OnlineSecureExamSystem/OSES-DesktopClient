@@ -6,6 +6,7 @@
 // The rest of the source file is licensed under MIT License.
 // Copyright (C) 2018 Jumar A. Macato, All Rights Reserved.
 
+using AvaloniaGif.Caching;
 using System;
 using System.Buffers;
 using System.Collections.Generic;
@@ -14,8 +15,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-
-using AvaloniaGif.Caching;
 using static AvaloniaGif.Extensions.StreamExtensions;
 
 namespace AvaloniaGif.Decoding

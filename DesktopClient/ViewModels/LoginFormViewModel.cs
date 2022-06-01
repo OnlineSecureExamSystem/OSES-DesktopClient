@@ -1,20 +1,20 @@
 ﻿using Avalonia.Controls.Notifications;
 using DesktopClient.Helpers;
 using DesktopClient.Models;
+using DesktopClient.Services;
 using DesktopClient.Views;
 using ReactiveUI;
 using System;
 using System.Diagnostics;
+using System.Net;
 using System.Reactive;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DesktopClient.ViewModels
 {
     public class LoginFormViewModel : ViewModelBase, IRoutableViewModel
     {
         #region Properties
-        private string? _email;
+        private string? _email = "rd077gamer@gmail.com";
 
         public string? Email
         {
@@ -26,7 +26,7 @@ namespace DesktopClient.ViewModels
             }
         }
 
-        private string? _password;
+        private string? _password = "sEUdRylySd";
 
 
         public string? Password
@@ -57,10 +57,12 @@ namespace DesktopClient.ViewModels
 
         public LoginFormViewModel(IScreen screen, MainWindowViewModel mainWindow)
         {
+
+
             HostScreen = screen;
             StepManager = (StepManagerViewModel)screen;
             MainWindowP = mainWindow;
-           
+
             var canLogin = this.WhenAnyValue(
                 x => x.Email, x => x.Password,
                 (email, pass) =>
@@ -70,9 +72,27 @@ namespace DesktopClient.ViewModels
 
             LoginCommand = ReactiveCommand.CreateFromTask(async () =>
             {
-                await Task.Run(() => Thread.Sleep(3000));
-                HostScreen.Router.Navigate.Execute(new ChooseVerificationMethodViewModel(screen, StepManager, MainWindowP));
+
+
+                AuthenticationService authenticationService = new AuthenticationService();
+                var result = await authenticationService.Login(Email, Password);
+
+                if (result.StatusCode != HttpStatusCode.BadRequest)
+                {
+                    HostScreen.Router.Navigate.Execute(new ChooseVerificationMethodViewModel(screen, StepManager, MainWindowP));
+                }
+                else
+                {
+                    ApiNotifier.Notify(result);
+                }
             }, canLogin);
+
+            //LoginCommand = ReactiveCommand.CreateFromTask(async () =>
+            //{
+            //    StreamingHelper streamingHelper = new StreamingHelper();
+            //    //streamingHelper.InitWebsocket();
+            //    streamingHelper.InitWebsocket();
+            //});
 
             // exception handeling
             LoginCommand.ThrownExceptions.Subscribe(x =>
@@ -81,6 +101,8 @@ namespace DesktopClient.ViewModels
                       NotificationType.Error)));
 
             OpenBrowser = ReactiveCommand.Create(openBrowser);
+
+
         }
 
         void openBrowser()

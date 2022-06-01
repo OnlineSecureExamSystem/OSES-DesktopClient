@@ -1,14 +1,10 @@
 ﻿using Avalonia.Controls.Notifications;
+using DesktopClient.CustomControls.StepCircle;
 using DesktopClient.Services;
 using DesktopClient.Views;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reactive;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DesktopClient.ViewModels
 {
@@ -24,17 +20,27 @@ namespace DesktopClient.ViewModels
 
         public ReactiveCommand<Unit, Unit> NavigateBack { get; }
 
+        public ReactiveCommand<Unit, Unit> SkipCommand { get; }
+
         public IObservable<bool> Executing => SendCodeCommand.IsExecuting;
 
         public MainWindowViewModel MainWindowp { get; }
 
-        
+
 
         public ChooseVerificationMethodViewModel(IScreen screen, StepManagerViewModel stepManager, MainWindowViewModel mainWindow)
         {
             HostScreen = screen;
             StepManager = stepManager;
             MainWindowp = mainWindow;
+
+
+            SkipCommand = ReactiveCommand.Create(() =>
+            {
+                StepManager.LoginCtrl = new Done();
+                StepManager.ExamCodeCtrl = new Running();
+                HostScreen.Router.Navigate.Execute(new EnterCodeViewModel(screen, StepManager, MainWindowp));
+            });
 
             SendCodeCommand = ReactiveCommand.CreateFromTask<string, Unit>(async (p) =>
             {

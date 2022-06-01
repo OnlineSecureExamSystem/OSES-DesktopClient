@@ -1,7 +1,4 @@
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 
 namespace DesktopClient.CustomControls.StepCircle

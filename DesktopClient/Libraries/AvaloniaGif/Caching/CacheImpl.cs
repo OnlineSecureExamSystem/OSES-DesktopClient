@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -52,7 +51,7 @@ namespace AvaloniaGif.Caching
             _expiration = builder.Expiration;
             _purgeInterval = builder.PurgeInterval;
             _doSlidingExp = builder.DoSlidingExpiration ?? false;
-            
+
             if (_expiration.HasValue && _purgeInterval.HasValue)
             {
                 TimeSpan interval = _purgeInterval.Value;

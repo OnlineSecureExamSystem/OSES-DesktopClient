@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DesktopClient.Helpers
 {
@@ -16,9 +12,9 @@ namespace DesktopClient.Helpers
         /* The window is displayed only on a monitor. Everywhere else, the window does not appear at all.
         One use for this affinity is for windows that show video recording controls, so that the controls are not included in the capture */
         public static readonly uint WDA_EXCLUDEFROMCAPTURE = 3;
-         
+
         [DllImport("user32.dll")]
         public static extern bool SetWindowDisplayAffinity(IntPtr hwnd, uint dwAffinity);
-        
+
     }
 }

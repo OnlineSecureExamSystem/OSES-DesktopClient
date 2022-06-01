@@ -10,16 +10,22 @@ using MessageBox.Avalonia.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace DesktopClient.Helpers
 {
     public class SystemMonitor
     {
+        [DllImport("user32.dll")]
+        private static extern int GetSystemMetrics(int nIndex);
+
         private DispatcherTimer _timer;
         private DispatcherTimer _examTimer;
         private DispatcherTimer _internetTimer;
+        private DispatcherTimer _screenTimer;
         int connectionCutCount = 0;
         public bool IsMonitoring { get; private set; }
+
 
         public static bool IsMessageBoxOpen { get; private set; }
         public static bool IsInExamRoom { get; set; }
@@ -96,12 +102,21 @@ namespace DesktopClient.Helpers
             IsMonitoring = true;
         }
 
+
         public void StartInternetMonitoring()
         {
-            _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromSeconds(5);
-            _timer.Tick += internetTimer_Elapsed;
-            _timer.Start();
+            _internetTimer = new DispatcherTimer();
+            _internetTimer.Interval = TimeSpan.FromSeconds(5);
+            _internetTimer.Tick += internetTimer_Elapsed;
+            _internetTimer.Start();
+        }
+
+        public void StartScreenMonitoring()
+        {
+            _screenTimer = new DispatcherTimer();
+            _screenTimer.Interval = TimeSpan.FromSeconds(5);
+            _screenTimer.Tick += screenTimer_Elapsed;
+            _screenTimer.Start();
         }
 
 
@@ -113,6 +128,38 @@ namespace DesktopClient.Helpers
             _examTimer.Tick += examTimer_Elapsed;
             _examTimer.Start();
             IsMonitoring = true;
+        }
+
+        private async void screenTimer_Elapsed(object sender, EventArgs e)
+        {
+            int screenCount = GetSystemMetrics(80);
+            if (screenCount > 1)
+            {
+                if (!IsMessageBoxOpen)
+                {
+                    if (IsInExamRoom)
+                    {
+                        IsMessageBoxOpen = true;
+                        var endMessageBox = MessageBoxManager.GetMessageBoxCustomWindow(new MessageBoxCustomParams
+                        {
+
+                            ButtonDefinitions = new[] { new ButtonDefinition { Name = "Ok", IsDefault = true }, },
+                            ContentTitle = "Warning",
+                            ContentMessage = "You can't use more than one screen in the exam room,\n disconnect the other screens or you will be kicked",
+                            Icon = Icon.Info,
+                            Topmost = true,
+                            CanResize = false,
+                            WindowStartupLocation = WindowStartupLocation.CenterScreen
+                        });
+                        var r2 = await endMessageBox.ShowDialog(getMainWindow());
+                    }
+                    else
+                    {
+                        ExceptionNotifier.NotifyWarning("You have more than one screen connected to your computer.\n" +
+                        "Please connect only one screen to your computer.");
+                    }
+                }
+            }
         }
 
         private async void internetTimer_Elapsed(object sender, EventArgs e)

@@ -1,13 +1,13 @@
-﻿using Avalonia.Controls;
-using Avalonia.Controls.Notifications;
+﻿using Avalonia.Controls.Notifications;
+using DesktopClient.CustomControls.StepCircle;
 using DesktopClient.Helpers;
 using DesktopClient.Models;
+using DesktopClient.Services;
 using DesktopClient.Views;
 using ReactiveUI;
 using System;
 using System.Reactive;
 using System.Reactive.Linq;
-using DesktopClient.CustomControls.StepCircle;
 
 namespace DesktopClient.ViewModels
 {
@@ -27,7 +27,7 @@ namespace DesktopClient.ViewModels
         }
         #endregion
 
-         ReactiveCommand<Unit, Unit> EnterCommand { get; }
+        ReactiveCommand<Unit, Unit> EnterCommand { get; }
 
         ReactiveCommand<Unit, Unit> NavigateBack { get; }
 
@@ -58,11 +58,29 @@ namespace DesktopClient.ViewModels
 
             EnterCommand = ReactiveCommand.CreateFromTask(async () =>
             {
+                ExamService examService = new ExamService();
+
+                // to be removed
                 SystemRequirmentsViewModel vm = new SystemRequirmentsViewModel(screen, StepManager, MainWindowp);
                 await vm.InitTask;
                 screen.Router.Navigate.Execute(vm);
                 StepManager.ExamCodeCtrl = new Done();
                 StepManager.SystemCheckCtrl = new Running();
+
+                //var result = await examService.GetExamAsync(Code);
+                //if (result == null)
+                //{
+                //    ExceptionNotifier.NotifyError("Exam not found");
+                //}
+                //else
+                //{
+                //    SystemRequirmentsViewModel vm = new SystemRequirmentsViewModel(screen, StepManager, MainWindowp);
+                //    await vm.InitTask;
+                //    screen.Router.Navigate.Execute(vm);
+                //    StepManager.ExamCodeCtrl = new Done();
+                //    StepManager.SystemCheckCtrl = new Running();
+                //}
+
             }, canEnter);
 
             EnterCommand.ThrownExceptions.Subscribe(x =>
